@@ -23,6 +23,7 @@
         <module>shopApp-rest</module>
         <module>ShopApp-web</module>
     </modules>
+
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>
