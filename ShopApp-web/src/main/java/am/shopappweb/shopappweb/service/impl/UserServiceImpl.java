@@ -2,11 +2,15 @@ package am.shopappweb.shopappweb.service.impl;
 
 
 import am.shopappweb.shopappweb.security.CurrentUser;
+import am.shopappweb.shopappweb.service.AddressService;
 import am.shopappweb.shopappweb.service.UserService;
+import am.shoppingCommon.shoppingApplication.dto.addressDto.AddressDto;
 import am.shoppingCommon.shoppingApplication.dto.userDto.UpdatePasswordDto;
 import am.shoppingCommon.shoppingApplication.dto.userDto.UserRegisterDto;
+import am.shoppingCommon.shoppingApplication.entity.Address;
 import am.shoppingCommon.shoppingApplication.entity.Role;
 import am.shoppingCommon.shoppingApplication.entity.User;
+import am.shoppingCommon.shoppingApplication.mapper.AddressMapper;
 import am.shoppingCommon.shoppingApplication.mapper.UserMapper;
 import am.shoppingCommon.shoppingApplication.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +34,8 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AddressService addressService;
+
     @Value("${shopping-app.upload.image.path}")
     private String imageUploadPath;
 
@@ -57,6 +63,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public User save(User user) {
         return userRepository.save(user);
+    }
+
+    @Override
+    public User saveAddress(CurrentUser currentUser, AddressDto addressDto) {
+        User user = currentUser.getUser();
+        User byId = userRepository.findById(user.getId()).orElse(null);
+        List<Address> addresses = byId.getAddresses();
+        addresses.add(AddressMapper.addressDtoToAddress(addressDto));
+        byId.setAddresses(addresses);
+        return byId;
     }
 
     @Override
@@ -119,6 +135,23 @@ public class UserServiceImpl implements UserService {
     @Override
     public void removeById(int id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public void removeAddressFromUserAndAddressTable(CurrentUser currentUser, int id) {
+        User user = currentUser.getUser();
+        User byId = userRepository.findById(user.getId()).orElse(null);
+        List<Address> addresses = byId.getAddresses();
+        Address address1 = null;
+        for (Address address : addresses) {
+            if (address.getId() == id) {
+                address1 = address;
+            }
+        }
+        addresses.remove(address1);
+        byId.setAddresses(addresses);
+        userRepository.save(byId);
+        addressService.delete(id);
     }
 
     @Override

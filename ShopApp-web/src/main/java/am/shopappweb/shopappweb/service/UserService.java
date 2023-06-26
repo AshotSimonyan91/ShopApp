@@ -2,6 +2,7 @@ package am.shopappweb.shopappweb.service;
 
 
 import am.shopappweb.shopappweb.security.CurrentUser;
+import am.shoppingCommon.shoppingApplication.dto.addressDto.AddressDto;
 import am.shoppingCommon.shoppingApplication.dto.userDto.UpdatePasswordDto;
 import am.shoppingCommon.shoppingApplication.dto.userDto.UserRegisterDto;
 import am.shoppingCommon.shoppingApplication.entity.User;
@@ -27,8 +28,10 @@ public interface UserService {
 
     User save(UserRegisterDto user);
     User save(User user);
+    User saveAddress(CurrentUser currentUser, AddressDto addressDto);
 
     void removeById(int id);
+    void removeAddressFromUserAndAddressTable(CurrentUser currentUser, int id);
 
     User findById(int id);
 

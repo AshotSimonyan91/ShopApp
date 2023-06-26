@@ -10,7 +10,6 @@ import am.shoppingCommon.shoppingApplication.dto.userDto.UserUpdateDto;
 import am.shoppingCommon.shoppingApplication.entity.Address;
 import am.shoppingCommon.shoppingApplication.entity.Order;
 import am.shoppingCommon.shoppingApplication.entity.User;
-import am.shoppingCommon.shoppingApplication.mapper.AddressMapper;
 import am.shoppingCommon.shoppingApplication.mapper.OrderMapper;
 import am.shoppingCommon.shoppingApplication.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
@@ -105,7 +104,8 @@ public class UserController {
 
 
     @GetMapping("/order")
-    public String userOrderPage(@AuthenticationPrincipal CurrentUser currentUser, ModelMap modelMap) {
+    public String userOrderPage(@AuthenticationPrincipal CurrentUser currentUser,
+                                ModelMap modelMap) {
         List<Order> allByUserId = orderService.findAllByUserId(currentUser.getUser().getId());
         modelMap.addAttribute("user", UserMapper.userToUserDto(currentUser.getUser()));
         modelMap.addAttribute(OrderMapper.listOrderToListOrderDto(allByUserId));
@@ -113,13 +113,15 @@ public class UserController {
     }
 
     @GetMapping("/payment")
-    public String userPaymentPage(@AuthenticationPrincipal CurrentUser currentUser, ModelMap modelMap) {
+    public String userPaymentPage(@AuthenticationPrincipal CurrentUser currentUser,
+                                  ModelMap modelMap) {
         modelMap.addAttribute("user", UserMapper.userToUserDto(currentUser.getUser()));
         return "account-payment";
     }
 
     @GetMapping("/verify")
-    public String verifyEmail(@RequestParam("email") String email, @RequestParam("token") UUID token) {
+    public String verifyEmail(@RequestParam("email") String email,
+                              @RequestParam("token") UUID token) {
         boolean isVerified = userService.verifyUserByEmail(email, token);
         if (isVerified) {
             return "redirect:/customLogin";
@@ -141,7 +143,9 @@ public class UserController {
     }
 
     @GetMapping("/changePassword")
-    public String changePassword(@RequestParam("email") String email, @RequestParam("token") UUID token, ModelMap modelMap) {
+    public String changePassword(@RequestParam("email") String email,
+                                 @RequestParam("token") UUID token,
+                                 ModelMap modelMap) {
         boolean isChanged = userService.changeUserPasswordTokenVerify(email, token.toString());
         if (isChanged) {
             modelMap.addAttribute("email", email);
@@ -152,7 +156,10 @@ public class UserController {
     }
 
     @PostMapping("/changePassword")
-    public String resetPassword(@RequestParam("password") String password, @RequestParam("password") String password2, @RequestParam("email") String email, @RequestParam("token") String token) {
+    public String resetPassword(@RequestParam("password") String password,
+                                @RequestParam("password") String password2,
+                                @RequestParam("email") String email,
+                                @RequestParam("token") String token) {
         if (userService.changePassword(password, password2, email, token)) {
             return "redirect:/customLogin";
         }
@@ -175,33 +182,17 @@ public class UserController {
             modelmap.addAttribute("user", userService.findByIdWithAddresses(currentUser.getUser().getId()));
             return "account-address";
         }
-        User user = currentUser.getUser();
-        User byId = userService.findById(user.getId());
-        List<Address> addresses = byId.getAddresses();
-        addresses.add(AddressMapper.addressDtoToAddress(addressDto));
-        byId.setAddresses(addresses);
-        userService.save(byId);
+        userService.save(userService.saveAddress(currentUser, addressDto));
         modelmap.addAttribute("user", userService.findByIdWithAddresses(currentUser.getUser().getId()));
         return "account-address";
     }
+
 
     @GetMapping("/address/delete")
     public String deleteUserAddress(ModelMap modelmap,
                                     @AuthenticationPrincipal CurrentUser currentUser,
                                     @RequestParam("id") int id) {
-        User user = currentUser.getUser();
-        User byId = userService.findById(user.getId());
-        List<Address> addresses = byId.getAddresses();
-        Address address1 = null;
-        for (Address address : addresses) {
-            if (address.getId() == id) {
-                address1 = address;
-            }
-        }
-        addresses.remove(address1);
-        byId.setAddresses(addresses);
-        userService.save(byId);
-        addressService.delete(id);
+        userService.removeAddressFromUserAndAddressTable(currentUser, id);
         modelmap.addAttribute("user", userService.findByIdWithAddresses(currentUser.getUser().getId()));
         return "account-address";
     }

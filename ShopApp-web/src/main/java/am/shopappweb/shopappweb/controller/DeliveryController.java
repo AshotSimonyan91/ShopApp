@@ -131,8 +131,6 @@ public class DeliveryController {
         modelMap.addAttribute("totalPages", totalPages);
         modelMap.addAttribute("currentPage", currentPage);
         modelMap.addAttribute("deliveries2", result);
-
-
         modelMap.addAttribute("user", UserMapper.userToUserDto(currentUser.getUser()));
         modelMap.addAttribute("deliveries1",
                 deliveryService.findAllByOrderStatus(Status.APPROVED, pageable).getContent());
@@ -160,8 +158,6 @@ public class DeliveryController {
         modelMap.addAttribute("totalPages", totalPages);
         modelMap.addAttribute("currentPage", currentPage);
         modelMap.addAttribute("deliveries2", result);
-
-
         modelMap.addAttribute("user",UserMapper.userToUserDto(currentUser.getUser()));
         modelMap.addAttribute("deliveries1",
                 deliveryService.findAllByOrderStatus(Status.APPROVED, pageable).getContent());
