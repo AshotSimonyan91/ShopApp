@@ -34,6 +34,8 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers(HttpMethod.POST,"/user/auth").permitAll()
                 .requestMatchers(HttpMethod.POST,"/user/register").permitAll()
+                .requestMatchers("/swagger-ui/**").permitAll()
+                .requestMatchers("/v3/api-docs/**").permitAll()
                 .requestMatchers(HttpMethod.GET,"/author/**").authenticated()
                 .requestMatchers(HttpMethod.POST, "/author/**").hasAnyAuthority("ADMIN")
                 .anyRequest().authenticated();

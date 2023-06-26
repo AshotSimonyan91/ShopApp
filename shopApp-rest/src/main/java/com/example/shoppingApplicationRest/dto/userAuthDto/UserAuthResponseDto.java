@@ -1,4 +1,4 @@
-package com.example.shoppingApplicationRest.dto;
+package com.example.shoppingApplicationRest.dto.userAuthDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -7,8 +7,8 @@ import am.shoppingCommon.shoppingApplication.entity.Role;
 import am.shoppingCommon.shoppingApplication.entity.User;
 import am.shoppingCommon.shoppingApplication.mapper.UserMapper;
 import am.shoppingCommon.shoppingApplication.repository.UserRepository;
-import com.example.shoppingApplicationRest.dto.UserAuthRequestDto;
-import com.example.shoppingApplicationRest.dto.UserAuthResponseDto;
+import com.example.shoppingApplicationRest.dto.userAuthDto.UserAuthRequestDto;
+import com.example.shoppingApplicationRest.dto.userAuthDto.UserAuthResponseDto;
 import com.example.shoppingApplicationRest.util.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -45,9 +45,9 @@ public class UserEndpoint {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserDto> register(@RequestBody CreateUserRequestDto createUserRequestDto){
+    public ResponseEntity<UserDto> register(@RequestBody CreateUserRequestDto createUserRequestDto) {
         Optional<User> byEmail = userRepository.findByEmail(createUserRequestDto.getEmail());
-        if(byEmail.isPresent()){
+        if (byEmail.isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
         User user = UserMapper.createUserRequestDtoMap(createUserRequestDto);
