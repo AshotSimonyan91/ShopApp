@@ -1,0 +1,225 @@
+<th:block th:include="/fragment/header::header"></th:block><!-- End Page Title --><!-- Section -->
+<section class="product-details py-6">
+    <div class="container">
+        <div class="row"><!-- Product Gallery -->
+            <div class="col-lg-6 lightbox-gallery product-gallery">
+                <div class="swiper swiper_gallery">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide" th:each="img : ${currentProduct.getImages()}">
+                            <div class="pd-gallery-slide"><a class="gallery-link"
+                                                             th:href="@{/getImage(profilePic=${img.image})}"><i
+                                    class="bi bi-arrows-fullscreen"></i></a> <img
+                                    th:src="@{/getImage(profilePic=${img.image})}" class="img-fluid" title=""
+                                    alt=""></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper swiper_thumb_gallery product-thumb">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide" th:each="img : ${currentProduct.getImages()}">
+                            <div class="pd-gallery-slide-thumb"><img
+                                    th:src="@{/getImage(profilePic=${img.image})}" class="img-fluid" title=""
+                                    alt=""></div>
+                        </div>
+                    </div>
+                    <div class="swiper-arrow-style-03 swiper-next swiper-next-pd-details_thumb"><i
+                            class="bi bi-chevron-right"></i></div>
+                    <div class="swiper-arrow-style-03 swiper-prev swiper-prev-pd-details_thumb"><i
+                            class="bi bi-chevron-left"></i></div>
+                </div>
+            </div><!-- End Product Gallery --><!-- Product Details -->
+            <div class="col-lg-6 ps-lg-5">
+                <div class="product-detail pt-4 pt-lg-0">
+                    <div class="products-brand pb-2"><span>Brand name</span></div>
+                    <div class="products-title mb-2"><h4 class="h4" th:text="${currentProduct.name}"></h4></div>
+                    <div class="rating-star text small pb-4"><i class="bi bi-star-fill active"></i> <i
+                            class="bi bi-star-fill active"></i> <i class="bi bi-star-fill active"></i> <i
+                            class="bi bi-star-fill active"></i> <i class="bi bi-star"></i> <small>(4 Reviews
+                        )</small></div>
+                    <div class="product-description">
+                        <p th:text="${currentProduct.description}"></p></div>
+                    <div class="product-attribute"><label class="fs-6 text-mode pb-2 fw-500">Size</label>
+                        <div class="nav-thumbs nav mb-3">
+                            <div class="form-check radio-text form-check-inline me-2"><input
+                                    class="form-check-input" type="radio" name="size_d3" id="xs_2" checked="">
+                                <label class="radio-text-label" for="xs_2">XS</label></div>
+                            <div class="form-check radio-text form-check-inline me-2"><input
+                                    class="form-check-input" type="radio" name="size_d3" id="s_2"> <label
+                                    class="radio-text-label" for="s_2">S</label></div>
+                            <div class="form-check radio-text form-check-inline me-2"><input
+                                    class="form-check-input" type="radio" name="size_d3" id="m_2"> <label
+                                    class="radio-text-label" for="m_2">M</label></div>
+                            <div class="form-check radio-text form-check-inline me-2"><input
+                                    class="form-check-input" type="radio" name="size_d3" id="l_2"> <label
+                                    class="radio-text-label" for="l_2">L</label></div>
+                        </div>
+                        <label class="fs-6 text-mode pb-2 fw-500">Color</label>
+                        <div class="nav-thumbs nav mb-3">
+                            <div class="form-check radio-color large form-check-inline me-2"><input
+                                    class="form-check-input" type="radio" name="color_1" id="color_01"
+                                    checked=""> <label class="radio-color-label" for="color_01"><span
+                                    style="background-color: #126532;"></span></label></div>
+                            <div class="form-check radio-color large form-check-inline me-2"><input
+                                    class="form-check-input" type="radio" name="color_1" id="color_2"> <label
+                                    class="radio-color-label" for="color_2"><span
+                                    style="background-color: #ff9922;"></span></label></div>
+                            <div class="form-check radio-color large form-check-inline me-2"><input
+                                    class="form-check-input" type="radio" name="color_1" id="color_3"> <label
+                                    class="radio-color-label" for="color_3"><span
+                                    style="background-color: #326598;"></span></label></div>
+                            <div class="form-check radio-color large form-check-inline me-2"><input
+                                    class="form-check-input" type="radio" name="color_1" id="color_4"> <label
+                                    class="radio-color-label" for="color_4"><span
+                                    style="background-color: #126578;"></span></label></div>
+                        </div>
+                    </div>
+                    <div class="count-down count-down-02 mb-3" data-countdown="January 01, 2024 15:00:00"></div>
+                    <div class="product-price fs-3 fw-500 mb-2">
+                                <span class="text-primary"
+                                      th:text="${currentProduct.price}">$28.<small>50</small></span>
+                    </div>
+                    <div class="product-detail-actions d-flex flex-wrap pt-3">
+                        <div class="cart-qty me-3 mb-3">
+                            <div class="dec qty-btn qty_btn">-</div>
+                            <input class="cart-qty-input form-control" type="text" name="qtybutton" value="1">
+                            <div class="inc qty-btn qty_btn">+</div>
+                        </div>
+                        <div class="cart-button mb-3 d-flex">
+                            <button class="btn btn-mode me-3"><i class="fi-shopping-cart"></i> Add to cart
+                            </button>
+                            <button class="btn btn-outline-mode me-3"><i class="fi-heart"></i></button>
+                            <button class="btn btn-outline-mode"><i class="fi-repeat"></i></button>
+                        </div>
+                    </div>
+                    <div class="product-info-buttons nav pt-4"><a href="product-details.html#" class="me-3"
+                                                                  data-bs-toggle="modal"
+                                                                  data-bs-target="#px_size_chart_modal"><i
+                            class="bi bi-scissors"></i>Size guide</a> <a href="product-details.html#" class=""
+                                                                         data-bs-toggle="modal"
+                                                                         data-bs-target="#px_shipping_modal"><i
+                            class="bi bi-truck me-2"></i>Shipping</a> <a href="product-details.html#"
+                                                                         class="ms-auto" data-bs-toggle="modal"
+                                                                         data-bs-target="#px_ask_modal"><i
+                            class="bi bi-envelope ms-auto"></i>Ask about product</a></div>
+                    <div class="pt-3 border-top mt-3 small">
+                        <p class="theme-link mb-2"><label
+                                class="m-0 text-mode">Categories:</label>
+                            <th:block th:each="category:${currentProduct.getCategories()}"><a
+                                    href="product-details.html#" th:text="${category.name}"></a>
+                            </th:block>
+                        </p>
+                        <p class="theme-link m-0"><label class="m-0 text-mode">Share:</label> <a
+                                class="icon icon-sm icon-secondary me-2" href="product-details.html#"><i
+                                class="bi bi-facebook"></i> </a><a class="icon icon-sm icon-secondary me-2"
+                                                                   href="product-details.html#"><i
+                                class="bi bi-twitter"></i> </a><a class="icon icon-sm icon-secondary me-2"
+                                                                  href="product-details.html#"><i
+                                class="bi bi-instagram"></i> </a><a class="icon icon-sm icon-secondary me-2"
+                                                                    href="product-details.html#"><i
+                                class="bi bi-linkedin"></i></a></p></div>
+                    <div class="pt-4"><img class="img-fluid" src="/img/fashion2/payment-details.png"
+                                           title="" alt=""></div>
+                </div>
+
+            </div><!-- End Product Details --></div>
+        <div class="col-md-12">
+            <h2>Comments</h2>
+            <form action="/comments/add" method="post" class="margin-bottom-20">
+                <textarea placeholder="comment" style="resize: none; border-radius: 8px; padding: 3px 0px 0px 8px;" name="comment" rows="2" cols="50" required></textarea><br>
+                <input type="hidden" th:value="${currentProduct.id}" name="id">
+                <input type="submit" value="add" class="add-comment-button">
+            </form>
+            <ul class="comment-list">
+                <li th:each="comment : ${comments}" class="comment-item">
+                    <img th:src="@{/getImage(profilePic=${comment.user.profilePic})}"   class="user-image"  alt="User Image" width="50" height="50">
+                     <span th:text="${#temporals.format(comment.dateTime, 'dd MMM yyyy HH:mm')}"> : </span><span th:text=" ' ' + ${comment.user.name}"></span>
+                    <span th:text="${comment.comment}"></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</section><!-- End Product Details --><!-- Product Tabs -->
+<section class="section">
+    <div class="container">
+        <div class="row justify-content-center section-heading">
+            <div class="col-lg-6 text-center"><h3 class="fw-500 h2 m-0">Browse our Bestsellers</h3></div>
+        </div>
+        <div class="swiper-hover-arrow position-relative">
+            <div class="swiper swiper-container" data-swiper-options='{
+                                  "slidesPerView": 2,
+                                  "spaceBetween": 24,
+                                  "loop": true,
+                                  "pagination": {
+                                    "el": ".swiper-pagination",
+                                    "clickable": true
+                                    },
+                                  "navigation": {
+                                    "nextEl": ".swiper-next-02",
+                                    "prevEl": ".swiper-prev-02"
+                                  },
+                                  "autoplay": {
+                                    "delay": 3500,
+                                    "disableOnInteraction": false
+                                  },
+                                  "breakpoints": {
+                                    "600": {
+                                      "slidesPerView": 3
+                                    },
+                                    "991": {
+                                      "slidesPerView": 3
+                                    },
+                                    "1200": {
+                                      "slidesPerView": 4
+                                    }
+                                  }
+                            }'>
+                <div class="swiper-wrapper"><!-- Product Box -->
+                    <div class="swiper-slide" th:each=" product : ${products}">
+                        <div class="product-card-2">
+                            <div class="product-card-image">
+                                <div class="badge-ribbon"><span class="badge bg-info">Sale</span></div>
+                                <div class="product-wishlist"><a href="#"
+                                                                 class="btn btn-outline-primary"><i
+                                        class="fi-heart"></i></a></div>
+                                <div class="product-media"><a href="singleProductPage.html#"><img
+                                        class="img-fluid" th:src="@{/getImage(profilePic=${product.images[0].image})}"
+                                        title=""
+                                        alt=""></a>
+                                    <div class="product-action nav justify-content-center"><a
+                                            href="singleProductPage.html#" class="btn btn-primary"><i
+                                            class="fi-shopping-cart"></i> </a><a href="#"
+                                                                                 class="btn btn-primary"><i
+                                            class="fi-repeat"></i> </a><a data-bs-toggle="modal"
+                                                                          data-bs-target="#px-quick-view"
+                                                                          href="javascript:void(0)"
+                                                                          class="btn btn-primary"><i
+                                            class="fi-eye"></i></a></div>
+                                </div>
+                            </div>
+                            <div class="product-card-info">
+                                <div class="rating-star text"><i class="bi bi-star-fill active"></i> <i
+                                        class="bi bi-star-fill active"></i> <i
+                                        class="bi bi-star-fill active"></i> <i
+                                        class="bi bi-star-fill active"></i> <i class="bi bi-star"></i></div>
+                                <h6 class="product-title"><a href="#" th:text="${product.name}">Fine-knit
+                                    sweater</a></h6>
+                                <div class="product-price"><span
+                                        class="text-primary" th:text="'$' + ${product.price}"></span>
+                                    <del class="fs-sm text-muted" th:text="'$' + ${product.price} + 10"></del>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- End Product Box --><!-- Product Box -->
+                </div>
+                <div class="swiper-pagination mt-4 d-lg-none position-relative"></div>
+            </div>
+            <div class="swiper-arrow-style-02 swiper-next swiper-next-02"><i class="bi bi-chevron-right"></i>
+            </div>
+            <div class="swiper-arrow-style-02 swiper-prev swiper-prev-02"><i class="bi bi-chevron-left"></i>
+            </div>
+        </div>
+    </div>
+</section><!-- End You may also like --></main>
+<th:block th:include="fragment/footer::footer"></th:block>
+</body>
+</html>

@@ -1,0 +1,10 @@
+<th:block th:include="/fragment/header::header"></th:block>
+<img th:if="${currentUser.profilePic != null}" th:src="@{/getImage(profilePic=${currentUser.profilePic})}"
+     width="80">
+<h2 th:text="${currentUser.name}"></h2>
+<div th:each="notification :${notifications}">
+    <p th:text="${notification.message}"></p>
+</div>
+<th:block th:include="footer.html :: footer"></th:block>
+</body>
+</html>

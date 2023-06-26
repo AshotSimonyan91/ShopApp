@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<div th:replace="header.html"></div>
+<div>
+    <form th:action="@{'/admin/update/' + ${user.id}}" method="post" enctype="multipart/form-data">
+        <label for="name">Name:</label>
+        <input id="name" type="text" name="name" th:value="${user.name}"><br>
+        <label for="surname">Surname:</label>
+        <input id="surname" type="text" name="surname" th:value="${user.surname}"><br>
+        <label for="email">Email:</label>
+        <input id="email" type="text" name="email" th:value="${user.email}"><br>
+        //add some logic
+
+
+        <div th:if="${user.addresses.size() == 0}">
+            <label for="address1">Address: </label>
+            <input id="address1" type="text" name="address"><br>
+        </div>
+        <div th:each="address : ${user.addresses}">
+            <label for="address" th:text="'Address: ' + ${user.addresses.indexOf(address)}">Address:</label>
+            <input id="address" type="text" name="address" th:value="${address}"><br>
+        </div>
+        <label for="gender">Gender:</label>
+        <select name="gender" id="gender">
+            <option value="MALE">Male</option>
+            <option value="FEMALE">Female</option>
+        </select><br>
+        <label for="phone">Phone Number:</label>
+        <input id="phone" type="text" name="phoneNumber" th:value="${user.phoneNumber}"><br>
+        <label for="type">User Type:</label>
+        <select name="userType" id="type">
+            <option value="USER">User</option>
+            <option value="MANAGER">Manager</option>
+            <option value="DELIVERY">Delivery</option>
+            <option value="ADMIN">Admin</option>
+        </select><br>
+        <input type="file" name="profile_pic" th:value="${user.profilePic}"><br>
+        <input type="submit" value="Update User">
+    </form>
+</div>
+<th:block th:include="footer.html :: footer"></th:block>
+</body>
+</html>

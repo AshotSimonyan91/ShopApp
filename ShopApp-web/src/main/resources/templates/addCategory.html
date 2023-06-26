@@ -1,0 +1,12 @@
+<div th:replace="header.html"></div>
+<div>
+    <form action="/categories/add" method="post" enctype="multipart/form-data">
+        <input type="text" name="name" placeholder="Name"><br>
+        <input type="file" name="pic"><br>
+        <br>
+        <input type="submit" value="Add Category">
+    </form>
+</div>
+<th:block th:include="footer.html :: footer"></th:block>
+</body>
+</html>>

@@ -1,0 +1,48 @@
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org">
+<th:block th:include="/fragment/header::header"></th:block>
+<div class="py-6">
+    <div class="container">
+        <div class="row"><!-- Profile Menu -->
+            <div class="col-lg-4 pb-4 pb-lg-0 col-xxl-3 pe-xxl-5">
+                <div class="bg-body border border-bottom-0 shadow-lg">
+                    <div class="d-flex p-3 align-items-center">
+                        <div class="avatar avatar-lg rounded-circle" th:if="${user.profilePic != null}">
+                            <img th:src="@{/getImage(profilePic=${user.profilePic})}">
+                        </div>
+                        <div class="col ps-3"><h6 class="m-0" th:text="${user.name}"></h6><small><a
+                                href="#" th:text="${user.email}">your@email.com</a></small></div>
+                    </div>
+                </div>
+            </div><!-- End Profile Menu --><!-- Content -->
+            <div class="col-lg-8 col-xxl-9">
+                <div class="card mb-5">
+                    <div class="card-header py-3"><h5 class="m-0">Profile Update</h5></div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6 mb-3">
+                                <label class="form-label">Email address<span class="text-danger">*</span></label>
+                                <span class="form-control" th:text="${user.email}"></span>
+
+                            </div>
+                            <div class="col-sm-6 mb-3">
+                                <label class="form-label">Name<span class="text-danger">*</span></label>
+                                <span class="form-control" th:text="${user.name}"></span>
+
+                            </div>
+                            <div class="col-sm-6 mb-3">
+                                <label class="form-label">Surname<span class="text-danger">*</span></label>
+                                <span class="form-control" th:text="${user.surname}"></span>
+                            </div>
+                            <div class="col-sm-6 mb-3">
+                                <label class="form-label">Mobile Number<span class="text-danger">*</span></label>
+                                <span class="form-control" th:text="${user.phoneNumber}"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- End Content --></div>
+    </div>
+</div><!--Table --></main>
+<block th:include="fragment/footer::footer"></block>
+</body>
+</html>

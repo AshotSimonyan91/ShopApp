@@ -1,0 +1,20 @@
+<div th:replace="header.html"></div>
+<div>
+    <form action="/products/add" method="post" enctype="multipart/form-data">
+        <input type="text" name="name" placeholder="Name"><br>
+        <input type="text" name="productCode" placeholder="Product Code"><br>
+        <input type="text" name="price" placeholder="Price"><br>
+        <input type="text" name="count" placeholder="Count"><br>
+        <input type="file" name="files" multiple><br>
+        <textarea name="description" placeholder="Product Description"></textarea><br>
+        <div th:each="category, status: ${categories}">
+            <span th:text="${category.name}"></span>
+            <input type="checkbox" th:name="categories[__${status.index}__].id" th:value="${category.id}">
+        </div>
+        <br>
+        <input type="submit" value="Add Product">
+    </form>
+</div>
+<th:block th:include="footer.html :: footer"></th:block>
+</body>
+</html>

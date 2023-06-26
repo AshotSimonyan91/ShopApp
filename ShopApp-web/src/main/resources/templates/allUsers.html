@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<div th:replace="header.html"></div>
+<table style="border: 1px solid black">
+    <thead>
+    <tr>
+        <th>Picture</th>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Surname</th>
+        <th>Email</th>
+        <th>Address</th>
+        <th>Gender</th>
+        <th>Phone Number</th>
+        <th>User Type</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+        <td>
+            <img th:if="${user.getProfilePic() != null}"
+                 th:src="@{/getImage(profilePic=${user.getProfilePic()})}"
+                 width="80">
+            <img th:unless="${user.getProfilePic() != null}" src="" width="80">
+        </td>
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.name}"></td>
+        <td th:text="${user.surname}"></td>
+        <td th:text="${user.email}"></td>
+        <td th:text="${user.addresses}"></td>
+        <td th:text="${user.gender}"></td>
+        <td th:text="${user.phoneNumber}"></td>
+        <td th:text="${user.getRole}"></td>
+        <td><a th:href="@{/admin/remove(id=${user.id})}">delete</a>/<a th:href="@{/admin/update(id=${user.id})}">update</a></td>
+    </tr>
+    </tbody>
+</table>
+<th:block th:include="footer.html :: footer"></th:block>
+</body>
+</html>
