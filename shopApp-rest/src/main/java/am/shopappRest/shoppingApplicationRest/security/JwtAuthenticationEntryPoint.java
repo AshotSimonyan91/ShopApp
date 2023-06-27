@@ -1,4 +1,4 @@
-package com.example.shoppingApplicationRest.security;
+package am.shopappRest.shoppingApplicationRest.security;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

@@ -1,8 +1,8 @@
-package com.example.shoppingApplicationRest.filter;
+package am.shopappRest.shoppingApplicationRest.filter;
 
 
-import com.example.shoppingApplicationRest.security.CurrentUserDetailServiceImpl;
-import com.example.shoppingApplicationRest.util.JwtTokenUtil;
+import am.shopappRest.shoppingApplicationRest.security.CurrentUserDetailServiceImpl;
+import am.shopappRest.shoppingApplicationRest.util.JwtTokenUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

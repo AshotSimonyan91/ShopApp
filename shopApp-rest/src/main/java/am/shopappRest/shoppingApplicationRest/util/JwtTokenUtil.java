@@ -1,4 +1,4 @@
-package com.example.shoppingApplicationRest.util;
+package am.shopappRest.shoppingApplicationRest.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

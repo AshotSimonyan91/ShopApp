@@ -192,5 +192,39 @@ public class ProductMapper {
         }
         return productResponseDtoSet;
     }
+
+    public static List<CreateProductResponseDto> mapToListDto(List<Product> entity) {
+        if (entity == null) {
+            return null;
+        }
+        List<CreateProductResponseDto> productResponseDtoList = new ArrayList<>();
+        for (Product product : entity) {
+            CreateProductResponseDto productResponseDto = new CreateProductResponseDto();
+            productResponseDto.setId(product.getId());
+            productResponseDto.setName(product.getName());
+            productResponseDto.setProductCode(product.getProductCode());
+            productResponseDto.setDescription(product.getDescription());
+            productResponseDto.setPrice(product.getPrice());
+            List<Image> list = product.getImages();
+            List<ImageDto> imageDtos = new ArrayList<>();
+            for (Image image : list) {
+                imageDtos.add(ImageMapper.imageToImageDto(image));
+            }
+            if (imageDtos != null) {
+                productResponseDto.setImages(imageDtos);
+            }
+            List<Category> list1 = product.getCategories();
+            List<CategoryDto> categoryDtos = new ArrayList<>();
+            for (Category category : list1) {
+                categoryDtos.add(CategoryMapper.categoryToDto(category));
+            }
+            if (categoryDtos != null) {
+                productResponseDto.setCategories(categoryDtos);
+            }
+
+            productResponseDtoList.add(productResponseDto);
+        }
+        return productResponseDtoList;
+    }
 }
 

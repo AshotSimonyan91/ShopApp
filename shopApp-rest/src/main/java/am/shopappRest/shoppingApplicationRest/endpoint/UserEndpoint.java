@@ -1,0 +1,156 @@
+package am.shopappRest.shoppingApplicationRest.endpoint;
+
+
+import am.shopappRest.shoppingApplicationRest.restDto.userAuthDto.UserAuthRequestDto;
+import am.shopappRest.shoppingApplicationRest.restDto.userAuthDto.UserAuthResponseDto;
+import am.shopappRest.shoppingApplicationRest.util.JwtTokenUtil;
+import am.shoppingCommon.shoppingApplication.dto.addressDto.AddressDto;
+import am.shoppingCommon.shoppingApplication.dto.notificationDto.NotificationResponseDto;
+import am.shoppingCommon.shoppingApplication.dto.orderDto.OrderDto;
+import am.shoppingCommon.shoppingApplication.dto.userDto.CreateUserRequestDto;
+import am.shoppingCommon.shoppingApplication.dto.userDto.UpdatePasswordDto;
+import am.shoppingCommon.shoppingApplication.dto.userDto.UserDto;
+import am.shoppingCommon.shoppingApplication.dto.userDto.UserUpdateDto;
+import am.shoppingCommon.shoppingApplication.entity.Role;
+import am.shoppingCommon.shoppingApplication.entity.User;
+import am.shoppingCommon.shoppingApplication.mapper.NotificationMapper;
+import am.shoppingCommon.shoppingApplication.mapper.OrderMapper;
+import am.shoppingCommon.shoppingApplication.mapper.UserMapper;
+import am.shoppingCommon.shoppingApplication.security.CurrentUser;
+import am.shoppingCommon.shoppingApplication.service.MailService;
+import am.shoppingCommon.shoppingApplication.service.NotificationService;
+import am.shoppingCommon.shoppingApplication.service.OrderService;
+import am.shoppingCommon.shoppingApplication.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.Valid;
+import java.io.IOException;
+import java.util.List;
+import java.util.UUID;
+
+@RestController
+@RequestMapping("/user")
+@RequiredArgsConstructor
+public class UserEndpoint {
+
+    private final MailService mailService;
+    private final UserService userService;
+    private final OrderService orderService;
+    private final NotificationService notificationService;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtTokenUtil tokenUtil;
+
+    @Value("${site.url}")
+    private String siteUrl;
+
+    @PostMapping("/auth")
+    public ResponseEntity<UserAuthResponseDto> auth(@RequestBody UserAuthRequestDto userAuthRequestDto) {
+        User user = userService.findByEmail(userAuthRequestDto.getEmail());
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        if (!passwordEncoder.matches(userAuthRequestDto.getPassword(), user.getPassword())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        String token = tokenUtil.generateToken(userAuthRequestDto.getEmail());
+        return ResponseEntity.ok(new UserAuthResponseDto(token));
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<UserDto> register(@RequestBody CreateUserRequestDto createUserRequestDto) {
+        User byEmail = userService.findByEmail(createUserRequestDto.getEmail());
+        if (byEmail != null) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+        User user = UserMapper.createUserRequestDtoMap(createUserRequestDto);
+        user.setPassword(passwordEncoder.encode(createUserRequestDto.getPassword()));
+        user.setRole(Role.USER);
+        userService.save(user);
+        return ResponseEntity.ok(UserMapper.userToUserDto(user));
+    }
+
+    @GetMapping()
+    public ResponseEntity<UserDto> getUserWithAddress(@AuthenticationPrincipal CurrentUser currentUser) {
+        return ResponseEntity.ok(UserMapper.userToUserDto(userService.findByIdWithAddresses(currentUser.getUser().getId())));
+    }
+
+    @PutMapping("/updatePassword")
+    public ResponseEntity<?> updatePassword(@Valid @RequestBody UpdatePasswordDto updatePasswordDto,
+                                            @AuthenticationPrincipal CurrentUser currentUser) {
+        userService.updatePassword(currentUser.getUser(), updatePasswordDto);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/updateUserData")
+    public ResponseEntity<?> updateCurrentUserData(@Valid @ModelAttribute UserUpdateDto userUpdateDto,
+                                                   @AuthenticationPrincipal CurrentUser currentUser,
+                                                   @RequestParam("profile_pic") MultipartFile multipartFile) throws IOException {
+        userService.updateUser(multipartFile, UserMapper.userUpdateDtoToUser(userUpdateDto), currentUser);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/notifications/{userId}")
+    public ResponseEntity<List<NotificationResponseDto>> gelNotification(@PathVariable("userId") int id) {
+        return ResponseEntity.ok(NotificationMapper.map(notificationService.findAllByUserId(id)));
+    }
+
+    @GetMapping("/order")
+    public ResponseEntity<List<OrderDto>> getUserOrders(@AuthenticationPrincipal CurrentUser currentUser) {
+        return ResponseEntity.ok(OrderMapper.listOrderToListOrderDto(orderService.findAllByUserId(currentUser.getUser().getId())));
+    }
+
+    @GetMapping("/verify")
+    public ResponseEntity<?> verifyEmail(@RequestParam("email") String email,
+                                         @RequestParam("token") UUID token) {
+        if (userService.verifyUserByEmail(email, token)) {
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+    @PutMapping("/forgotPassword")
+    public ResponseEntity<?> forgotPassword(@RequestParam("email") String email) {
+        User userByEmail = userService.findByEmail(email);
+        if (userByEmail != null) {
+            mailService.sendMail(userByEmail.getEmail(), "Welcome",
+                    "Hi " + userByEmail.getName() +
+                            " Welcome please for change password by click " + siteUrl + "/user/changePassword?email=" + userByEmail.getEmail() + "&token=" + userByEmail.getToken()
+            );
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @PutMapping("/changePassword")
+    public ResponseEntity<?> resetPassword(@RequestParam("password") String password,
+                                           @RequestParam("password2") String password2,
+                                           @RequestParam("email") String email,
+                                           @RequestParam("token") String token) {
+        if (userService.changePassword(password, password2, email, token)) {
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.status(HttpStatus.CONFLICT).build();
+    }
+
+    @PostMapping("/address")
+    public ResponseEntity<UserDto> addUserAddress(@AuthenticationPrincipal CurrentUser currentUser,
+                                                  @RequestBody AddressDto addressDto) {
+        userService.save(userService.saveAddress(currentUser, addressDto));
+        return ResponseEntity.ok(UserMapper.userToUserDto(userService.findByIdWithAddresses(currentUser.getUser().getId())));
+    }
+
+    @DeleteMapping("/address/delete")
+    public ResponseEntity<UserDto> deleteUserAddress(@AuthenticationPrincipal CurrentUser currentUser,
+                                                     @RequestParam("id") int id) {
+        userService.removeAddressFromUserAndAddressTable(currentUser, id);
+        return ResponseEntity.ok(UserMapper.userToUserDto(userService.findByIdWithAddresses(currentUser.getUser().getId())));
+    }
+
+}

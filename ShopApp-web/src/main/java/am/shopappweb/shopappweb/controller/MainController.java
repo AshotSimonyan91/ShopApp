@@ -68,7 +68,8 @@ public class MainController {
     @GetMapping("/search")
     public String searchPage(@RequestParam("value") String value,
                              @RequestParam(value = "page", defaultValue = "1") Integer page,
-                             @RequestParam(value = "size", defaultValue = "2") Integer size, ModelMap modelMap) {
+                             @RequestParam(value = "size", defaultValue = "9") Integer size,
+                             ModelMap modelMap) {
         Pageable pageable = PageRequest.of(page - 1, size);
         Page<Product> result = productService.findByName(value, pageable);
         int totalPages = result.getTotalPages();

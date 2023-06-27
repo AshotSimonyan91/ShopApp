@@ -1,6 +1,7 @@
 package am.shopappweb.shopappweb.controller;
 
 
+import am.shoppingCommon.shoppingApplication.mapper.NotificationMapper;
 import am.shoppingCommon.shoppingApplication.security.CurrentUser;
 import am.shoppingCommon.shoppingApplication.dto.addressDto.AddressDto;
 import am.shoppingCommon.shoppingApplication.dto.userDto.UpdatePasswordDto;
@@ -35,7 +36,6 @@ public class UserController {
     private final UserService userService;
     private final OrderService orderService;
     private final NotificationService notificationService;
-    private final AddressService addressService;
 
     @Value("${site.url}")
     private String siteUrl;
@@ -91,7 +91,7 @@ public class UserController {
     public String notificationPage(ModelMap modelmap,
                                    @PathVariable("userId") int id,
                                    @AuthenticationPrincipal CurrentUser currentUser) {
-        modelmap.addAttribute("notifications", notificationService.findAllByUserId(id));
+        modelmap.addAttribute("notifications", NotificationMapper.map(notificationService.findAllByUserId(id)));
         modelmap.addAttribute("currentUser", UserMapper.userToUserDto(currentUser.getUser()));
         return "notifications";
     }
@@ -156,7 +156,7 @@ public class UserController {
 
     @PostMapping("/changePassword")
     public String resetPassword(@RequestParam("password") String password,
-                                @RequestParam("password") String password2,
+                                @RequestParam("password2") String password2,
                                 @RequestParam("email") String email,
                                 @RequestParam("token") String token) {
         if (userService.changePassword(password, password2, email, token)) {

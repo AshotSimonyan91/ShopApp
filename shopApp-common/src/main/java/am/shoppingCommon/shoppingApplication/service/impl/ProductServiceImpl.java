@@ -4,7 +4,6 @@ package am.shoppingCommon.shoppingApplication.service.impl;
 import am.shoppingCommon.shoppingApplication.security.CurrentUser;
 import am.shoppingCommon.shoppingApplication.service.ProductService;
 import am.shoppingCommon.shoppingApplication.dto.productDto.CreateProductRequestDto;
-import am.shoppingCommon.shoppingApplication.dto.productDto.CreateProductResponseDto;
 import am.shoppingCommon.shoppingApplication.entity.Image;
 import am.shoppingCommon.shoppingApplication.entity.Product;
 import am.shoppingCommon.shoppingApplication.mapper.ProductMapper;
@@ -84,9 +83,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public CreateProductResponseDto findById(int id) {
+    public Product findById(int id) {
         Optional<Product> byId = productRepository.findById(id);
-        return ProductMapper.mapToResponseDto(byId.orElse(null));
+        return byId.orElse(null);
     }
 
 }

@@ -27,5 +27,5 @@ public interface ProductService {
 
     Product findBy_Id(int productId);
 
-    CreateProductResponseDto findById(int id);
+    Product findById(int id);
 }

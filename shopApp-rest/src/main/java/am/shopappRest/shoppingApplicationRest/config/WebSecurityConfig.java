@@ -1,8 +1,8 @@
-package com.example.shoppingApplicationRest.config;
+package am.shopappRest.shoppingApplicationRest.config;
 
 
-import com.example.shoppingApplicationRest.filter.JWTAuthenticationTokenFilter;
-import com.example.shoppingApplicationRest.security.JwtAuthenticationEntryPoint;
+import am.shopappRest.shoppingApplicationRest.security.JwtAuthenticationEntryPoint;
+import am.shopappRest.shoppingApplicationRest.filter.JWTAuthenticationTokenFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package com.example.shoppingApplicationRest;
+package am.shopappRest.shoppingApplicationRest;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

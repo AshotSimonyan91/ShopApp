@@ -1,5 +1,6 @@
 package am.shopappweb.shopappweb.controller;
 
+import am.shoppingCommon.shoppingApplication.mapper.CategoryMapper;
 import am.shoppingCommon.shoppingApplication.security.CurrentUser;
 import am.shoppingCommon.shoppingApplication.service.CategoryService;
 import am.shoppingCommon.shoppingApplication.service.OrderService;
@@ -52,7 +53,7 @@ public class AdminController {
 
     @GetMapping("/add/product")
     public String addProductAdminPage(ModelMap modelMap) {
-        modelMap.addAttribute("categories", categoryService.findAllCategory());
+        modelMap.addAttribute("categories", CategoryMapper.categoryDtoList(categoryService.findAllCategory()));
         return "admin/form-uploads";
     }
 

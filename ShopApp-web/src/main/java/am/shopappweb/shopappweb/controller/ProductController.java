@@ -1,13 +1,14 @@
 package am.shopappweb.shopappweb.controller;
 
 
+import am.shoppingCommon.shoppingApplication.dto.categoryDto.CategoryDto;
+import am.shoppingCommon.shoppingApplication.dto.productDto.CreateProductRequestDto;
+import am.shoppingCommon.shoppingApplication.entity.Product;
+import am.shoppingCommon.shoppingApplication.mapper.CategoryMapper;
 import am.shoppingCommon.shoppingApplication.security.CurrentUser;
 import am.shoppingCommon.shoppingApplication.service.CategoryService;
 import am.shoppingCommon.shoppingApplication.service.CommentService;
 import am.shoppingCommon.shoppingApplication.service.ProductService;
-import am.shoppingCommon.shoppingApplication.dto.categoryDto.CategoryDto;
-import am.shoppingCommon.shoppingApplication.dto.productDto.CreateProductRequestDto;
-import am.shoppingCommon.shoppingApplication.entity.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -56,8 +57,8 @@ public class ProductController {
 
     @GetMapping("/list")
     public String productListPage(ModelMap modelMap,
-                              @RequestParam("page") Optional<Integer> page,
-                              @RequestParam("size") Optional<Integer> size) {
+                                  @RequestParam("page") Optional<Integer> page,
+                                  @RequestParam("size") Optional<Integer> size) {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(9);
         Pageable pageable = PageRequest.of(currentPage - 1, pageSize);
@@ -86,7 +87,7 @@ public class ProductController {
 
     @GetMapping("/add")
     public String addProductPage(ModelMap modelMap) {
-        List<CategoryDto> allCategory = categoryService.findAllCategory();
+        List<CategoryDto> allCategory = CategoryMapper.categoryDtoList(categoryService.findAllCategory());
         modelMap.addAttribute("categories", allCategory);
         return "addProducts";
     }

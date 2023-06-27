@@ -1,7 +1,6 @@
 package am.shoppingCommon.shoppingApplication.service;
 
 
-import am.shoppingCommon.shoppingApplication.dto.wishlistDto.WishlistResponseDto;
 import am.shoppingCommon.shoppingApplication.entity.Product;
 import am.shoppingCommon.shoppingApplication.entity.WishList;
 import am.shoppingCommon.shoppingApplication.security.CurrentUser;
@@ -12,7 +11,7 @@ import java.util.Optional;
 public interface WishListService {
 
     List<WishList> findAll();
-    WishlistResponseDto findByUserId(int id);
+    WishList findByUserId(int id);
 
     void remove(int id);
 

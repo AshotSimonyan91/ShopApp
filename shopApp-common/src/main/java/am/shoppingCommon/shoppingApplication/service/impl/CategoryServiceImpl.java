@@ -28,8 +28,8 @@ public class CategoryServiceImpl implements CategoryService {
     private String imageUploadPath;
 
     @Override
-    public List<CategoryDto> findAllCategory() {
-        return CategoryMapper.categoryDtoList(categoryRepository.findAll());
+    public List<Category> findAllCategory() {
+        return categoryRepository.findAll();
     }
 
     @Override

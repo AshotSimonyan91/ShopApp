@@ -1,4 +1,4 @@
-package com.example.shoppingApplicationRest.security;
+package am.shopappRest.shoppingApplicationRest.security;
 
 import am.shoppingCommon.shoppingApplication.entity.User;
 import org.springframework.security.core.authority.AuthorityUtils;

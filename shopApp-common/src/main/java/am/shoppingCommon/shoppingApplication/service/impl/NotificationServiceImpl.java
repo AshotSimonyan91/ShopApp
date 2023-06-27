@@ -27,9 +27,8 @@ public class NotificationServiceImpl implements NotificationService {
 
 
     @Override
-    public List<NotificationResponseDto> findAllByUserId(int id) {
-        List<Notification> allByUserId = notificationRepository.findAllByUser_Id(id);
-        return NotificationMapper.map(allByUserId);
+    public List<Notification> findAllByUserId(int id) {
+        return notificationRepository.findAllByUser_Id(id);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package am.shopappweb.shopappweb.controller;
 
 
+import am.shoppingCommon.shoppingApplication.mapper.WishListMapper;
 import am.shoppingCommon.shoppingApplication.security.CurrentUser;
 import am.shoppingCommon.shoppingApplication.service.WishListService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ public class WishListController {
 
     @GetMapping
     public String wishListPage(ModelMap modelMap,@AuthenticationPrincipal CurrentUser currentUser) {
-        modelMap.addAttribute("wishlistById", wishListService.findByUserId(currentUser.getUser().getId()));
+        modelMap.addAttribute("wishlistById", WishListMapper.map(wishListService.findByUserId(currentUser.getUser().getId())));
         return "wishlist";
     }
 
