@@ -25,7 +25,7 @@ public class OrderEndpoint {
     private final OrderService orderService;
 
     @GetMapping()
-    public ResponseEntity<OrderDto> orderPage(@AuthenticationPrincipal CurrentUser currentUser) {
+    public ResponseEntity<OrderDto> getOrders(@AuthenticationPrincipal CurrentUser currentUser) {
         Optional<Order> byUserIdAndStatus = orderService
                 .findByUserIdAndStatus(currentUser.getUser().getId(), Status.PENDING);
         return ResponseEntity.ok(OrderMapper.orderToOrderDto(byUserIdAndStatus.orElse(null)));
@@ -37,7 +37,7 @@ public class OrderEndpoint {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/remove")
+    @DeleteMapping("/remove")
     public ResponseEntity<?> removeProductFromOrder(@RequestParam("product_id") int product_id,
                                                     @RequestParam("orderItem_id") int orderItem_id,
                                                     @AuthenticationPrincipal CurrentUser currentUser) {

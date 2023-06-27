@@ -22,7 +22,7 @@ public class NotificationEndpoint {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/remove")
+    @DeleteMapping("/remove")
     public ResponseEntity<?> removeNotification(@RequestParam("id") int id){
         notificationService.remove(id);
         return ResponseEntity.ok().build();

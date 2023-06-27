@@ -34,7 +34,7 @@ public class MainEndpoint {
     private final ProductService productService;
 
     @GetMapping("/")
-    public ResponseEntity<Map<String, List<CategoryDto>>> main() {
+    public ResponseEntity<Map<String, List<CategoryDto>>> getParentCategoriesWithChildCategories() {
         return ResponseEntity.ok(categoryService.getParentCategoriesWithChildren());
     }
 

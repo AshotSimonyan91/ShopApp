@@ -88,7 +88,7 @@ public class UserEndpoint {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/updateUserData")
+    @PutMapping("/updateUserData")
     public ResponseEntity<?> updateCurrentUserData(@Valid @ModelAttribute UserUpdateDto userUpdateDto,
                                                    @AuthenticationPrincipal CurrentUser currentUser,
                                                    @RequestParam("profile_pic") MultipartFile multipartFile) throws IOException {
@@ -97,7 +97,7 @@ public class UserEndpoint {
     }
 
     @GetMapping("/notifications/{userId}")
-    public ResponseEntity<List<NotificationResponseDto>> gelNotification(@PathVariable("userId") int id) {
+    public ResponseEntity<List<NotificationResponseDto>> getUserAllNotifications(@PathVariable("userId") int id) {
         return ResponseEntity.ok(NotificationMapper.map(notificationService.findAllByUserId(id)));
     }
 
@@ -115,7 +115,7 @@ public class UserEndpoint {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
-    @PutMapping("/forgotPassword")
+    @PostMapping("/forgotPassword")
     public ResponseEntity<?> forgotPassword(@RequestParam("email") String email) {
         User userByEmail = userService.findByEmail(email);
         if (userByEmail != null) {
