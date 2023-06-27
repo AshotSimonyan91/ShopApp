@@ -1,13 +1,10 @@
 package am.shoppingCommon.shoppingApplication.service.impl;
 
 
-import am.shoppingCommon.shoppingApplication.security.CurrentUser;
 import am.shoppingCommon.shoppingApplication.service.WishListService;
-import am.shoppingCommon.shoppingApplication.dto.wishlistDto.WishlistResponseDto;
 import am.shoppingCommon.shoppingApplication.entity.Product;
 import am.shoppingCommon.shoppingApplication.entity.User;
 import am.shoppingCommon.shoppingApplication.entity.WishList;
-import am.shoppingCommon.shoppingApplication.mapper.WishListMapper;
 import am.shoppingCommon.shoppingApplication.repository.ProductRepository;
 import am.shoppingCommon.shoppingApplication.repository.WishListRepository;
 import jakarta.transaction.Transactional;
@@ -46,8 +43,7 @@ public class WishListServiceImpl implements WishListService {
     }
 
     @Override
-    public void remove(int id, CurrentUser currentUser) {
-        User user = currentUser.getUser();
+    public void remove(int id, User user) {
         Optional<WishList> byUserId = wishListRepository.findByUserId(user.getId());
         if (byUserId.isPresent()) {
             Optional<Product> byId = productRepository.findById(id);
@@ -74,10 +70,9 @@ public class WishListServiceImpl implements WishListService {
     }
 
     @Override
-    public void save(int productId, CurrentUser currentUser) {
+    public void save(int productId, User user) {
         Optional<Product> byId = productRepository.findById(productId);
         if (byId.isPresent()) {
-            User user = currentUser.getUser();
             Optional<WishList> byUserId = wishListRepository.findByUserId(user.getId());
             if (byUserId.isEmpty()) {
                 Set<Product> products = new HashSet<>();

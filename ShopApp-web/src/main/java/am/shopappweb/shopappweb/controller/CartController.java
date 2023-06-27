@@ -1,11 +1,10 @@
 package am.shopappweb.shopappweb.controller;
 
 
-
-import am.shoppingCommon.shoppingApplication.security.CurrentUser;
-import am.shoppingCommon.shoppingApplication.service.CartService;
+import am.shopappweb.shopappweb.security.CurrentUser;
 import am.shoppingCommon.shoppingApplication.dto.cartDto.CartDto;
 import am.shoppingCommon.shoppingApplication.dto.cartDto.UpdateCartItemRequestDto;
+import am.shoppingCommon.shoppingApplication.service.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -31,7 +30,7 @@ public class CartController {
 
     @GetMapping("/add/{productId}")
     public String saveCart(@PathVariable("productId") int id, @AuthenticationPrincipal CurrentUser currentUser) {
-        cartService.save(id, currentUser);
+        cartService.save(id, currentUser.getUser());
         return "redirect:/products";
     }
 

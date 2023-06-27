@@ -1,4 +1,4 @@
-package am.shoppingCommon.shoppingApplication.security;
+package am.shopappweb.shopappweb.security;
 
 
 import am.shoppingCommon.shoppingApplication.entity.User;

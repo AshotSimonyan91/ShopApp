@@ -1,17 +1,17 @@
 package am.shoppingCommon.shoppingApplication.service.impl;
 
 
-import am.shoppingCommon.shoppingApplication.security.CurrentUser;
-import am.shoppingCommon.shoppingApplication.service.CartService;
 import am.shoppingCommon.shoppingApplication.dto.cartDto.CartDto;
 import am.shoppingCommon.shoppingApplication.dto.cartDto.CartItemDto;
 import am.shoppingCommon.shoppingApplication.entity.Cart;
 import am.shoppingCommon.shoppingApplication.entity.CartItem;
 import am.shoppingCommon.shoppingApplication.entity.Product;
+import am.shoppingCommon.shoppingApplication.entity.User;
 import am.shoppingCommon.shoppingApplication.mapper.CartMapper;
 import am.shoppingCommon.shoppingApplication.repository.CartItemRepository;
 import am.shoppingCommon.shoppingApplication.repository.CartRepository;
 import am.shoppingCommon.shoppingApplication.repository.ProductRepository;
+import am.shoppingCommon.shoppingApplication.service.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,9 +50,9 @@ public class CartServiceImpl implements CartService {
 
     @Override
     @Transactional
-    public void save(int id, CurrentUser currentUser) {
-        Optional<Cart> cartOptional = cartRepository.findAllByUser_Id(currentUser.getUser().getId());
-        Cart cart = cartOptional.orElseGet(() -> createNewCart(currentUser));
+    public void save(int id, User user) {
+        Optional<Cart> cartOptional = cartRepository.findAllByUser_Id(user.getId());
+        Cart cart = cartOptional.orElseGet(() -> createNewCart(user));
 
         List<CartItem> cartItems = cart.getCartItems();
         Optional<Product> productOptional = productRepository.findById(id);
@@ -78,9 +78,9 @@ public class CartServiceImpl implements CartService {
         cartRepository.save(cart);
     }
 
-    private Cart createNewCart(CurrentUser currentUser) {
+    private Cart createNewCart(User user) {
         Cart cart = new Cart();
-        cart.setUser(currentUser.getUser());
+        cart.setUser(user);
         cart.setCartItems(new ArrayList<>());
         return cart;
     }

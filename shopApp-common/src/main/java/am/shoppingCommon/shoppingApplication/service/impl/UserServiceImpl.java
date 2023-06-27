@@ -1,7 +1,6 @@
 package am.shoppingCommon.shoppingApplication.service.impl;
 
 
-import am.shoppingCommon.shoppingApplication.security.CurrentUser;
 import am.shoppingCommon.shoppingApplication.service.AddressService;
 import am.shoppingCommon.shoppingApplication.service.UserService;
 import am.shoppingCommon.shoppingApplication.dto.addressDto.AddressDto;
@@ -66,8 +65,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User saveAddress(CurrentUser currentUser, AddressDto addressDto) {
-        User user = currentUser.getUser();
+    public User saveAddress(User user, AddressDto addressDto) {
         User byId = userRepository.findById(user.getId()).orElse(null);
         List<Address> addresses = byId.getAddresses();
         addresses.add(AddressMapper.addressDtoToAddress(addressDto));
@@ -93,8 +91,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateUser(MultipartFile multipartFile, User user, CurrentUser currentUser) throws IOException {
-        Optional<User> userOptional = userRepository.findById(currentUser.getUser().getId());
+    public void updateUser(MultipartFile multipartFile, User user, User currentUser) throws IOException {
+        Optional<User> userOptional = userRepository.findById(currentUser.getId());
         if (userOptional.isPresent()) {
             User userOldData = userOptional.get();
             if (user.getName() == null || user.getName().equals("")) {
@@ -138,8 +136,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void removeAddressFromUserAndAddressTable(CurrentUser currentUser, int id) {
-        User user = currentUser.getUser();
+    public void removeAddressFromUserAndAddressTable(User user, int id) {
         User byId = userRepository.findById(user.getId()).orElse(null);
         List<Address> addresses = byId.getAddresses();
         Address address1 = null;

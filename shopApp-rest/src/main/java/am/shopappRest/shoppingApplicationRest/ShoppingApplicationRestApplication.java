@@ -10,7 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
-@ComponentScan(basePackages ={"com.example.shoppingApplicationRest","am.shoppingCommon.shoppingApplication"})
+@ComponentScan(basePackages ={"am.shopappRest.shoppingApplicationRest","am.shoppingCommon.shoppingApplication"})
 @EntityScan(basePackages = {"am.shoppingCommon.shoppingApplication.entity"})
 @EnableJpaRepositories(basePackages = {"am.shoppingCommon.shoppingApplication.repository"})
 public class ShoppingApplicationRestApplication {

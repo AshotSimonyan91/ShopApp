@@ -1,17 +1,20 @@
 package am.shopappweb.shopappweb.controller;
 
 
-import am.shoppingCommon.shoppingApplication.mapper.NotificationMapper;
-import am.shoppingCommon.shoppingApplication.security.CurrentUser;
+import am.shopappweb.shopappweb.security.CurrentUser;
 import am.shoppingCommon.shoppingApplication.dto.addressDto.AddressDto;
 import am.shoppingCommon.shoppingApplication.dto.userDto.UpdatePasswordDto;
 import am.shoppingCommon.shoppingApplication.dto.userDto.UserRegisterDto;
 import am.shoppingCommon.shoppingApplication.dto.userDto.UserUpdateDto;
 import am.shoppingCommon.shoppingApplication.entity.Order;
 import am.shoppingCommon.shoppingApplication.entity.User;
+import am.shoppingCommon.shoppingApplication.mapper.NotificationMapper;
 import am.shoppingCommon.shoppingApplication.mapper.OrderMapper;
 import am.shoppingCommon.shoppingApplication.mapper.UserMapper;
-import am.shoppingCommon.shoppingApplication.service.*;
+import am.shoppingCommon.shoppingApplication.service.MailService;
+import am.shoppingCommon.shoppingApplication.service.NotificationService;
+import am.shoppingCommon.shoppingApplication.service.OrderService;
+import am.shoppingCommon.shoppingApplication.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -83,7 +86,7 @@ public class UserController {
     public String updateCurrentUser(@Valid @ModelAttribute UserUpdateDto userUpdateDto,
                                     @AuthenticationPrincipal CurrentUser currentUser,
                                     @RequestParam("profile_pic") MultipartFile multipartFile) throws IOException {
-        userService.updateUser(multipartFile, UserMapper.userUpdateDtoToUser(userUpdateDto), currentUser);
+        userService.updateUser(multipartFile, UserMapper.userUpdateDtoToUser(userUpdateDto), currentUser.getUser());
         return "redirect:/user";
     }
 
@@ -181,7 +184,7 @@ public class UserController {
             modelmap.addAttribute("user", userService.findByIdWithAddresses(currentUser.getUser().getId()));
             return "account-address";
         }
-        userService.save(userService.saveAddress(currentUser, addressDto));
+        userService.save(userService.saveAddress(currentUser.getUser(), addressDto));
         modelmap.addAttribute("user", userService.findByIdWithAddresses(currentUser.getUser().getId()));
         return "account-address";
     }
@@ -191,7 +194,7 @@ public class UserController {
     public String deleteUserAddress(ModelMap modelmap,
                                     @AuthenticationPrincipal CurrentUser currentUser,
                                     @RequestParam("id") int id) {
-        userService.removeAddressFromUserAndAddressTable(currentUser, id);
+        userService.removeAddressFromUserAndAddressTable(currentUser.getUser(), id);
         modelmap.addAttribute("user", userService.findByIdWithAddresses(currentUser.getUser().getId()));
         return "account-address";
     }

@@ -1,7 +1,7 @@
 package am.shoppingCommon.shoppingApplication.service.impl;
 
 
-import am.shoppingCommon.shoppingApplication.security.CurrentUser;
+import am.shoppingCommon.shoppingApplication.entity.User;
 import am.shoppingCommon.shoppingApplication.service.ProductService;
 import am.shoppingCommon.shoppingApplication.dto.productDto.CreateProductRequestDto;
 import am.shoppingCommon.shoppingApplication.entity.Image;
@@ -57,11 +57,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public void save(CreateProductRequestDto productRequestDto, MultipartFile[] files, CurrentUser currentUser) throws IOException {
+    public void save(CreateProductRequestDto productRequestDto, MultipartFile[] files, User user) throws IOException {
         Product product = ProductMapper.map(productRequestDto);
         product.getCategories().removeIf(category -> category.getId() == 0);
         List<Image> imageList = new ArrayList<>();
-        product.setUser(currentUser.getUser());
+        product.setUser(user);
         for (MultipartFile multipartFile : files) {
             if (multipartFile != null && !multipartFile.isEmpty()) {
                 String fileName = System.nanoTime() + "_" + multipartFile.getOriginalFilename();

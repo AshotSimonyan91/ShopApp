@@ -5,7 +5,7 @@ import am.shoppingCommon.shoppingApplication.dto.categoryDto.CategoryDto;
 import am.shoppingCommon.shoppingApplication.dto.productDto.CreateProductRequestDto;
 import am.shoppingCommon.shoppingApplication.entity.Product;
 import am.shoppingCommon.shoppingApplication.mapper.CategoryMapper;
-import am.shoppingCommon.shoppingApplication.security.CurrentUser;
+import am.shopappweb.shopappweb.security.CurrentUser;
 import am.shoppingCommon.shoppingApplication.service.CategoryService;
 import am.shoppingCommon.shoppingApplication.service.CommentService;
 import am.shoppingCommon.shoppingApplication.service.ProductService;
@@ -96,7 +96,7 @@ public class ProductController {
     public String addProduct(@ModelAttribute CreateProductRequestDto createProductRequestDto,
                              @AuthenticationPrincipal CurrentUser currentUser,
                              @RequestParam("files") MultipartFile[] files) throws IOException {
-        productService.save(createProductRequestDto, files, currentUser);
+        productService.save(createProductRequestDto, files, currentUser.getUser());
         return "redirect:/";
     }
 

@@ -5,7 +5,6 @@ import am.shoppingCommon.shoppingApplication.dto.addressDto.AddressDto;
 import am.shoppingCommon.shoppingApplication.dto.userDto.UpdatePasswordDto;
 import am.shoppingCommon.shoppingApplication.dto.userDto.UserRegisterDto;
 import am.shoppingCommon.shoppingApplication.entity.User;
-import am.shoppingCommon.shoppingApplication.security.CurrentUser;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -18,7 +17,7 @@ public interface UserService {
 
     List<User> findAll();
 
-    void updateUser(MultipartFile multipartFile, User user, CurrentUser currentUser) throws IOException;
+    void updateUser(MultipartFile multipartFile, User user, User currentUser) throws IOException;
 
     boolean changeUserPasswordTokenVerify(String email, String token);
 
@@ -27,11 +26,14 @@ public interface UserService {
     void remove(int id);
 
     User save(UserRegisterDto user);
+
     User save(User user);
-    User saveAddress(CurrentUser currentUser, AddressDto addressDto);
+
+    User saveAddress(User user, AddressDto addressDto);
 
     void removeById(int id);
-    void removeAddressFromUserAndAddressTable(CurrentUser currentUser, int id);
+
+    void removeAddressFromUserAndAddressTable(User currentUser, int id);
 
     User findById(int id);
 

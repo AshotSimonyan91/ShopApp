@@ -2,7 +2,7 @@ package am.shopappweb.shopappweb.controller;
 
 
 import am.shoppingCommon.shoppingApplication.mapper.WishListMapper;
-import am.shoppingCommon.shoppingApplication.security.CurrentUser;
+import am.shopappweb.shopappweb.security.CurrentUser;
 import am.shoppingCommon.shoppingApplication.service.WishListService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -29,14 +29,14 @@ public class WishListController {
     @GetMapping("/add")
     public String addWishList(@RequestParam("productId") int productId,
                               @AuthenticationPrincipal CurrentUser currentUser) {
-        wishListService.save(productId, currentUser);
+        wishListService.save(productId, currentUser.getUser());
         return "redirect:/products";
     }
 
     @GetMapping("/remove")
     public String removeWishList(@RequestParam("id") int id,
                                  @AuthenticationPrincipal CurrentUser currentUser) {
-        wishListService.remove(id, currentUser);
+        wishListService.remove(id, currentUser.getUser());
         return "redirect:/wishList?userid=" + currentUser.getUser().getId();
     }
 }

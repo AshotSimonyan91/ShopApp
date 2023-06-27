@@ -1,7 +1,7 @@
 package am.shopappweb.shopappweb.controller;
 
 
-import am.shoppingCommon.shoppingApplication.security.CurrentUser;
+import am.shopappweb.shopappweb.security.CurrentUser;
 import am.shoppingCommon.shoppingApplication.service.CategoryService;
 import am.shoppingCommon.shoppingApplication.service.MainService;
 import am.shoppingCommon.shoppingApplication.service.ProductService;

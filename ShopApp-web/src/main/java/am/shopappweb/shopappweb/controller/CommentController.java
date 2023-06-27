@@ -1,7 +1,7 @@
 package am.shopappweb.shopappweb.controller;
 
 
-import am.shoppingCommon.shoppingApplication.security.CurrentUser;
+import am.shopappweb.shopappweb.security.CurrentUser;
 import am.shoppingCommon.shoppingApplication.service.CommentService;
 import am.shoppingCommon.shoppingApplication.dto.commentDto.CommentRequestDto;
 import lombok.RequiredArgsConstructor;

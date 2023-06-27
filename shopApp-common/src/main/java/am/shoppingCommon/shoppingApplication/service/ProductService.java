@@ -2,9 +2,8 @@ package am.shoppingCommon.shoppingApplication.service;
 
 
 import am.shoppingCommon.shoppingApplication.dto.productDto.CreateProductRequestDto;
-import am.shoppingCommon.shoppingApplication.dto.productDto.CreateProductResponseDto;
 import am.shoppingCommon.shoppingApplication.entity.Product;
-import am.shoppingCommon.shoppingApplication.security.CurrentUser;
+import am.shoppingCommon.shoppingApplication.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,7 +22,7 @@ public interface ProductService {
     void remove(int id);
 
 
-    void save(CreateProductRequestDto product, MultipartFile[] files, CurrentUser currentUser) throws IOException;
+    void save(CreateProductRequestDto product, MultipartFile[] files, User user) throws IOException;
 
     Product findBy_Id(int productId);
 
