@@ -1,8 +1,9 @@
 package am.shopappweb.shopappweb.controller;
 
 
-import am.shopappweb.shopappweb.security.CurrentUser;
-import am.shopappweb.shopappweb.service.CartService;
+
+import am.shoppingCommon.shoppingApplication.security.CurrentUser;
+import am.shoppingCommon.shoppingApplication.service.CartService;
 import am.shoppingCommon.shoppingApplication.dto.cartDto.CartDto;
 import am.shoppingCommon.shoppingApplication.dto.cartDto.UpdateCartItemRequestDto;
 import lombok.RequiredArgsConstructor;

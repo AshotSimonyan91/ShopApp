@@ -1,6 +1,6 @@
 package am.shopappweb.shopappweb.controller;
 
-import am.shopappweb.shopappweb.service.NotificationService;
+import am.shoppingCommon.shoppingApplication.service.NotificationService;
 import am.shoppingCommon.shoppingApplication.dto.notificationDto.NotificationRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

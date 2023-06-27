@@ -1,8 +1,8 @@
 package am.shopappweb.shopappweb.controller;
 
 
-import am.shopappweb.shopappweb.security.CurrentUser;
-import am.shopappweb.shopappweb.service.WishListService;
+import am.shoppingCommon.shoppingApplication.security.CurrentUser;
+import am.shoppingCommon.shoppingApplication.service.WishListService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;

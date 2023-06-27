@@ -1,7 +1,7 @@
-package am.shopappweb.shopappweb.service.impl;
+package am.shoppingCommon.shoppingApplication.service.impl;
 
 
-import am.shopappweb.shopappweb.service.NotificationService;
+import am.shoppingCommon.shoppingApplication.service.NotificationService;
 import am.shoppingCommon.shoppingApplication.dto.notificationDto.NotificationRequestDto;
 import am.shoppingCommon.shoppingApplication.dto.notificationDto.NotificationResponseDto;
 import am.shoppingCommon.shoppingApplication.entity.Notification;

@@ -1,8 +1,8 @@
 package am.shopappweb.shopappweb.controller;
 
 
-import am.shopappweb.shopappweb.security.CurrentUser;
-import am.shopappweb.shopappweb.service.OrderService;
+import am.shoppingCommon.shoppingApplication.security.CurrentUser;
+import am.shoppingCommon.shoppingApplication.service.OrderService;
 import am.shoppingCommon.shoppingApplication.entity.Order;
 import am.shoppingCommon.shoppingApplication.entity.Status;
 import am.shoppingCommon.shoppingApplication.mapper.OrderMapper;

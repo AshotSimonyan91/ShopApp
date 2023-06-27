@@ -1,7 +1,7 @@
 package am.shopappweb.shopappweb.controller;
 
 
-import am.shopappweb.shopappweb.service.CategoryService;
+import am.shoppingCommon.shoppingApplication.service.CategoryService;
 import am.shoppingCommon.shoppingApplication.dto.categoryDto.CategoryDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

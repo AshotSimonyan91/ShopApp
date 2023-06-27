@@ -1,6 +1,6 @@
-package am.shopappweb.shopappweb.service.impl;
+package am.shoppingCommon.shoppingApplication.service.impl;
 
-import am.shopappweb.shopappweb.service.MailService;
+import am.shoppingCommon.shoppingApplication.service.MailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;

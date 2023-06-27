@@ -1,11 +1,11 @@
-package am.shopappweb.shopappweb.service;
+package am.shoppingCommon.shoppingApplication.service;
 
 
-import am.shopappweb.shopappweb.security.CurrentUser;
 import am.shoppingCommon.shoppingApplication.dto.addressDto.AddressDto;
 import am.shoppingCommon.shoppingApplication.dto.userDto.UpdatePasswordDto;
 import am.shoppingCommon.shoppingApplication.dto.userDto.UserRegisterDto;
 import am.shoppingCommon.shoppingApplication.entity.User;
+import am.shoppingCommon.shoppingApplication.security.CurrentUser;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;

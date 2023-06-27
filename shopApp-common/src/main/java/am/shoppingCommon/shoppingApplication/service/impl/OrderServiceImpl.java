@@ -1,7 +1,7 @@
-package am.shopappweb.shopappweb.service.impl;
+package am.shoppingCommon.shoppingApplication.service.impl;
 
 
-import am.shopappweb.shopappweb.service.OrderService;
+import am.shoppingCommon.shoppingApplication.service.OrderService;
 import am.shoppingCommon.shoppingApplication.dto.orderDto.OrderDto;
 import am.shoppingCommon.shoppingApplication.dto.orderDto.OrderResponseDto;
 import am.shoppingCommon.shoppingApplication.entity.*;

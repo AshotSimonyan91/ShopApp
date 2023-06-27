@@ -1,6 +1,6 @@
-package am.shopappweb.shopappweb.service.impl;
+package am.shoppingCommon.shoppingApplication.service.impl;
 
-import am.shopappweb.shopappweb.service.AdminService;
+import am.shoppingCommon.shoppingApplication.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

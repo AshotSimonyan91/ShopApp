@@ -1,9 +1,9 @@
 package am.shopappweb.shopappweb.controller;
 
-import am.shopappweb.shopappweb.security.CurrentUser;
-import am.shopappweb.shopappweb.service.CategoryService;
-import am.shopappweb.shopappweb.service.OrderService;
-import am.shopappweb.shopappweb.service.UserService;
+import am.shoppingCommon.shoppingApplication.security.CurrentUser;
+import am.shoppingCommon.shoppingApplication.service.CategoryService;
+import am.shoppingCommon.shoppingApplication.service.OrderService;
+import am.shoppingCommon.shoppingApplication.service.UserService;
 import am.shoppingCommon.shoppingApplication.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

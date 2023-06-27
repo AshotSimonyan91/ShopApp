@@ -1,9 +1,9 @@
 package am.shopappweb.shopappweb.controller;
 
 
-import am.shopappweb.shopappweb.security.CurrentUser;
-import am.shopappweb.shopappweb.service.CartService;
-import am.shopappweb.shopappweb.service.UserService;
+import am.shoppingCommon.shoppingApplication.security.CurrentUser;
+import am.shoppingCommon.shoppingApplication.service.CartService;
+import am.shoppingCommon.shoppingApplication.service.UserService;
 import am.shoppingCommon.shoppingApplication.dto.cartDto.CartItemDto;
 import am.shoppingCommon.shoppingApplication.dto.userDto.UpdatePasswordDto;
 import am.shoppingCommon.shoppingApplication.dto.userDto.UserShortDto;

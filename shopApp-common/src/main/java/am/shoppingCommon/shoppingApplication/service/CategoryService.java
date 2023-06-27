@@ -1,4 +1,4 @@
-package am.shopappweb.shopappweb.service;
+package am.shoppingCommon.shoppingApplication.service;
 
 import am.shoppingCommon.shoppingApplication.dto.categoryDto.CategoryDto;
 import am.shoppingCommon.shoppingApplication.entity.Category;

@@ -1,10 +1,10 @@
 package am.shopappweb.shopappweb.controller;
 
 
-import am.shopappweb.shopappweb.security.CurrentUser;
-import am.shopappweb.shopappweb.service.CategoryService;
-import am.shopappweb.shopappweb.service.CommentService;
-import am.shopappweb.shopappweb.service.ProductService;
+import am.shoppingCommon.shoppingApplication.security.CurrentUser;
+import am.shoppingCommon.shoppingApplication.service.CategoryService;
+import am.shoppingCommon.shoppingApplication.service.CommentService;
+import am.shoppingCommon.shoppingApplication.service.ProductService;
 import am.shoppingCommon.shoppingApplication.dto.categoryDto.CategoryDto;
 import am.shoppingCommon.shoppingApplication.dto.productDto.CreateProductRequestDto;
 import am.shoppingCommon.shoppingApplication.entity.Product;

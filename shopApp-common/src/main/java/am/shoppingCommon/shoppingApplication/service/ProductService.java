@@ -1,10 +1,10 @@
-package am.shopappweb.shopappweb.service;
+package am.shoppingCommon.shoppingApplication.service;
 
 
-import am.shopappweb.shopappweb.security.CurrentUser;
 import am.shoppingCommon.shoppingApplication.dto.productDto.CreateProductRequestDto;
 import am.shoppingCommon.shoppingApplication.dto.productDto.CreateProductResponseDto;
 import am.shoppingCommon.shoppingApplication.entity.Product;
+import am.shoppingCommon.shoppingApplication.security.CurrentUser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;

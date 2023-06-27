@@ -1,8 +1,8 @@
-package am.shopappweb.shopappweb.service.impl;
+package am.shoppingCommon.shoppingApplication.service.impl;
 
 
-import am.shopappweb.shopappweb.security.CurrentUser;
-import am.shopappweb.shopappweb.service.ProductService;
+import am.shoppingCommon.shoppingApplication.security.CurrentUser;
+import am.shoppingCommon.shoppingApplication.service.ProductService;
 import am.shoppingCommon.shoppingApplication.dto.productDto.CreateProductRequestDto;
 import am.shoppingCommon.shoppingApplication.dto.productDto.CreateProductResponseDto;
 import am.shoppingCommon.shoppingApplication.entity.Image;

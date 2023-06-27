@@ -1,4 +1,4 @@
-package am.shopappweb.shopappweb.service;
+package am.shoppingCommon.shoppingApplication.service;
 
 public interface AddressService {
 

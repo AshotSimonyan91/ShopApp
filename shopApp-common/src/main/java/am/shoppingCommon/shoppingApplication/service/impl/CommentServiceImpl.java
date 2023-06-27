@@ -1,7 +1,7 @@
-package am.shopappweb.shopappweb.service.impl;
+package am.shoppingCommon.shoppingApplication.service.impl;
 
 
-import am.shopappweb.shopappweb.service.CommentService;
+import am.shoppingCommon.shoppingApplication.service.CommentService;
 import am.shoppingCommon.shoppingApplication.dto.commentDto.CommentRequestDto;
 import am.shoppingCommon.shoppingApplication.dto.commentDto.CommentResponseDto;
 import am.shoppingCommon.shoppingApplication.entity.Comment;

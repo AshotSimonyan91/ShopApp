@@ -1,9 +1,9 @@
-package am.shopappweb.shopappweb.service;
+package am.shoppingCommon.shoppingApplication.service;
 
 
-import am.shopappweb.shopappweb.security.CurrentUser;
 import am.shoppingCommon.shoppingApplication.dto.cartDto.CartDto;
 import am.shoppingCommon.shoppingApplication.dto.cartDto.CartItemDto;
+import am.shoppingCommon.shoppingApplication.security.CurrentUser;
 
 import java.util.List;
 

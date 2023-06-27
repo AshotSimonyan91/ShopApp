@@ -1,7 +1,7 @@
-package am.shopappweb.shopappweb.service.impl;
+package am.shoppingCommon.shoppingApplication.service.impl;
 
 
-import am.shopappweb.shopappweb.service.DeliveryService;
+import am.shoppingCommon.shoppingApplication.service.DeliveryService;
 import am.shoppingCommon.shoppingApplication.entity.Delivery;
 import am.shoppingCommon.shoppingApplication.entity.Order;
 import am.shoppingCommon.shoppingApplication.entity.Status;

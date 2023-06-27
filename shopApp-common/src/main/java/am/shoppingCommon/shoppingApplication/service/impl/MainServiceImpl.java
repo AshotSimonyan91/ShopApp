@@ -1,8 +1,8 @@
-package am.shopappweb.shopappweb.service.impl;
+package am.shoppingCommon.shoppingApplication.service.impl;
 
 
 
-import am.shopappweb.shopappweb.service.MainService;
+import am.shoppingCommon.shoppingApplication.service.MainService;
 import am.shoppingCommon.shoppingApplication.entity.Product;
 import am.shoppingCommon.shoppingApplication.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +35,6 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public List<Product> search(String value) {
-        List<Product> byNameContainingIgnoreCase = productRepository.findByNameContainingIgnoreCase(value);
-        return byNameContainingIgnoreCase;
+        return productRepository.findByNameContainingIgnoreCase(value);
     }
 }
