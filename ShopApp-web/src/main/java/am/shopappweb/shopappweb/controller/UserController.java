@@ -90,15 +90,6 @@ public class UserController {
         return "redirect:/user";
     }
 
-    @GetMapping("/notifications/{userId}")
-    public String notificationPage(ModelMap modelmap,
-                                   @PathVariable("userId") int id,
-                                   @AuthenticationPrincipal CurrentUser currentUser) {
-        modelmap.addAttribute("notifications", NotificationMapper.map(notificationService.findAllByUserId(id)));
-        modelmap.addAttribute("currentUser", UserMapper.userToUserDto(currentUser.getUser()));
-        return "notifications";
-    }
-
     @GetMapping("/forgotPassword")
     public String forgotPasswordPage() {
         return "reset-password";
@@ -109,7 +100,7 @@ public class UserController {
     public String userOrderPage(@AuthenticationPrincipal CurrentUser currentUser,
                                 ModelMap modelMap) {
         List<Order> allByUserId = orderService.findAllByUserId(currentUser.getUser().getId());
-        modelMap.addAttribute("user", UserMapper.userToUserDto(currentUser.getUser()));
+        modelMap.addAttribute("user", userService.findByIdWithAddresses(currentUser.getUser().getId()));
         modelMap.addAttribute(OrderMapper.listOrderToListOrderDto(allByUserId));
         return "account-orders";
     }
@@ -198,5 +189,4 @@ public class UserController {
         modelmap.addAttribute("user", userService.findByIdWithAddresses(currentUser.getUser().getId()));
         return "account-address";
     }
-
 }

@@ -13,4 +13,6 @@ public interface NotificationService {
     void remove(int id);
 
     void save(NotificationRequestDto notificationRequestDto);
+
+    List<Notification> notifications(int userId);
 }

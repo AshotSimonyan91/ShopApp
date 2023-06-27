@@ -46,4 +46,9 @@ public class NotificationServiceImpl implements NotificationService {
             notificationRepository.save(notification);
         }
     }
+
+    @Override
+    public List<Notification> notifications(int userId) {
+        return notificationRepository.findTop30ByUserIdOrderByDateTimeDesc(userId);
+    }
 }
