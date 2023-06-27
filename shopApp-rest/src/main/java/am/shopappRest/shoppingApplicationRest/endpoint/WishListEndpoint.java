@@ -1,8 +1,8 @@
 package am.shopappRest.shoppingApplicationRest.endpoint;
 
+import am.shopappRest.shoppingApplicationRest.security.CurrentUser;
 import am.shoppingCommon.shoppingApplication.dto.wishlistDto.WishlistResponseDto;
 import am.shoppingCommon.shoppingApplication.mapper.WishListMapper;
-import am.shoppingCommon.shoppingApplication.security.CurrentUser;
 import am.shoppingCommon.shoppingApplication.service.WishListService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -28,14 +28,14 @@ public class WishListEndpoint {
     @PostMapping("/add")
     public ResponseEntity<?> addWishList(@RequestParam("productId") int productId,
                                          @AuthenticationPrincipal CurrentUser currentUser) {
-        wishListService.save(productId, currentUser);
+        wishListService.save(productId, currentUser.getUser());
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/remove")
     public ResponseEntity<?> removeWishList(@RequestParam("id") int id,
                                             @AuthenticationPrincipal CurrentUser currentUser) {
-        wishListService.remove(id, currentUser);
+        wishListService.remove(id, currentUser.getUser());
         return ResponseEntity.ok().build();
     }
 }

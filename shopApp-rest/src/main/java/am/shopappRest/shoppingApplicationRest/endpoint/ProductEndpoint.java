@@ -2,11 +2,11 @@ package am.shopappRest.shoppingApplicationRest.endpoint;
 
 import am.shopappRest.shoppingApplicationRest.restDto.productRequestDto.CurrentProductDto;
 import am.shopappRest.shoppingApplicationRest.restDto.productRequestDto.ProductPaginationDto;
+import am.shopappRest.shoppingApplicationRest.security.CurrentUser;
 import am.shoppingCommon.shoppingApplication.dto.productDto.CreateProductRequestDto;
 import am.shoppingCommon.shoppingApplication.entity.Product;
 import am.shoppingCommon.shoppingApplication.mapper.CommentMapper;
 import am.shoppingCommon.shoppingApplication.mapper.ProductMapper;
-import am.shoppingCommon.shoppingApplication.security.CurrentUser;
 import am.shoppingCommon.shoppingApplication.service.CategoryService;
 import am.shoppingCommon.shoppingApplication.service.CommentService;
 import am.shoppingCommon.shoppingApplication.service.ProductService;
@@ -69,7 +69,7 @@ public class ProductEndpoint {
     public ResponseEntity<?> addProduct(@RequestBody CreateProductRequestDto createProductRequestDto,
                                         @AuthenticationPrincipal CurrentUser currentUser,
                                         @RequestParam("files") MultipartFile[] files) throws IOException {
-        productService.save(createProductRequestDto, files, currentUser);
+        productService.save(createProductRequestDto, files, currentUser.getUser());
         return ResponseEntity.ok().build();
     }
 

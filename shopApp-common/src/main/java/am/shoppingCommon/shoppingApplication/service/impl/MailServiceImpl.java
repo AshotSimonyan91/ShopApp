@@ -1,5 +1,6 @@
 package am.shoppingCommon.shoppingApplication.service.impl;
 
+
 import am.shoppingCommon.shoppingApplication.service.MailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.MailSender;

@@ -3,6 +3,7 @@ package am.shopappRest.shoppingApplicationRest.endpoint;
 
 import am.shopappRest.shoppingApplicationRest.restDto.userAuthDto.UserAuthRequestDto;
 import am.shopappRest.shoppingApplicationRest.restDto.userAuthDto.UserAuthResponseDto;
+import am.shopappRest.shoppingApplicationRest.security.CurrentUser;
 import am.shopappRest.shoppingApplicationRest.util.JwtTokenUtil;
 import am.shoppingCommon.shoppingApplication.dto.addressDto.AddressDto;
 import am.shoppingCommon.shoppingApplication.dto.notificationDto.NotificationResponseDto;
@@ -16,7 +17,6 @@ import am.shoppingCommon.shoppingApplication.entity.User;
 import am.shoppingCommon.shoppingApplication.mapper.NotificationMapper;
 import am.shoppingCommon.shoppingApplication.mapper.OrderMapper;
 import am.shoppingCommon.shoppingApplication.mapper.UserMapper;
-import am.shoppingCommon.shoppingApplication.security.CurrentUser;
 import am.shoppingCommon.shoppingApplication.service.MailService;
 import am.shoppingCommon.shoppingApplication.service.NotificationService;
 import am.shoppingCommon.shoppingApplication.service.OrderService;
@@ -92,7 +92,7 @@ public class UserEndpoint {
     public ResponseEntity<?> updateCurrentUserData(@Valid @ModelAttribute UserUpdateDto userUpdateDto,
                                                    @AuthenticationPrincipal CurrentUser currentUser,
                                                    @RequestParam("profile_pic") MultipartFile multipartFile) throws IOException {
-        userService.updateUser(multipartFile, UserMapper.userUpdateDtoToUser(userUpdateDto), currentUser);
+        userService.updateUser(multipartFile, UserMapper.userUpdateDtoToUser(userUpdateDto), currentUser.getUser());
         return ResponseEntity.ok().build();
     }
 
@@ -142,14 +142,14 @@ public class UserEndpoint {
     @PostMapping("/address")
     public ResponseEntity<UserDto> addUserAddress(@AuthenticationPrincipal CurrentUser currentUser,
                                                   @RequestBody AddressDto addressDto) {
-        userService.save(userService.saveAddress(currentUser, addressDto));
+        userService.save(userService.saveAddress(currentUser.getUser(), addressDto));
         return ResponseEntity.ok(UserMapper.userToUserDto(userService.findByIdWithAddresses(currentUser.getUser().getId())));
     }
 
     @DeleteMapping("/address/delete")
     public ResponseEntity<UserDto> deleteUserAddress(@AuthenticationPrincipal CurrentUser currentUser,
                                                      @RequestParam("id") int id) {
-        userService.removeAddressFromUserAndAddressTable(currentUser, id);
+        userService.removeAddressFromUserAndAddressTable(currentUser.getUser(), id);
         return ResponseEntity.ok(UserMapper.userToUserDto(userService.findByIdWithAddresses(currentUser.getUser().getId())));
     }
 
