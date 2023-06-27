@@ -1,9 +1,14 @@
 package am.shopappweb.shopappweb.controller;
 
+import am.shopappweb.shopappweb.security.CurrentUser;
+import am.shoppingCommon.shoppingApplication.mapper.UserMapper;
 import am.shoppingCommon.shoppingApplication.service.NotificationService;
 import am.shoppingCommon.shoppingApplication.dto.notificationDto.NotificationRequestDto;
+import am.shoppingCommon.shoppingApplication.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -11,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class NotificationController {
     private final NotificationService notificationService;
+    private final UserService userService;
 
     @GetMapping("/send")
     public String sendNotificationPage() {
@@ -27,5 +33,12 @@ public class NotificationController {
     public String removeNotification(@RequestParam("id") int id) {
         notificationService.remove(id);
         return "redirect:/notification/send";
+    }
+
+    @GetMapping
+    public String notificationsPage(@AuthenticationPrincipal CurrentUser currentUser, ModelMap modelMap) {
+        modelMap.addAttribute("user", UserMapper.userToUserDto(userService.findByIdWithAddresses(currentUser.getUser().getId())));
+        modelMap.addAttribute("notifications", notificationService.findAllByUserId(currentUser.getUser().getId()));
+        return "notifications";
     }
 }

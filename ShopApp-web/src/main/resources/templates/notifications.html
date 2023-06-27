@@ -1,10 +1,74 @@
 <th:block th:include="/fragment/header::header"></th:block>
-<img th:if="${currentUser.profilePic != null}" th:src="@{/getImage(profilePic=${currentUser.profilePic})}"
-     width="80">
-<h2 th:text="${currentUser.name}"></h2>
-<div th:each="notification :${notifications}">
-    <p th:text="${notification.message}"></p>
-</div>
-<th:block th:include="footer.html :: footer"></th:block>
+<div class="py-6">
+    <div class="container">
+        <div class="row"><!-- Profile Menu -->
+            <div class="col-lg-4 pb-4 pb-lg-0 col-xxl-3 pe-xxl-5">
+                <div class="bg-body border border-bottom-0 shadow-lg">
+                    <div class="d-flex p-3 align-items-center">
+                        <div class="avatar avatar-lg rounded-circle" th:if="${user.profilePic != null}">
+                            <img th:src="@{/getImage(profilePic=${user.profilePic})}">
+                        </div>
+                        <div class="col ps-3"><h6 class="m-0" th:text="${user.name}"></h6><small><a
+                                href="#" th:text="${user.email}">your@email.com</a></small></div>
+                    </div>
+                    <div class="bg-gray-200 p-3 border-bottom border-top"><h6 class="m-0">Dashboard</h6></div>
+                    <ul class="list-unstyled mb-0 theme-link">
+                        <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center p-3"
+                                                          href="/user/order"><i
+                                class="bi bi-bag me-2"></i> Order
+                            <div class="ms-auto badge-pill badge bg-secondary">5</div>
+                        </a></li>
+                        <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center p-3"
+                                                          href="/wishList"><i
+                                class="fi-heart me-2"></i>Wishlist
+                            <div class="ms-auto badge-pill badge bg-secondary">5</div>
+                        </a></li>
+                        <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center p-3"
+                                                          href="/user/notifications"><i
+                                class="fi-heart me-2"></i>Notifications
+                            <div class="ms-auto badge-pill badge bg-secondary">5</div>
+                        </a></li>
+                    </ul>
+                    <div class="bg-gray-200 p-3 border-bottom"><h6 class="m-0">Account settings</h6></div>
+                    <ul class="list-unstyled mb-0 theme-link">
+                        <li class="border-bottom mb-0"><a
+                                class="nav-link-style d-flex align-items-center active p-3"
+                                href="/user"><i class="fi-user me-2"></i>Profile info</a></li>
+                        <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center p-3"
+                                                          href="/user/address"><i
+                                class="bi bi-map-fill me-2"></i>Addresses</a></li>
+                        <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center p-3"
+                                                          href="/user/payment"><i
+                                class="bi bi-credit-card me-2"></i>Payment</a></li>
+                        <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center p-3"
+                                                          href="/logout"><i
+                                class="bi bi-box-arrow-left me-2"></i>Logout</a></li>
+                    </ul>
+                </div>
+            </div><!-- End Profile Menu --><!-- Content -->
+            <div class="col-lg-8 col-xxl-9">
+                <div class="table-responsive fs-md mb-4">
+                    <table class="table table-bordered table-hover mb-0">
+                        <thead class="text-700 bg-gray-200">
+                        <tr>
+                            <th class="fw-600">Subject</th>
+                            <th class="fw-600">Text</th>
+                            <th class="fw-600">Date</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="notification :${notifications}">
+                            <td class="p-3 text-mode"><span class="fw-500" th:text="'#' + ${notification.subject}"></span></td>
+                            <td class="p-3"><span class="badge bg-warning m-0" th:text="${notification.message}"></span></td>
+                            <td class="p-3" th:text="${#temporals.format(notification.dateTime, 'yyyy-MM-dd HH:mm')}"></td>
+
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div><!-- End Content --></div>
+    </div>
+</div><!--Table --></main>
+<block th:include="fragment/footer::footer"></block>
 </body>
 </html>
