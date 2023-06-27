@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/comments")
+@RequestMapping("/delivery")
 @RequiredArgsConstructor
 public class DeliveryEndpoint {
     private final DeliveryService deliveryService;

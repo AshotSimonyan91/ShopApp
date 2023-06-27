@@ -23,7 +23,7 @@ public class CommentEndpoint {
     }
 
     @DeleteMapping("/remove")
-    public ResponseEntity<?> removeComment(@RequestParam("comment_id") int id, @RequestParam("product_id") int productId) {
+    public ResponseEntity<?> removeComment(@RequestParam("comment_id") int id) {
         commentService.remove(id);
         return ResponseEntity.noContent().build();
     }
