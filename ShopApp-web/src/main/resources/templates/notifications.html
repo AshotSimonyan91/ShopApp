@@ -58,10 +58,9 @@
                         </thead>
                         <tbody>
                         <tr th:each="notification :${notifications}">
-                            <td class="p-3 text-mode"><span class="fw-500" th:text="'#' + ${notification.subject}"></span></td>
-                            <td class="p-3"><span class="badge bg-warning m-0" th:text="${notification.message}"></span></td>
+                            <td class="p-3 text-mode"><span class="fw-500" th:text="${notification.subject}"></span></td>
+                            <td class="p-3"><span th:text="${notification.message}"></span></td>
                             <td class="p-3" th:text="${#temporals.format(notification.dateTime, 'yyyy-MM-dd HH:mm')}"></td>
-
                         </tr>
                         </tbody>
                     </table>

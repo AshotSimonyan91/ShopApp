@@ -1,15 +1,18 @@
 package am.shoppingCommon.shoppingApplication.service.impl;
 
 
-import am.shoppingCommon.shoppingApplication.service.NotificationService;
 import am.shoppingCommon.shoppingApplication.dto.notificationDto.NotificationRequestDto;
-import am.shoppingCommon.shoppingApplication.dto.notificationDto.NotificationResponseDto;
 import am.shoppingCommon.shoppingApplication.entity.Notification;
+import am.shoppingCommon.shoppingApplication.entity.Order;
 import am.shoppingCommon.shoppingApplication.entity.User;
 import am.shoppingCommon.shoppingApplication.mapper.NotificationMapper;
 import am.shoppingCommon.shoppingApplication.repository.NotificationRepository;
 import am.shoppingCommon.shoppingApplication.repository.UserRepository;
+import am.shoppingCommon.shoppingApplication.service.NotificationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,7 +51,16 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public List<Notification> notifications(int userId) {
-        return notificationRepository.findTop30ByUserIdOrderByDateTimeDesc(userId);
+    public List<Notification> notifications(int id) {
+        Pageable pageable = PageRequest.of(0, 20);
+        List<Notification> lastNotifications = notificationRepository.findAllByUserIdOrderByDateTimeDesc(id,pageable);
+        return lastNotifications;
+    }
+
+    @Override
+    public List<Notification> last3Notifications(int userId) {
+        Pageable pageable = PageRequest.of(0, 3);
+        List<Notification> lastNotifications = notificationRepository.findAllByUserIdOrderByDateTimeDesc(userId,pageable);
+        return lastNotifications;
     }
 }
