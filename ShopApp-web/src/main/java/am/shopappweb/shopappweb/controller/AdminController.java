@@ -2,16 +2,14 @@ package am.shopappweb.shopappweb.controller;
 
 import am.shoppingCommon.shoppingApplication.mapper.CategoryMapper;
 import am.shopappweb.shopappweb.security.CurrentUser;
-import am.shoppingCommon.shoppingApplication.service.CategoryService;
-import am.shoppingCommon.shoppingApplication.service.NotificationService;
-import am.shoppingCommon.shoppingApplication.service.OrderService;
-import am.shoppingCommon.shoppingApplication.service.UserService;
+import am.shoppingCommon.shoppingApplication.service.*;
 import am.shoppingCommon.shoppingApplication.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -23,13 +21,14 @@ public class AdminController {
     private final OrderService orderService;
     private final CategoryService categoryService;
     private final NotificationService notificationService;
+    private final AdminService adminService;
 
     @GetMapping
     public String adminPage(ModelMap modelMap,
                             @AuthenticationPrincipal CurrentUser currentUser) {
         modelMap.addAttribute("user", userService.findByIdWithAddresses(currentUser.getUser().getId()));
         modelMap.addAttribute("orders", orderService.ordersLimit10());
-        modelMap.addAttribute("notifications",notificationService.last3Notifications(currentUser.getUser().getId()));
+        modelMap.addAttribute("notifications", notificationService.last3Notifications(currentUser.getUser().getId()));
         return "/admin/admin-page";
     }
 
@@ -58,6 +57,12 @@ public class AdminController {
     public String addProductAdminPage(ModelMap modelMap) {
         modelMap.addAttribute("categories", CategoryMapper.categoryDtoList(categoryService.findAllCategory()));
         return "admin/form-uploads";
+    }
+
+    @GetMapping("/block/{id}")
+    public String blockUser(@PathVariable("id") int id, @AuthenticationPrincipal CurrentUser currentUser) {
+        adminService.block(id, currentUser.getUser());
+        return "redirect:/admin";
     }
 
 }

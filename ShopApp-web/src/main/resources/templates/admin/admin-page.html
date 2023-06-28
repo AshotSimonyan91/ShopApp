@@ -2,11 +2,9 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 
-    <meta charset="utf-8"/>
-    <title>Sales Dashboard | Dashonic - assets & Dashboard Template</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="Premium Multipurpose assets & Dashboard Template" name="description"/>
-    <meta content="Pichforest" name="author"/>
+    <meta charset="utf-8">
+    <meta name="keywords" content="ShopApp">
+    <meta name="description" content="ShopApp"><!-- title --><title>ShopApp</title>
     <!-- App favicon -->
     <link rel="shortcut icon" href="/assets/images/favicon.ico">
 
@@ -37,19 +35,19 @@
                 <div class="navbar-brand-box">
                     <a href="assets-page.html" class="logo logo-dark">
                             <span class="logo-sm">
-                                <img src="/assets/images/logo-sm.png" alt="" height="22">
+                                <img src="/img/logo.svg" alt="" height="22">
                             </span>
                         <span class="logo-lg">
-                                <img src="/assets/images/logo-dark.png" alt="" height="22">
+                                <img src="/img/logo.svg" alt="" height="22">
                             </span>
                     </a>
 
                     <a href="assets-page.html" class="logo logo-light">
                             <span class="logo-sm">
-                                <img src="/assets/images/logo-sm.png" alt="" height="22">
+                                <img src="/img/logo.svg" alt="" height="22">
                             </span>
                         <span class="logo-lg">
-                                <img src="/assets/images/logo-light.png" alt="" height="22">
+                                <img src="/img/logo.svg" alt="" height="22">
                             </span>
                     </a>
                 </div>
@@ -256,80 +254,21 @@
                         </div>
                         <div data-simplebar style="max-height: 250px;">
                             <h6 class="dropdown-header bg-light">New</h6>
-                            <a href="assets-page.html" class="text-reset notification-item">
-                                <div class="d-flex border-bottom align-items-start">
-                                    <div class="flex-shrink-0">
-                                        <img src="/assets/images/users/avatar-3.jpg"
-                                             class="me-3 rounded-circle avatar-sm" alt="user-pic">
-                                    </div>
-                                    <div class="flex-grow-1">
-                                        <h6 class="mb-1">Justin Verduzco</h6>
-                                        <div class="text-muted">
-                                            <p class="mb-1 font-size-13">Your task changed an issue from "In Progress"
-                                                to <span class="badge badge-soft-success">Review</span></p>
-                                            <p class="mb-0 font-size-10 text-uppercase fw-bold"><i
-                                                    class="mdi mdi-clock-outline"></i> 1 hours ago</p>
+                            <th:block th:if="${notifications} != null" th:each="notifcation :${notifications}">
+                                <a href="/notification" class="text-reset notification-item">
+                                    <div class="d-flex border-bottom align-items-start">
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-1" th:text="${notifcation.subject}"></h6>
+                                            <div class="text-muted">
+                                                <p class="mb-1 font-size-13" th:text="${notifcation.message}">
+                                                    </p>
+                                                <p class="mb-0 font-size-10 text-uppercase fw-bold" th:text="${#temporals.format(notifcation.dateTime, 'yyyy-MM-dd HH:mm')}"><i
+                                                        class="mdi mdi-clock-outline"></i></p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </a>
-                            <a href="assets-page.html" class="text-reset notification-item">
-                                <div class="d-flex border-bottom align-items-start">
-                                    <div class="flex-shrink-0">
-                                        <div class="avatar-sm me-3">
-                                                <span class="avatar-title bg-primary rounded-circle font-size-16">
-                                                    <i class="uil-shopping-basket"></i>
-                                                </span>
-                                        </div>
-                                    </div>
-                                    <div class="flex-grow-1">
-                                        <h6 class="mb-1">New order has been placed</h6>
-                                        <div class="text-muted">
-                                            <p class="mb-1 font-size-13">Open the order confirmation or shipment
-                                                confirmation.</p>
-                                            <p class="mb-0 font-size-10 text-uppercase fw-bold"><i
-                                                    class="mdi mdi-clock-outline"></i> 5 hours ago</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                            <a href="assets-page.html" class="text-reset notification-item">
-                                <div class="d-flex border-bottom align-items-start">
-                                    <div class="flex-shrink-0">
-                                        <div class="avatar-sm me-3">
-                                                <span class="avatar-title bg-soft-success text-success rounded-circle font-size-16">
-                                                    <i class="uil-truck"></i>
-                                                </span>
-                                        </div>
-                                    </div>
-                                    <div class="flex-grow-1">
-                                        <h6 class="mb-1">Your item is shipped</h6>
-                                        <div class="text-muted">
-                                            <p class="mb-1 font-size-13">Here is somthing that you might light like to
-                                                know.</p>
-                                            <p class="mb-0 font-size-10 text-uppercase fw-bold"><i
-                                                    class="mdi mdi-clock-outline"></i> 1 day ago</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-
-                            <a href="assets-page.html" class="text-reset notification-item">
-                                <div class="d-flex border-bottom align-items-start">
-                                    <div class="flex-shrink-0">
-                                        <img src="/assets/images/users/avatar-4.jpg"
-                                             class="me-3 rounded-circle avatar-sm" alt="user-pic">
-                                    </div>
-                                    <div class="flex-grow-1">
-                                        <h6 class="mb-1">Salena Layfield</h6>
-                                        <div class="text-muted">
-                                            <p class="mb-1 font-size-13">Yay ! Everything worked!</p>
-                                            <p class="mb-0 font-size-10 text-uppercase fw-bold"><i
-                                                    class="mdi mdi-clock-outline"></i> 3 days ago</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
+                                </a>
+                            </th:block>
                         </div>
                     </div>
                 </div>
@@ -360,7 +299,7 @@
                         <a class="dropdown-item" href="/user"><i
                                 class="mdi mdi-account-circle text-muted font-size-16 align-middle me-1"></i> <span
                                 class="align-middle">Profile</span></a>
-                        <a class="dropdown-item" href="apps-chat.html"><i
+                        <a class="dropdown-item" href="/notification"><i
                                 class="mdi mdi-message-text-outline text-muted font-size-16 align-middle me-1"></i>
                             <span class="align-middle">Notifications</span></a>
                         <div class="dropdown-divider"></div>
@@ -379,19 +318,19 @@
         <div class="navbar-brand-box">
             <a href="assets-page.html" class="logo logo-dark">
                     <span class="logo-sm">
-                        <img src="/assets/images/logo-sm.png" alt="" height="22">
+                        <img src="/img/logo.svg" alt="" height="22">
                     </span>
                 <span class="logo-lg">
-                        <img src="/assets/images/logo-dark.png" alt="" height="22">
+                        <img src="/img/logo.svg" alt="" height="22">
                     </span>
             </a>
 
             <a href="assets-page.html" class="logo logo-light">
                     <span class="logo-lg">
-                        <img src="/assets/images/logo-light.png" alt="" height="22">
+                        <img src="/img/logo.svg" alt="" height="22">
                     </span>
                 <span class="logo-sm">
-                        <img src="/assets/images/logo-sm-light.png" alt="" height="22">
+                        <img src="/img/logo.svg" alt="" height="22">
                     </span>
             </a>
         </div>
@@ -644,22 +583,6 @@
                                                 </form>
                                             </div>
                                         </div>
-
-                                        <div class="dropdown d-inline">
-                                            <a class="dropdown-toggle text-reset mb-3" href="assets-page.html#"
-                                               data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <span class="fw-semibold">Report By:</span> <span
-                                                    class="text-muted">Monthly<i
-                                                    class="mdi mdi-chevron-down ms-1"></i></span>
-                                            </a>
-
-                                            <div class="dropdown-menu dropdown-menu-end">
-                                                <a class="dropdown-item" href="assets-page.html#">Yearly</a>
-                                                <a class="dropdown-item" href="assets-page.html#">Monthly</a>
-                                                <a class="dropdown-item" href="assets-page.html#">Weekly</a>
-                                                <a class="dropdown-item" href="assets-page.html#">Today</a>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
 
@@ -722,7 +645,8 @@
                                                         <div>
                                                             <h5 class="font-size-14 text-truncate mb-0"><a
                                                                     href="assets-page.html#"
-                                                                    class="text-reset" th:text="${order.user.name}">Alex Fox</a>
+                                                                    class="text-reset" th:text="${order.user.name}">Alex
+                                                                Fox</a>
                                                             </h5>
                                                         </div>
                                                     </div>
@@ -745,9 +669,10 @@
                                                             <li><a href="assets-page.html#" class="dropdown-item"><i
                                                                     class="mdi mdi-pencil font-size-16 text-success me-1"></i>
                                                                 Edit</a></li>
-                                                            <li><a href="assets-page.html#" class="dropdown-item"><i
-                                                                    class="mdi mdi-trash-can font-size-16 text-danger me-1"></i>
-                                                                Delete</a></li>
+                                                            <li><a href="/admin/block" class="dropdown-item"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-slash" viewBox="0 0 16 16">
+                                                                <path d="M13.879 10.414a2.501 2.501 0 0 0-3.465 3.465l3.465-3.465Zm.707.707-3.465 3.465a2.501 2.501 0 0 0 3.465-3.465Zm-4.56-1.096a3.5 3.5 0 1 1 4.949 4.95 3.5 3.5 0 0 1-4.95-4.95ZM11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm.256 7a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Z"/>
+                                                            </svg></i>
+                                                                Block</a></li>
                                                         </ul>
                                                     </div>
                                                 </td>
@@ -822,13 +747,13 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-sm-6">
-                        <script>document.write(new Date().getFullYear())</script> &copy; Dashonic.
+                        <script>document.write(new Date().getFullYear())</script> &copy; ITSpace.
                     </div>
                     <div class="col-sm-6">
                         <div class="text-sm-end d-none d-sm-block">
-                            Crafted with <i class="mdi mdi-heart text-danger"></i> by <a href="https://Pichforest.com/"
-                                                                                         target="_blank"
-                                                                                         class="text-reset">Pichforest</a>
+                            Crafted by <a href="#"
+                                               target="_blank"
+                                               class="text-reset">Ashot Simonyan & Hrant Meselyan</a>
                         </div>
                     </div>
                 </div>
