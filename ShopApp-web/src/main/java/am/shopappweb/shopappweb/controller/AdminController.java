@@ -3,6 +3,7 @@ package am.shopappweb.shopappweb.controller;
 import am.shoppingCommon.shoppingApplication.mapper.CategoryMapper;
 import am.shopappweb.shopappweb.security.CurrentUser;
 import am.shoppingCommon.shoppingApplication.service.CategoryService;
+import am.shoppingCommon.shoppingApplication.service.NotificationService;
 import am.shoppingCommon.shoppingApplication.service.OrderService;
 import am.shoppingCommon.shoppingApplication.service.UserService;
 import am.shoppingCommon.shoppingApplication.mapper.UserMapper;
@@ -21,12 +22,14 @@ public class AdminController {
     private final UserService userService;
     private final OrderService orderService;
     private final CategoryService categoryService;
+    private final NotificationService notificationService;
 
     @GetMapping
     public String adminPage(ModelMap modelMap,
                             @AuthenticationPrincipal CurrentUser currentUser) {
         modelMap.addAttribute("user", userService.findByIdWithAddresses(currentUser.getUser().getId()));
         modelMap.addAttribute("orders", orderService.ordersLimit10());
+        modelMap.addAttribute("notifications",notificationService.last3Notifications(currentUser.getUser().getId()));
         return "/admin/admin-page";
     }
 

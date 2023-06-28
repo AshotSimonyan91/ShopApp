@@ -38,7 +38,7 @@ public class NotificationController {
     @GetMapping
     public String notificationsPage(@AuthenticationPrincipal CurrentUser currentUser, ModelMap modelMap) {
         modelMap.addAttribute("user", UserMapper.userToUserDto(userService.findByIdWithAddresses(currentUser.getUser().getId())));
-        modelMap.addAttribute("notifications", notificationService.findAllByUserId(currentUser.getUser().getId()));
+        modelMap.addAttribute("notifications", notificationService.notifications(currentUser.getUser().getId()));
         return "notifications";
     }
 }
