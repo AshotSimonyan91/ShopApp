@@ -1,5 +1,6 @@
 package am.shopappweb.shopappweb.controller;
 
+import am.shoppingCommon.shoppingApplication.dto.orderDto.OrderDto;
 import am.shoppingCommon.shoppingApplication.mapper.CategoryMapper;
 import am.shopappweb.shopappweb.security.CurrentUser;
 import am.shoppingCommon.shoppingApplication.service.*;
@@ -8,10 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -22,6 +20,7 @@ public class AdminController {
     private final CategoryService categoryService;
     private final NotificationService notificationService;
     private final AdminService adminService;
+    private final DeliveryService deliveryService;
 
     @GetMapping
     public String adminPage(ModelMap modelMap,
@@ -54,15 +53,40 @@ public class AdminController {
     }
 
     @GetMapping("/add/product")
-    public String addProductAdminPage(ModelMap modelMap) {
+    public String addProductAdminPage(ModelMap modelMap, @AuthenticationPrincipal CurrentUser currentUser) {
         modelMap.addAttribute("categories", CategoryMapper.categoryDtoList(categoryService.findAllCategory()));
-        return "admin/form-uploads";
+        modelMap.addAttribute("user", userService.findByIdWithAddresses(currentUser.getUser().getId()));
+        modelMap.addAttribute("notifications", notificationService.last3Notifications(currentUser.getUser().getId()));
+        return "admin/add-product";
     }
 
     @GetMapping("/block/{id}")
     public String blockUser(@PathVariable("id") int id, @AuthenticationPrincipal CurrentUser currentUser) {
         adminService.block(id, currentUser.getUser());
         return "redirect:/admin";
+    }
+
+    @GetMapping("/edit/order/{id}")
+    public String editOrderPage(@PathVariable("id") int id, @AuthenticationPrincipal CurrentUser currentUser, ModelMap modelMap) {
+        modelMap.addAttribute("user", UserMapper.userToUserDto(userService.findByIdWithAddresses(currentUser.getUser().getId())));
+        modelMap.addAttribute("order", orderService.orderById(id));
+        modelMap.addAttribute("deliveries", userService.findAllDeliveries());
+        return "admin/order-edit";
+    }
+
+    @PostMapping("/edit/order")
+    public String editOrder(@ModelAttribute OrderDto orderDto, @RequestParam("delivery") int deliveryId, @AuthenticationPrincipal CurrentUser currentUser) {
+        adminService.editOrder(orderDto, currentUser.getUser());
+        return "redirect:/admin";
+    }
+
+    @GetMapping("/remove/orderItem/{productId}/{orderItemId}/{userId}/{orderId}")
+    public String removeOrderItemAdmin(@PathVariable("productId") int productId,
+                                       @PathVariable("orderItemId") int orderItemId,
+                                       @PathVariable("userId") int userId,
+                                       @PathVariable("orderId") int orderId) {
+        orderService.removeByProductIdAndOrderItemId(productId, orderItemId, userId);
+        return "redirect:/admin/edit/order/" + orderId;
     }
 
 }

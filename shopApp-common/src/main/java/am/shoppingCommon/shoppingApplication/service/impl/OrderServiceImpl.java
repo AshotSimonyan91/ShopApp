@@ -46,6 +46,11 @@ public class OrderServiceImpl implements OrderService {
     public Optional<Order> findById(int id) {
         return orderRepository.findById(id);
     }
+    @Override
+    public Order orderById(int id) {
+        Optional<Order> byId = orderRepository.findById(id);
+        return byId.orElse(null);
+    }
 
     @Override
     public List<OrderDto> ordersLimit10() {
