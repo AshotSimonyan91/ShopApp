@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+        http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
+
+
+    <changeSet id="1" author="AshotSimonyan">
+        <createTable tableName="address">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="city" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="country" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="street" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="unit_number" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="post_code" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="category">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="image" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="parent_category" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="image">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="image" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="user">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="email" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="enabled" type="tinyint" defaultValue="0">
+                <constraints nullable="true"/>
+            </column>
+            <column name="gender" type="enum('FEMALE','MALE')">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="phone_number" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="profile_pic" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="role" type="enum ('ADMIN', 'DELIVERY', 'MANAGER', 'USER')">
+                <constraints nullable="false"/>
+            </column>
+            <column name="surname" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="token" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="cart">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_cart_user" references="user(id)"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="notification">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="date_time" type="datetime(6)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="message" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="subject" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_notification_user" references="user(id)"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="orders">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="date_time" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="enum ('APPROVED', 'DELIVERED', 'IN_PROCESS', 'PENDING')">
+                <constraints nullable="false"/>
+            </column>
+            <column name="total_amount" type="double">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_orders_user" references="user(id)"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="delivery">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="order_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_delivery_order" references="orders(id)"/>
+            </column>
+            <column name="user_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_delivery_user" references="user(id)"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="product">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="count" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="text">
+                <constraints nullable="true"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="double">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_code" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_product_user" references="user(id)"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="cart_item">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="count" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cart_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_cart_item_cart" references="cart(id)"/>
+            </column>
+            <column name="product_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_cart_item_product" references="product(id)"/>
+            </column>
+        </createTable>
+        
+        <createTable tableName="category_product">
+            <column name="product_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_category_product_product" references="product(id)"/>
+            </column>
+            <column name="category_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_category_product_category" references="category(id)"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint constraintName="un_category_product" tableName="category_product" columnNames="product_id,category_id"/>
+
+        <createTable tableName="comment">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="comment" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_time" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_comment_product" references="product(id)"/>
+            </column>
+            <column name="user_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_comment_user" references="user(id)"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="order_item">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="count" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_order_item_product" references="product(id)"/>
+            </column>
+            <column name="order_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_order_item_order" references="orders(id)"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="product_images">
+            <column name="product_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_product_images_product" references="product(id)"/>
+            </column>
+            <column name="images_id" type="int">
+                <constraints nullable="false" unique="true" foreignKeyName="fk_product_images_image" references="image(id)"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="user_address">
+            <column name="user_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_user_address_user" references="user(id)"/>
+            </column>
+            <column name="address_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_user_address_address" references="address(id)"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint constraintName="un_user_address" tableName="user_address" columnNames="user_id,address_id"/>
+
+        <createTable tableName="wish_list">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="user_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_wish_list_user" references="user(id)"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="wishlist_product">
+            <column name="wishlist_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_wishlist_product_wishlist" references="wish_list(id)"/>
+            </column>
+            <column name="product_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_wishlist_product_product" references="product(id)"/>
+            </column>
+        </createTable>
+        <addPrimaryKey constraintName="pk_wishlist_product" tableName="wishlist_product" columnNames="wishlist_id,product_id"/>
+    </changeSet>
+
+
+
+</databaseChangeLog>

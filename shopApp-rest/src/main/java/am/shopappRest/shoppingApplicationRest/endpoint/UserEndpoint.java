@@ -8,10 +8,7 @@ import am.shopappRest.shoppingApplicationRest.util.JwtTokenUtil;
 import am.shoppingCommon.shoppingApplication.dto.addressDto.AddressDto;
 import am.shoppingCommon.shoppingApplication.dto.notificationDto.NotificationResponseDto;
 import am.shoppingCommon.shoppingApplication.dto.orderDto.OrderDto;
-import am.shoppingCommon.shoppingApplication.dto.userDto.CreateUserRequestDto;
-import am.shoppingCommon.shoppingApplication.dto.userDto.UpdatePasswordDto;
-import am.shoppingCommon.shoppingApplication.dto.userDto.UserDto;
-import am.shoppingCommon.shoppingApplication.dto.userDto.UserUpdateDto;
+import am.shoppingCommon.shoppingApplication.dto.userDto.*;
 import am.shoppingCommon.shoppingApplication.entity.Role;
 import am.shoppingCommon.shoppingApplication.entity.User;
 import am.shoppingCommon.shoppingApplication.mapper.NotificationMapper;
@@ -64,16 +61,16 @@ public class UserEndpoint {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserDto> register(@RequestBody CreateUserRequestDto createUserRequestDto) {
-        User byEmail = userService.findByEmail(createUserRequestDto.getEmail());
+    public ResponseEntity<UserShortDto> register(@RequestBody UserRegisterDto userRegisterDto) {
+        User byEmail = userService.findByEmail(userRegisterDto.getEmail());
         if (byEmail != null) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
-        User user = UserMapper.createUserRequestDtoMap(createUserRequestDto);
-        user.setPassword(passwordEncoder.encode(createUserRequestDto.getPassword()));
+        User user = UserMapper.userRegisterDtoToUser(userRegisterDto);
+        user.setPassword(passwordEncoder.encode(userRegisterDto.getPassword()));
         user.setRole(Role.USER);
         userService.save(user);
-        return ResponseEntity.ok(UserMapper.userToUserDto(user));
+        return ResponseEntity.ok(UserMapper.userToUserShortDto(user));
     }
 
     @GetMapping()
@@ -89,11 +86,11 @@ public class UserEndpoint {
     }
 
     @PutMapping("/updateUserData")
-    public ResponseEntity<?> updateCurrentUserData(@Valid @ModelAttribute UserUpdateDto userUpdateDto,
-                                                   @AuthenticationPrincipal CurrentUser currentUser,
-                                                   @RequestParam("profile_pic") MultipartFile multipartFile) throws IOException {
+    public ResponseEntity<UserShortDto> updateCurrentUserData(@Valid @RequestBody UserUpdateDto userUpdateDto,
+                                                              @AuthenticationPrincipal CurrentUser currentUser,
+                                                              @RequestParam("profile_pic") MultipartFile multipartFile) throws IOException {
         userService.updateUser(multipartFile, UserMapper.userUpdateDtoToUser(userUpdateDto), currentUser.getUser());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(UserMapper.userToUserShortDto(userService.findById(currentUser.getUser().getId())));
     }
 
     @GetMapping("/notifications/{userId}")
@@ -115,15 +112,15 @@ public class UserEndpoint {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
-    @PostMapping("/forgotPassword")
-    public ResponseEntity<?> forgotPassword(@RequestParam("email") String email) {
+    @GetMapping("/forgotPassword")
+    public ResponseEntity<String> forgotPassword(@RequestParam("email") String email) {
         User userByEmail = userService.findByEmail(email);
         if (userByEmail != null) {
             mailService.sendMail(userByEmail.getEmail(), "Welcome",
                     "Hi " + userByEmail.getName() +
                             " Welcome please for change password by click " + siteUrl + "/user/changePassword?email=" + userByEmail.getEmail() + "&token=" + userByEmail.getToken()
             );
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok(userByEmail.getToken());
         }
         return ResponseEntity.notFound().build();
     }

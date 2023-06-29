@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -32,9 +33,9 @@ public class OrderEndpoint {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> addOrder(@AuthenticationPrincipal CurrentUser currentUser) {
+    public ResponseEntity<List<OrderDto>> addOrder(@AuthenticationPrincipal CurrentUser currentUser) {
         orderService.save(currentUser.getUser().getId());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(OrderMapper.listOrderToListOrderDto(orderService.findAllByUserId(currentUser.getUser().getId())));
     }
 
     @DeleteMapping("/remove")
