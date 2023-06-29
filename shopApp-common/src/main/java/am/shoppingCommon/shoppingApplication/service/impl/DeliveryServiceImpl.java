@@ -29,12 +29,12 @@ public class DeliveryServiceImpl implements DeliveryService {
 
     @Override
     public Page<Delivery> findAllByUserIdAndOrderStatus(int id, Status status, Pageable pageable) {
-        return deliveryRepository.findAllByUserIdAndOrderStatus(id,status,pageable);
+        return deliveryRepository.findAllByUserIdAndOrderStatus(id, status, pageable);
     }
 
     @Override
-    public Page<Delivery> findAllByOrderStatus(Status status,Pageable pageable) {
-        return deliveryRepository.findAllByOrderStatus(status,pageable);
+    public Page<Delivery> findAllByOrderStatus(Status status, Pageable pageable) {
+        return deliveryRepository.findAllByOrderStatus(status, pageable);
     }
 
     @Override
@@ -69,5 +69,11 @@ public class DeliveryServiceImpl implements DeliveryService {
         delivery.setUser(user);
         delivery.getOrder().setStatus(status);
         deliveryRepository.save(delivery);
+    }
+
+    @Override
+    public Delivery findByOrderId(int id) {
+        Optional<Delivery> allByOrderId = deliveryRepository.findAllByOrder_Id(id);
+        return allByOrderId.orElse(null);
     }
 }

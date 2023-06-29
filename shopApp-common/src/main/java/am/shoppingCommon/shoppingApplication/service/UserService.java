@@ -43,4 +43,6 @@ public interface UserService {
 
     boolean verifyUserByEmail(String email, UUID token);
 
+    List<User> findAllDeliveries();
+
 }

@@ -22,4 +22,6 @@ public interface DeliveryService {
     void save(Delivery delivery);
 
     void chooseDelivery(User user, int id, Status status);
+
+    Delivery findByOrderId(int id);
 }

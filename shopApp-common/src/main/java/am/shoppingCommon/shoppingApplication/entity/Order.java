@@ -3,6 +3,7 @@ package am.shoppingCommon.shoppingApplication.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,6 +22,7 @@ public class Order {
     private int id;
     @Column(nullable = false)
     @CreationTimestamp
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime dateTime;
     @Column(nullable = false)
     private double totalAmount;

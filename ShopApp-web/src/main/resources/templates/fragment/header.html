@@ -149,12 +149,14 @@
         </div>
     </div><!-- End Login Popup  --><!-- Mini Cart  -->
     <div class="offcanvas offcanvas-end" tabindex="-1" id="modalMiniCart" aria-labelledby="modalMiniCartLabel">
-        <div class="offcanvas-header border-bottom"><h6 class="offcanvas-title" id="modalMiniCartLabel">Your Cart <th:block th:if="${cartItems != null}">
-            <span th:text="${#lists.size(cartItems)}"></span>
-        </th:block>
-            <th:block th:if="${cartItems == null}">
-                <span th:text="0"></span>
-            </th:block>
+        <div class="offcanvas-header border-bottom">
+            <h6 class="offcanvas-title" id="modalMiniCartLabel">Your Cart
+                <th:block th:if="${cartItems != null}">
+                    <span th:text="${#lists.size(cartItems)}"></span>
+                </th:block>
+                <th:block th:if="${cartItems == null}">
+                    <span th:text="0"></span>
+                </th:block>
             </h6>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
@@ -170,8 +172,11 @@
                                         th:src="@{/getImage(profilePic=${cartItem.product.images[0].image})}"
                                         alt="..."></a></div>
                                 <div class="col-8"><!-- Title --><p class="mb-2"><a class="text-mode fw-500"
-                                                                                    href="./html/account/login.html#" th:text="${cartItem.product.name}">Cotton
-                                    floral print Dress</a> <span class="m-0 text-muted w-100 d-block" th:text="'1 pcs price = ' + ${cartItem.product.price}"></span></p>
+                                                                                    href="./html/account/login.html#"
+                                                                                    th:text="${cartItem.product.name}">Cotton
+                                    floral print Dress</a> <span class="m-0 text-muted w-100 d-block"
+                                                                 th:text="'1 pcs price = ' + ${cartItem.product.price}"></span>
+                                </p>
                                     <!--Footer -->
                                 </div>
                             </div>
@@ -181,9 +186,9 @@
             </ul>
         </div>
         <div class="offcanvas-footer border-top p-3">
-           <a
+            <a
                     class="btn btn-block btn-outline-mode w-100" href="/cart">View Cart</a></div>
-        </div>
+    </div>
     </div><!-- End Mini Cart  --><!-- Quick View  -->
     <div class="modal-quick-view modal fade" id="px-quick-view" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-xl">
@@ -489,31 +494,41 @@
                             </ul>
                         </div><!-- Right -->
                         <div class="d-flex align-items-center justify-content-center w-100 w-lg-auto"><!-- Language -->
-                            <div class="dropdown ms-0 ms-lg-3"><a class="dropdown-toggle text-white"
-                                                                  href="./html/account/login.html#"
-                                                                  role="button" id="dropdown_language"
-                                                                  data-bs-toggle="dropdown" aria-haspopup="true"
-                                                                  aria-expanded="false"><img class="me-2" width="20"
-                                                                                             src="/img/flags/uk.svg"
-                                                                                             alt=""> English</a>
-                                <div class="dropdown-menu mt-2 shadow" aria-labelledby="dropdown_language"
-                                     style="margin: 0px;">
-                                    <a class="dropdown-item" href="./html/account/login.html#"><img class="me-2"
-                                                                                                    width="20"
-                                                                                                    src="/img/flags/sp.svg"
-                                                                                                    alt=""> Español</a>
-                                    <a
-                                            class="dropdown-item" href="./html/account/login.html#"><img class="me-2"
-                                                                                                         width="20"
-                                                                                                         src="/img/flags/fr.svg"
-                                                                                                         alt="">
-                                        Français</a> <a
-                                        class="dropdown-item" href="./html/account/login.html#"><img class="me-2"
-                                                                                                     width="20"
-                                                                                                     src="/img/flags/gr.svg"
-                                                                                                     alt=""> Deutsch</a>
-                                </div>
-                            </div><!-- Top link -->
+                            <ul class="nav ms-auto ms-lg-3">
+                                <li class="nav-item h-switch dropdown">
+                                    <button class="theme-switch nav-link text-white dropdown-toggle"
+                                            type="button" aria-expanded="false" data-bs-toggle="dropdown"
+                                            data-bs-display="static"><span class="bi my-1 theme-icon-active">Lang</span><span
+                                            class="d-none">Toggle theme</span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="bd-theme">
+                                        <li>
+                                            <a href="?lang=en">
+                                                <button type="button" class="dropdown-item"
+                                                        data-bs-theme-value="auto">
+                                                    <span class="bi me-2 opacity-50 theme-icon">Eng</span>
+                                                </button>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="?lang=hy">
+                                                <button type="button" class="dropdown-item"
+                                                        data-bs-theme-value="auto">
+                                                    <span class="bi me-2 opacity-50 theme-icon">Հայ</span>
+                                                </button>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="?lang=ru">
+                                                <button type="button" class="dropdown-item"
+                                                        data-bs-theme-value="auto">
+                                                    <span class="bi me-2 opacity-50 theme-icon">Рус</span>
+                                                </button>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul><!-- Top social -->
                             <ul class="nav ms-auto ms-lg-3">
                                 <li class="nav-item h-switch dropdown">
                                     <button class="theme-switch nav-link text-white dropdown-toggle" id="bd-theme"
@@ -569,7 +584,7 @@
                         <ul class="navbar-nav mx-auto">
 
                             <li class="dropdown dropdown-full nav-item"><a href="./html/account/login.html#"
-                                                                           class="nav-link">Latest</a>
+                                                                           class="nav-link" th:text="#{header.latest}"></a>
                                 <label class="px-dropdown-toggle mob-menu"></label>
                                 <div class="dropdown-menu dropdown-mega-menu py-0">
                                     <div class="container-fluid p-3 p-lg-4">
@@ -628,7 +643,7 @@
                                 </div>
                             </li>
                             <li class="dropdown dropdown-full nav-item"><a href="./html/account/login.html#"
-                                                                           class="nav-link">Collection</a> <label
+                                                                           class="nav-link" th:text="#{header.collection}">Collection</a> <label
                                     class="px-dropdown-toggle mob-menu"></label>
                                 <div class="dropdown-menu dropdown-mega-menu py-0">
                                     <div class="container-fluid p-3 p-lg-4">
@@ -684,8 +699,10 @@
                                 </div>
                             </li>
                             <li class="dropdown dropdown-full nav-item"><a href="./html/account/login.html#"
-                                                                           class="nav-link">Categories</a> <label
-                                    class="px-dropdown-toggle mob-menu"></label>
+                                                                           class="nav-link"
+                                                                           th:text="#{index.categories.page}">Categories</a>
+                                <label
+                                        class="px-dropdown-toggle mob-menu"></label>
                                 <div class="dropdown-menu dropdown-mega-menu py-0">
                                     <div class="container-fluid p-3 p-lg-4">
                                         <div class="row gy-4" style="justify-content: center !important;">
@@ -762,24 +779,24 @@
                                 </div>
                             </li>
                             <li class="dropdown nav-item"><a href="./html/account/login.html#"
-                                                             class="nav-link">Pages</a> <label
+                                                             class="nav-link" th:text="#{header.page}"></a> <label
                                     class="px-dropdown-toggle mob-menu"></label>
                                 <ul class="dropdown-menu left shadow-lg">
-                                    <li><a class="dropdown-item" href="../pages/about.html">About</a></li>
+                                    <li><a class="dropdown-item" href="../pages/about.html" th:text="#{header.about}"></a></li>
                                     <li><a class="dropdown-item" href="../pages/faq.html">FAQ's</a></li>
-                                    <li><a class="dropdown-item" href="../pages/policy.html">Policy</a></li>
-                                    <li><a class="dropdown-item" href="../pages/support.html">Support</a></li>
-                                    <li><a class="dropdown-item" href="../pages/support-topic.html">Support Topic</a>
+                                    <li><a class="dropdown-item" href="../pages/policy.html" th:text="#{header.policy}"></a></li>
+                                    <li><a class="dropdown-item" href="../pages/support.html" th:text="#{header.support}"></a></li>
+                                    <li><a class="dropdown-item" href="../pages/support-topic.html" th:text="#{header.support.topic}"></a>
                                     </li>
-                                    <li><a class="dropdown-item" href="../pages/contact-us.html">Contact Us</a></li>
+                                    <li><a class="dropdown-item" href="../pages/contact-us.html" th:text="#{header.contact.us}"></a></li>
                                 </ul>
                             </li>
-                            <li class="dropdown nav-item"><a href="./html/account/login.html#" class="nav-link">Blog</a>
+                            <li class="dropdown nav-item"><a href="./html/account/login.html#" class="nav-link" th:text="#{header.blog}"></a>
                                 <label
                                         class="px-dropdown-toggle mob-menu"></label>
                                 <ul class="dropdown-menu left shadow-lg">
-                                    <li><a class="dropdown-item" href="../blog/blog.html">Blog</a></li>
-                                    <li><a class="dropdown-item" href="../blog/blog-single.html">Blog Single</a></li>
+                                    <li><a class="dropdown-item" href="../blog/blog.html" th:text="#{header.blog}"></a></li>
+                                    <li><a class="dropdown-item" href="../blog/blog-single.html" th:text="#{header.blog.single}"></a></li>
                                 </ul>
                             </li>
                         </ul>

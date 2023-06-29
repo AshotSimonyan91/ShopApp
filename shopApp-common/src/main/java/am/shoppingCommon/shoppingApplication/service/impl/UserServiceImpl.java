@@ -190,6 +190,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> findAllDeliveries() {
+        List<User> byRole = userRepository.findByRole(Role.DELIVERY);
+        if (!byRole.isEmpty()) {
+            return byRole;
+        }
+        return null;
+    }
+
+    @Override
     public boolean changeUserPasswordTokenVerify(String email, String token) {
         boolean isVerified = false;
         Optional<User> byEmail = userRepository.findByEmail(email);

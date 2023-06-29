@@ -25,4 +25,6 @@ public interface OrderService {
     Optional<Order> findById(int id);
 
     List<OrderDto> ordersLimit10();
+
+    Order orderById(int id);
 }
