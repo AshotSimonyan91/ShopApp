@@ -21,6 +21,5 @@ import java.util.List;
 public class CurrentProductDto {
 
     private CreateProductResponseDto createProductResponseDto;
-    private List<CreateProductResponseDto> productDtos;
     private List<CommentResponseDto> commentDtos;
 }

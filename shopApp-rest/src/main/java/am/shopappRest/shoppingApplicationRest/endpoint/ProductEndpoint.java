@@ -60,7 +60,6 @@ public class ProductEndpoint {
     public ResponseEntity<CurrentProductDto> getCurrentProduct(@PathVariable("id") int id) {
         CurrentProductDto currentProductDto = new CurrentProductDto();
         currentProductDto.setCreateProductResponseDto(ProductMapper.mapToResponseDto(productService.findById(id)));
-        currentProductDto.setProductDtos(ProductMapper.mapToListDto(productService.findAll()));
         currentProductDto.setCommentDtos(CommentMapper.map(commentService.findAllByLimit(id)));
         return ResponseEntity.ok(currentProductDto);
     }
