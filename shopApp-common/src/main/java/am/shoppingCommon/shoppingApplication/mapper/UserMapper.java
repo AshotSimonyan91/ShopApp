@@ -111,6 +111,8 @@ public class UserMapper {
         userShortDto.setName(user.getName());
         userShortDto.setSurname(user.getSurname());
         userShortDto.setEmail(user.getEmail());
+        userShortDto.setProfilePic(user.getProfilePic());
+        userShortDto.setRole(user.getRole());
         userShortDto.setGender(user.getGender());
         return userShortDto;
     }
@@ -138,12 +140,6 @@ public class UserMapper {
         return userDto;
     }
 
-//    public static User currentUserToUser(CurrentUser currentUser) {
-//        if (currentUser != null) {
-//            return currentUser.getUser();
-//        }
-//        return null;
-//    }
     public static List<UserDto> userDtoListMap(List<User> userList){
         if (userList == null){
             return null;

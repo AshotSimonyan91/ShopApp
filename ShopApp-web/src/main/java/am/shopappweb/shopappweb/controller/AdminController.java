@@ -1,6 +1,8 @@
 package am.shopappweb.shopappweb.controller;
 
 import am.shoppingCommon.shoppingApplication.dto.orderDto.OrderDto;
+import am.shoppingCommon.shoppingApplication.dto.userDto.UserDto;
+import am.shoppingCommon.shoppingApplication.entity.User;
 import am.shoppingCommon.shoppingApplication.mapper.CategoryMapper;
 import am.shopappweb.shopappweb.security.CurrentUser;
 import am.shoppingCommon.shoppingApplication.service.*;
@@ -10,6 +12,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @Controller
 @RequiredArgsConstructor
@@ -20,7 +25,6 @@ public class AdminController {
     private final CategoryService categoryService;
     private final NotificationService notificationService;
     private final AdminService adminService;
-    private final DeliveryService deliveryService;
 
     @GetMapping
     public String adminPage(ModelMap modelMap,
@@ -40,8 +44,15 @@ public class AdminController {
     @GetMapping("/update")
     public String updateUserPage(@RequestParam("id") int id,
                                  ModelMap modelMap) {
+        modelMap.addAttribute("userId", id);
         modelMap.addAttribute("user", UserMapper.userToUserDto(userService.findById(id)));
         return "admin/user-update";
+    }
+
+    @PostMapping("/update")
+    public String updateUser(@ModelAttribute UserDto userDto, @RequestParam("img") MultipartFile profilePic) throws IOException {
+        adminService.updateUser(userDto,profilePic);
+        return "redirect:/admin";
     }
 
     @GetMapping("/all")
