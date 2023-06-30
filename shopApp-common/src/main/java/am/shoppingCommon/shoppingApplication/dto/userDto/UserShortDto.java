@@ -1,6 +1,7 @@
 package am.shoppingCommon.shoppingApplication.dto.userDto;
 
 import am.shoppingCommon.shoppingApplication.entity.Gender;
+import am.shoppingCommon.shoppingApplication.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,4 +20,6 @@ public class UserShortDto {
     private String surname;
     private String email;
     private Gender gender;
+    private String profilePic;
+    private Role role;
 }

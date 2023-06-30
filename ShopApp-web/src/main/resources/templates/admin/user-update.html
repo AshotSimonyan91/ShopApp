@@ -163,17 +163,19 @@
                             id="page-header-user-dropdown"
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <img class="rounded-circle header-profile-user"
-                             th:src="@{/getImage(profilePic=${user.profilePic})}"
+                             th:src="@{/getImage(profilePic=${currentUser.profilePic})}"
                              alt="Header Avatar">
                         <span class="ms-2 d-none d-sm-block user-item-desc">
-                                <span class="user-name" th:text="${user.name}">Kate Dudley</span>
-                                <span class="user-sub-title" th:text="${user.getRole().name()}">assetsistrator</span>
+                                <span class="user-name" th:text="${currentUser.name}">Kate Dudley</span>
+                                <span class="user-sub-title"
+                                      th:text="${currentUser.getRole().name()}">assetsistrator</span>
                             </span>
                     </button>
                     <div class="dropdown-menu dropdown-menu-end pt-0">
                         <div class="p-3 bg-primary border-bottom">
-                            <h6 class="mb-0 text-white" th:text="${user.getName()} + '' + ${user.surname}"></h6>
-                            <p class="mb-0 font-size-11 text-white-50 fw-semibold" th:text="${user.email}"></p>
+                            <h6 class="mb-0 text-white"
+                                th:text="${currentUser.getName()} + '' + ${currentUser.surname}"></h6>
+                            <p class="mb-0 font-size-11 text-white-50 fw-semibold" th:text="${currentUser.email}"></p>
                         </div>
                         <a class="dropdown-item" href="/user"><i
                                 class="mdi mdi-account-circle text-muted font-size-16 align-middle me-1"></i> <span
@@ -284,8 +286,9 @@
         <div class="page-content">
             <div class="container-fluid">
                 <h1 class="text-center">Edit User</h1>
-                <form action="/admin/update/" method="post" enctype="multipart/form-data">
+                <form action="/admin/update" method="post" enctype="multipart/form-data">
                     <div class="row">
+                        <input type="hidden" name="id" th:value="${userId}">
                         <div class="col-md-5">
                             <label class="form-label" for="name">Name:</label>
                             <input class="form-control" id="name" type="text" name="name" th:value="${user.name}"
@@ -313,13 +316,14 @@
                         <div class="row" style="margin-top: 15px;">
                             <div class="col-lg-5">
                                 <label class="form-label" for="phone">Phone Number:</label>
-                                <input class="form-control" id="phone" type="text" name="phoneNumber"
+                                <input class="form-control" id="phone" type="text" placeholder="Phone Number"
+                                       name="phoneNumber"
                                        th:value="${user.phoneNumber}"
                                        required>
                             </div>
                             <div class="col-md-5">
                                 <label class="form-label" for="type">User Type:</label>
-                                <select class="form-select" name="userType" id="type" required>
+                                <select class="form-select" name="role" id="type" required>
                                     <option value="USER">User</option>
                                     <option value="MANAGER">Manager</option>
                                     <option value="DELIVERY">Delivery</option>
@@ -329,7 +333,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-5">
-                                <input type="file" name="profile_pic" class="form-control"
+                                <input type="file" name="img" class="form-control"
                                        style="margin-top: 15px; width: 50%" required>
                             </div>
                         </div>
