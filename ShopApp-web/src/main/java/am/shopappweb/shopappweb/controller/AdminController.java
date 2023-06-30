@@ -41,13 +41,13 @@ public class AdminController {
     public String updateUserPage(@RequestParam("id") int id,
                                  ModelMap modelMap) {
         modelMap.addAttribute("user", UserMapper.userToUserDto(userService.findById(id)));
-        return "updateUser";
+        return "admin/user-update";
     }
 
     @GetMapping("/all")
     public String allUsersPage(ModelMap modelMap,
                                @AuthenticationPrincipal CurrentUser currentUser) {
-        modelMap.addAttribute("currentUser", UserMapper.userToUserDto(currentUser.getUser()));
+        modelMap.addAttribute("currentUser", UserMapper.userToUserDto(userService.findByIdWithAddresses(currentUser.getUser().getId())));
         modelMap.addAttribute("users", UserMapper.userDtoListMap(userService.findAll()));
         return "allUsers";
     }
@@ -76,7 +76,7 @@ public class AdminController {
 
     @PostMapping("/edit/order")
     public String editOrder(@ModelAttribute OrderDto orderDto, @RequestParam("delivery") int deliveryId, @AuthenticationPrincipal CurrentUser currentUser) {
-        adminService.editOrder(orderDto, currentUser.getUser());
+        adminService.editOrder(orderDto,deliveryId, currentUser.getUser());
         return "redirect:/admin";
     }
 
