@@ -127,7 +127,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="status" type="enum ('APPROVED', 'DELIVERED', 'IN_PROCESS', 'PENDING')">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="total_amount" type="double">
                 <constraints nullable="false"/>
@@ -145,7 +145,7 @@
                 <constraints nullable="false" foreignKeyName="fk_delivery_order" references="orders(id)"/>
             </column>
             <column name="user_id" type="int">
-                <constraints nullable="false" foreignKeyName="fk_delivery_user" references="user(id)"/>
+                <constraints nullable="true" foreignKeyName="fk_delivery_user" references="user(id)"/>
             </column>
         </createTable>
 
@@ -181,13 +181,13 @@
                 <constraints nullable="false"/>
             </column>
             <column name="cart_id" type="int">
-                <constraints nullable="false" foreignKeyName="fk_cart_item_cart" references="cart(id)"/>
+                <constraints nullable="true" foreignKeyName="fk_cart_item_cart" references="cart(id)"/>
             </column>
             <column name="product_id" type="int">
-                <constraints nullable="false" foreignKeyName="fk_cart_item_product" references="product(id)"/>
+                <constraints nullable="true" foreignKeyName="fk_cart_item_product" references="product(id)"/>
             </column>
         </createTable>
-        
+
         <createTable tableName="category_product">
             <column name="product_id" type="int">
                 <constraints nullable="false" foreignKeyName="fk_category_product_product" references="product(id)"/>
@@ -196,7 +196,8 @@
                 <constraints nullable="false" foreignKeyName="fk_category_product_category" references="category(id)"/>
             </column>
         </createTable>
-        <addUniqueConstraint constraintName="un_category_product" tableName="category_product" columnNames="product_id,category_id"/>
+        <addUniqueConstraint constraintName="un_category_product" tableName="category_product"
+                             columnNames="product_id,category_id"/>
 
         <createTable tableName="comment">
             <column name="id" type="int" autoIncrement="true">
@@ -224,10 +225,10 @@
                 <constraints nullable="false"/>
             </column>
             <column name="product_id" type="int">
-                <constraints nullable="false" foreignKeyName="fk_order_item_product" references="product(id)"/>
+                <constraints nullable="true" foreignKeyName="fk_order_item_product" references="product(id)"/>
             </column>
             <column name="order_id" type="int">
-                <constraints nullable="false" foreignKeyName="fk_order_item_order" references="orders(id)"/>
+                <constraints nullable="true" foreignKeyName="fk_order_item_order" references="orders(id)"/>
             </column>
         </createTable>
 
@@ -236,7 +237,8 @@
                 <constraints nullable="false" foreignKeyName="fk_product_images_product" references="product(id)"/>
             </column>
             <column name="images_id" type="int">
-                <constraints nullable="false" unique="true" foreignKeyName="fk_product_images_image" references="image(id)"/>
+                <constraints nullable="false" unique="true" foreignKeyName="fk_product_images_image"
+                             references="image(id)"/>
             </column>
         </createTable>
 
@@ -248,7 +250,8 @@
                 <constraints nullable="false" foreignKeyName="fk_user_address_address" references="address(id)"/>
             </column>
         </createTable>
-        <addUniqueConstraint constraintName="un_user_address" tableName="user_address" columnNames="user_id,address_id"/>
+        <addUniqueConstraint constraintName="un_user_address" tableName="user_address"
+                             columnNames="user_id,address_id"/>
 
         <createTable tableName="wish_list">
             <column name="id" type="int" autoIncrement="true">
@@ -267,9 +270,9 @@
                 <constraints nullable="false" foreignKeyName="fk_wishlist_product_product" references="product(id)"/>
             </column>
         </createTable>
-        <addPrimaryKey constraintName="pk_wishlist_product" tableName="wishlist_product" columnNames="wishlist_id,product_id"/>
+        <addPrimaryKey constraintName="pk_wishlist_product" tableName="wishlist_product"
+                       columnNames="wishlist_id,product_id"/>
     </changeSet>
-
 
 
 </databaseChangeLog>
