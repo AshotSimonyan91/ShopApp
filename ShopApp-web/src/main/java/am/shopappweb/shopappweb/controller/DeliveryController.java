@@ -2,13 +2,12 @@ package am.shopappweb.shopappweb.controller;
 
 
 import am.shopappweb.shopappweb.security.CurrentUser;
-import am.shoppingCommon.shoppingApplication.entity.Order;
-import am.shoppingCommon.shoppingApplication.service.DeliveryService;
-import am.shoppingCommon.shoppingApplication.service.OrderService;
-import am.shoppingCommon.shoppingApplication.service.UserService;
 import am.shoppingCommon.shoppingApplication.entity.Delivery;
 import am.shoppingCommon.shoppingApplication.entity.Status;
 import am.shoppingCommon.shoppingApplication.mapper.UserMapper;
+import am.shoppingCommon.shoppingApplication.service.DeliveryService;
+import am.shoppingCommon.shoppingApplication.service.OrderService;
+import am.shoppingCommon.shoppingApplication.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -79,7 +78,7 @@ public class DeliveryController {
         modelMap.addAttribute("totalPages", totalPages);
         modelMap.addAttribute("currentPage", currentPage);
         modelMap.addAttribute("deliveries1", result);
-        modelMap.addAttribute("user", UserMapper.userToUserDto(currentUser.getUser()));
+        modelMap.addAttribute("user", UserMapper.userToUserDto(userService.findByIdWithAddresses(currentUser.getUser().getId())));
         modelMap.addAttribute("deliveries2",
                 deliveryService.findAllByUserIdAndOrderStatus(currentUser.getUser().getId(), Status.IN_PROCESS, pageable).getContent());
         return "account-delivery";
@@ -106,7 +105,7 @@ public class DeliveryController {
         modelMap.addAttribute("totalPages", totalPages);
         modelMap.addAttribute("currentPage", currentPage);
         modelMap.addAttribute("deliveries1", result);
-        modelMap.addAttribute("user", UserMapper.userToUserDto(currentUser.getUser()));
+        modelMap.addAttribute("user", UserMapper.userToUserDto(userService.findByIdWithAddresses(currentUser.getUser().getId())));
         modelMap.addAttribute("deliveries2",
                 deliveryService.findAllByUserIdAndOrderStatus(currentUser.getUser().getId(), Status.IN_PROCESS, pageable).getContent());
         return "account-delivery";
@@ -132,7 +131,7 @@ public class DeliveryController {
         modelMap.addAttribute("totalPages", totalPages);
         modelMap.addAttribute("currentPage", currentPage);
         modelMap.addAttribute("deliveries2", result);
-        modelMap.addAttribute("user", UserMapper.userToUserDto(currentUser.getUser()));
+        modelMap.addAttribute("user", UserMapper.userToUserDto(userService.findByIdWithAddresses(currentUser.getUser().getId())));
         modelMap.addAttribute("deliveries1",
                 deliveryService.findAllByOrderStatus(Status.APPROVED, pageable).getContent());
         return "account-delivery-custom";
@@ -159,7 +158,7 @@ public class DeliveryController {
         modelMap.addAttribute("totalPages", totalPages);
         modelMap.addAttribute("currentPage", currentPage);
         modelMap.addAttribute("deliveries2", result);
-        modelMap.addAttribute("user",UserMapper.userToUserDto(currentUser.getUser()));
+        modelMap.addAttribute("user",UserMapper.userToUserDto(userService.findByIdWithAddresses(currentUser.getUser().getId())));
         modelMap.addAttribute("deliveries1",
                 deliveryService.findAllByOrderStatus(Status.APPROVED, pageable).getContent());
         return "account-delivery-custom";

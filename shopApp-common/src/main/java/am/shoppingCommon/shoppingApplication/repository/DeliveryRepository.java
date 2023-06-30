@@ -16,4 +16,5 @@ public interface DeliveryRepository extends JpaRepository<Delivery, Integer> {
     Page<Delivery> findAllByOrderStatus(Status status, Pageable pageable);
 
     Optional<Delivery> findAllByOrder_Id(int orderId);
+
 }
