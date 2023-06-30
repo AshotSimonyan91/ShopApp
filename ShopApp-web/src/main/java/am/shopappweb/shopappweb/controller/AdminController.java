@@ -31,13 +31,13 @@ public class AdminController {
         return "/admin/admin-page";
     }
 
-    @GetMapping("remove")
+    @GetMapping("/remove")
     public String removeUser(@RequestParam("id") int id) {
         userService.removeById(id);
         return "redirect:/admin/all";
     }
 
-    @GetMapping("update")
+    @GetMapping("/update")
     public String updateUserPage(@RequestParam("id") int id,
                                  ModelMap modelMap) {
         modelMap.addAttribute("user", UserMapper.userToUserDto(userService.findById(id)));
@@ -60,11 +60,6 @@ public class AdminController {
         return "admin/add-product";
     }
 
-    @GetMapping("/block/{id}")
-    public String blockUser(@PathVariable("id") int id, @AuthenticationPrincipal CurrentUser currentUser) {
-        adminService.block(id, currentUser.getUser());
-        return "redirect:/admin";
-    }
 
     @GetMapping("/edit/order/{id}")
     public String editOrderPage(@PathVariable("id") int id, @AuthenticationPrincipal CurrentUser currentUser, ModelMap modelMap) {
@@ -76,7 +71,7 @@ public class AdminController {
 
     @PostMapping("/edit/order")
     public String editOrder(@ModelAttribute OrderDto orderDto, @RequestParam("delivery") int deliveryId, @AuthenticationPrincipal CurrentUser currentUser) {
-        adminService.editOrder(orderDto,deliveryId, currentUser.getUser());
+        adminService.editOrder(orderDto, deliveryId, currentUser.getUser());
         return "redirect:/admin";
     }
 
@@ -89,4 +84,25 @@ public class AdminController {
         return "redirect:/admin/edit/order/" + orderId;
     }
 
+    @GetMapping("/users")
+    public String adminUsersPage(@AuthenticationPrincipal CurrentUser currentUser, ModelMap modelMap) {
+        modelMap.addAttribute("currentUser", userService.findByIdWithAddresses(currentUser.getUser().getId()));
+        modelMap.addAttribute("orders", orderService.ordersLimit10());
+        modelMap.addAttribute("users", userService.findAll());
+        modelMap.addAttribute("notifications", notificationService.last3Notifications(currentUser.getUser().getId()));
+        return "/admin/user-list";
+    }
+
+    @GetMapping("/block/{id}")
+    public String blockUser(@PathVariable("id") int id, @AuthenticationPrincipal CurrentUser currentUser) {
+        adminService.block(id, currentUser.getUser());
+        return "redirect:/admin/users";
+
+    }
+
+    @GetMapping("/unblock/{id}")
+    public String unblockUser(@PathVariable("id") int id, @AuthenticationPrincipal CurrentUser currentUser) {
+        adminService.unBlock(id, currentUser.getUser());
+        return "redirect:/admin/users";
+    }
 }
