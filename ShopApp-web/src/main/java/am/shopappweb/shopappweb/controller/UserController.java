@@ -8,7 +8,6 @@ import am.shoppingCommon.shoppingApplication.dto.userDto.UserRegisterDto;
 import am.shoppingCommon.shoppingApplication.dto.userDto.UserUpdateDto;
 import am.shoppingCommon.shoppingApplication.entity.Order;
 import am.shoppingCommon.shoppingApplication.entity.User;
-import am.shoppingCommon.shoppingApplication.mapper.NotificationMapper;
 import am.shoppingCommon.shoppingApplication.mapper.OrderMapper;
 import am.shoppingCommon.shoppingApplication.mapper.UserMapper;
 import am.shoppingCommon.shoppingApplication.service.MailService;
@@ -38,7 +37,6 @@ public class UserController {
     private final MailService mailService;
     private final UserService userService;
     private final OrderService orderService;
-    private final NotificationService notificationService;
 
     @Value("${site.url}")
     private String siteUrl;

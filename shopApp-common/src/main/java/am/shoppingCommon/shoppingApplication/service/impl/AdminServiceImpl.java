@@ -48,23 +48,23 @@ public class AdminServiceImpl implements AdminService {
     @Override
     @Transactional
     public Order editOrder(OrderDto orderDto, int deliveryId, User currentUser) {
-//        if (currentUser.getRole() == Role.ADMIN) {
+        if (currentUser.getRole() == Role.ADMIN) {
 
-        Optional<Order> byId = orderRepository.findById(orderDto.getId());
-        Optional<Delivery> deliveryOptional = deliveryRepository.findAllByOrder_Id(orderDto.getId());
-        Optional<User> userOptional = userRepository.findById(deliveryId);
+            Optional<Order> byId = orderRepository.findById(orderDto.getId());
+            Optional<Delivery> deliveryOptional = deliveryRepository.findAllByOrder_Id(orderDto.getId());
+            Optional<User> userOptional = userRepository.findById(deliveryId);
 
-        if (byId.isPresent() && deliveryOptional.isPresent() && userOptional.isPresent()) {
-            Order orderFromDb = byId.get();
-            orderFromDb.setTotalAmount(orderDto.getTotalAmount());
-            orderFromDb.setStatus(orderDto.getStatus());
-            Delivery delivery = deliveryOptional.get();
-            delivery.setUser(userOptional.get());
-            deliveryRepository.save(delivery);
+            if (byId.isPresent() && deliveryOptional.isPresent() && userOptional.isPresent()) {
+                Order orderFromDb = byId.get();
+                orderFromDb.setTotalAmount(orderDto.getTotalAmount());
+                orderFromDb.setStatus(orderDto.getStatus());
+                Delivery delivery = deliveryOptional.get();
+                delivery.setUser(userOptional.get());
+                deliveryRepository.save(delivery);
 
-            return orderRepository.save(orderFromDb);
+                return orderRepository.save(orderFromDb);
+            }
         }
-
         return null;
     }
 }
