@@ -322,12 +322,12 @@
                                        required>
                             </div>
                             <div class="col-md-5">
-                                <label class="form-label" for="type">User Type:</label>
-                                <select class="form-select" name="role" id="type" required>
-                                    <option value="USER">User</option>
-                                    <option value="MANAGER">Manager</option>
-                                    <option value="DELIVERY">Delivery</option>
-                                    <option value="ADMIN">Admin</option>
+                                <label class="form-label">User Type:</label>
+                                <select class="form-select" name="role" required>
+                                    <option th:value="USER">User</option>
+                                    <option th:value="MANAGER">Manager</option>
+                                    <option th:value="DELIVERY">Delivery</option>
+                                    <option th:value="ADMIN">Admin</option>
                                 </select>
                             </div>
                         </div>
