@@ -14,7 +14,9 @@ public interface CategoryService {
 
     void remove(int id);
 
-    void save(CategoryDto categoryDto, MultipartFile multipartFile) throws IOException;
+    Category save(CategoryDto categoryDto, MultipartFile multipartFile) throws IOException;
+    Category save(CategoryDto categoryDto);
+    Category save(int id, MultipartFile multipartFile) throws IOException;
 
     Category findById(Integer id);
 

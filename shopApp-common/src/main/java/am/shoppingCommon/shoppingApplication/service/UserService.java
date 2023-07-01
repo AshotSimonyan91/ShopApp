@@ -18,6 +18,8 @@ public interface UserService {
     List<User> findAll();
 
     void updateUser(MultipartFile multipartFile, User user, User currentUser) throws IOException;
+    void updateUser(User user, User currentUser);
+    void updateUser(MultipartFile multipartFile,User currentUser) throws IOException;
 
     boolean changeUserPasswordTokenVerify(String email, String token);
 

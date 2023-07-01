@@ -40,7 +40,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> findByName(String name,Pageable pageable) {
+    public Page<Product> findByName(String name, Pageable pageable) {
         return productRepository.findByNameContainingIgnoreCase(name, pageable);
     }
 
@@ -77,10 +77,32 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product findBy_Id(int id) {
-        Optional<Product> byId = productRepository.findById(id);
-        return byId.orElse(null);
+    public Product save(CreateProductRequestDto productRequestDto, User user) {
+        Product product = ProductMapper.map(productRequestDto);
+        product.getCategories().removeIf(category -> category.getId() == 0);
+        product.setUser(user);
+        return productRepository.save(product);
     }
+
+    @Override
+    @Transactional
+    public Product save(int id, MultipartFile[] files) throws IOException {
+        Product product = productRepository.findById(id).orElse(null);
+        List<Image> imageList = new ArrayList<>();
+        for (MultipartFile multipartFile : files) {
+            if (multipartFile != null && !multipartFile.isEmpty()) {
+                String fileName = System.nanoTime() + "_" + multipartFile.getOriginalFilename();
+                File file = new File(imageUploadPath + fileName);
+                multipartFile.transferTo(file);
+                Image image = new Image();
+                image.setImage(fileName);
+                imageList.add(image);
+            }
+        }
+        product.setImages(imageList);
+        return productRepository.save(product);
+    }
+
 
     @Override
     public Product findById(int id) {

@@ -23,8 +23,8 @@ public interface ProductService {
 
 
     void save(CreateProductRequestDto product, MultipartFile[] files, User user) throws IOException;
-
-    Product findBy_Id(int productId);
+    Product save(CreateProductRequestDto product,User user);
+    Product save(int id,MultipartFile[] files) throws IOException;
 
     Product findById(int id);
 }

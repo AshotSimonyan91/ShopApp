@@ -87,9 +87,15 @@ public class UserEndpoint {
 
     @PutMapping("/updateUserData")
     public ResponseEntity<UserShortDto> updateCurrentUserData(@Valid @RequestBody UserUpdateDto userUpdateDto,
-                                                              @AuthenticationPrincipal CurrentUser currentUser,
+                                                              @AuthenticationPrincipal CurrentUser currentUser){
+        userService.updateUser(UserMapper.userUpdateDtoToUser(userUpdateDto), currentUser.getUser());
+        return ResponseEntity.ok(UserMapper.userToUserShortDto(userService.findById(currentUser.getUser().getId())));
+    }
+
+    @PostMapping("/updateUserData/image")
+    public ResponseEntity<UserShortDto> updateCurrentUserImage(@AuthenticationPrincipal CurrentUser currentUser,
                                                               @RequestParam("profile_pic") MultipartFile multipartFile) throws IOException {
-        userService.updateUser(multipartFile, UserMapper.userUpdateDtoToUser(userUpdateDto), currentUser.getUser());
+        userService.updateUser(multipartFile, currentUser.getUser());
         return ResponseEntity.ok(UserMapper.userToUserShortDto(userService.findById(currentUser.getUser().getId())));
     }
 

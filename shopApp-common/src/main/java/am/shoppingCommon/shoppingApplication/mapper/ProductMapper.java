@@ -141,8 +141,10 @@ public class ProductMapper {
         productDto.setPrice(entity.getPrice());
         List<Image> list = entity.getImages();
         List<ImageDto> imageDtos = new ArrayList<>();
-        for (Image image : list) {
-            imageDtos.add(ImageMapper.imageToImageDto(image));
+        if (list != null) {
+            for (Image image : list) {
+                imageDtos.add(ImageMapper.imageToImageDto(image));
+            }
         }
         if (imageDtos != null) {
             productDto.setImages(imageDtos);

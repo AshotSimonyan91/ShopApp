@@ -30,6 +30,7 @@ public class CategoryMapper {
             return null;
         }
         CategoryDto categoryDto = new CategoryDto();
+        categoryDto.setId(category.getId());
         categoryDto.setName(category.getName());
         categoryDto.setParentCategory(category.getParentCategory());
         categoryDto.setImage(category.getImage());

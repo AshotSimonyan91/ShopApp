@@ -33,7 +33,7 @@ public class Product {
     private int count;
     @ManyToOne(optional = false)
     private User user;
-    @OneToMany(cascade = CascadeType.PERSIST)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Image> images;
     @ManyToMany
     @JoinTable(name = "category_product", uniqueConstraints = @UniqueConstraint(columnNames = {"product_id", "category_id"}),

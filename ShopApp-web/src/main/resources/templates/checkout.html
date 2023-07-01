@@ -7,23 +7,22 @@
                 <form>
                     <div class="row mb-5 gy-4">
                         <div class="col-12"><label class="form-label" for="checkout_Billing_Country">Country
-                            *</label> <input class="form-control" id="checkout_Billing_Country" type="text"
-                                             placeholder="Country" required=""></div>
+                            *</label> <p class="form-control" id="checkout_Billing_Country" th:text="${user.addresses[0].country}"></p>
+                        </div>
                         <div class="col-12"><label class="form-label" for="checkout_Billing_Address">Address
-                            Line 1 *</label> <input class="form-control" id="checkout_Billing_Address"
-                                                    type="text" placeholder="Address Line 1" required=""></div>
-                        <div class="col-12"><label class="form-label" for="checkout_Billing_Address_Two">Address
-                            Line 2</label> <input class="form-control" id="checkout_Billing_Address_Two"
-                                                  type="text" placeholder="Address Line 2 (optional)"></div>
+                            Line 1 *</label> <p class="form-control" id="checkout_Billing_Address" th:text="${user.addresses[0].street}"></p></div>
+                        <div class="col-12"><label class="form-label" for="checkout_Billing_Address_Two">Unit</label>
+                            <p class="form-control" id="checkout_Billing_Address_Two" th:text="${user.addresses[0].unitNumber}"></p>
+                        </div>
                         <div class="col-12 col-md-6"><label class="form-label" for="checkout_Billing_Town">Town
-                            / City *</label> <input class="form-control" id="checkout_Billing_Town" type="text"
-                                                    placeholder="Town / City" required=""></div>
+                            / City *</label> <p class="form-control" id="checkout_Billing_Town" th:text="${user.addresses[0].city}"></p>
+                        </div>
                         <div class="col-12 col-md-6"><label class="form-label" for="checkout_Billing_ZIP">ZIP /
-                            Postcode *</label> <input class="form-control" id="checkout_Billing_ZIP" type="text"
-                                                      placeholder="ZIP / Postcode" required=""></div>
+                            Postcode *</label> <p class="form-control" id="checkout_Billing_ZIP" th:text="${user.addresses[0].postCode}"></p>
+                        </div>
                         <div class="col-12"><label class="form-label" for="checkoutBillingPhone">Mobile Phone
-                            *</label> <input class="form-control" id="checkoutBillingPhone" type="tel"
-                                             placeholder="Mobile Phone" required=""></div>
+                            *</label> <p class="form-control" id="checkoutBillingPhone" th:text="${user.phoneNumber}"></p>
+                        </div>
                     </div><!-- Heading --><h6 class="mb-4 h3">Shipping Details</h6><!-- Shipping details -->
                     <div class="table-responsive mb-6">
                         <table class="table table-bordered table-hover mb-0">

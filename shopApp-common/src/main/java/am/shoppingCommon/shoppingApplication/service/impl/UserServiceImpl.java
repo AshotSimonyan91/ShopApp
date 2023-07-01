@@ -129,6 +129,56 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    @Transactional
+    public void updateUser(User user, User currentUser){
+        Optional<User> userOptional = userRepository.findById(currentUser.getId());
+        if (userOptional.isPresent()) {
+            User userOldData = userOptional.get();
+            if (user.getName() == null || user.getName().equals("")) {
+                user.setName(userOldData.getName());
+            }
+            if (user.getSurname() == null || user.getSurname().equals("")) {
+                user.setSurname(userOldData.getSurname());
+            }
+            if (user.getEmail() == null || user.getEmail().equals("")) {
+                user.setEmail(userOldData.getEmail());
+            }
+            if (user.getPhoneNumber() == null || user.getPhoneNumber().equals("")) {
+                user.setPhoneNumber(userOldData.getPhoneNumber());
+            }
+            if (user.getGender() == null) {
+                user.setGender(userOldData.getGender());
+            }
+            if (user.getRole() == null) {
+                user.setRole(userOldData.getRole());
+            }
+            if (userOldData.getProfilePic() != null) {
+                user.setProfilePic(userOldData.getProfilePic());
+            }
+            user.setEnabled(true);
+            user.setId(userOldData.getId());
+            user.setPassword(userOldData.getPassword());
+            userRepository.save(user);
+        }
+    }
+
+
+    @Override
+    @Transactional
+    public void updateUser(MultipartFile multipartFile,User currentUser) throws IOException {
+        Optional<User> userOptional = userRepository.findById(currentUser.getId());
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            if (multipartFile != null && !multipartFile.isEmpty()) {
+                String fileName = System.nanoTime() + "_" + multipartFile.getOriginalFilename();
+                File file = new File(imageUploadPath + fileName);
+                multipartFile.transferTo(file);
+                user.setProfilePic(fileName);
+            }
+            userRepository.save(user);
+        }
+    }
 
     @Override
     public void removeById(int id) {

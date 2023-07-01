@@ -9,6 +9,7 @@ import am.shoppingCommon.shoppingApplication.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -38,7 +39,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void save(CategoryDto categoryDto, MultipartFile multipartFile) throws IOException {
+    public Category save(CategoryDto categoryDto, MultipartFile multipartFile) throws IOException {
         Category category = CategoryMapper.dtoToCategory(categoryDto);
         if (multipartFile != null && !multipartFile.isEmpty()) {
             String fileName = System.nanoTime() + "_" + multipartFile.getOriginalFilename();
@@ -46,7 +47,25 @@ public class CategoryServiceImpl implements CategoryService {
             multipartFile.transferTo(file);
             category.setImage(fileName);
         }
-        categoryRepository.save(category);
+        return categoryRepository.save(category);
+    }
+
+    @Override
+    public Category save(CategoryDto categoryDto) {
+        Category category = CategoryMapper.dtoToCategory(categoryDto);
+        return categoryRepository.save(category);
+    }
+
+    @Override
+    public Category save(int id, MultipartFile multipartFile) throws IOException {
+        Category category = categoryRepository.findById(id).orElse(null);
+        if (multipartFile != null && !multipartFile.isEmpty()) {
+            String fileName = System.nanoTime() + "_" + multipartFile.getOriginalFilename();
+            File file = new File(imageUploadPath + fileName);
+            multipartFile.transferTo(file);
+            category.setImage(fileName);
+        }
+        return categoryRepository.save(category);
     }
 
     @Override

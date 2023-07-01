@@ -4,12 +4,13 @@ import am.shopappRest.shoppingApplicationRest.restDto.productRequestDto.CurrentP
 import am.shopappRest.shoppingApplicationRest.restDto.productRequestDto.ProductPaginationDto;
 import am.shopappRest.shoppingApplicationRest.security.CurrentUser;
 import am.shoppingCommon.shoppingApplication.dto.productDto.CreateProductRequestDto;
+import am.shoppingCommon.shoppingApplication.dto.productDto.ProductDto;
 import am.shoppingCommon.shoppingApplication.entity.Product;
 import am.shoppingCommon.shoppingApplication.mapper.CommentMapper;
 import am.shoppingCommon.shoppingApplication.mapper.ProductMapper;
-import am.shoppingCommon.shoppingApplication.service.CategoryService;
 import am.shoppingCommon.shoppingApplication.service.CommentService;
 import am.shoppingCommon.shoppingApplication.service.ProductService;
+import am.shoppingCommon.shoppingApplication.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -34,7 +35,6 @@ import java.util.stream.IntStream;
 public class ProductEndpoint {
 
     private final ProductService productService;
-    private final CategoryService categoryService;
     private final CommentService commentService;
 
     @GetMapping
@@ -65,11 +65,15 @@ public class ProductEndpoint {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> addProduct(@RequestBody CreateProductRequestDto createProductRequestDto,
-                                        @AuthenticationPrincipal CurrentUser currentUser,
-                                        @RequestParam("files") MultipartFile[] files) throws IOException {
-        productService.save(createProductRequestDto, files, currentUser.getUser());
-        return ResponseEntity.ok().build();
+    public ResponseEntity<ProductDto> addProduct(@RequestBody CreateProductRequestDto createProductRequestDto,
+                                                 @AuthenticationPrincipal CurrentUser currentUser) {
+        return ResponseEntity.ok(ProductMapper.mapToDto(productService.save(createProductRequestDto, currentUser.getUser())));
+    }
+
+    @PostMapping("/{id}/image")
+    public ResponseEntity<ProductDto> addProductImage(@PathVariable("id") int id,
+                                                      @RequestParam("files") MultipartFile[] files) throws IOException {
+        return ResponseEntity.ok(ProductMapper.mapToDto(productService.save(id, files)));
     }
 
 }
