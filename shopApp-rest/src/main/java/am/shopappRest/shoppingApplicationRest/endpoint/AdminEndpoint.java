@@ -11,6 +11,7 @@ import am.shoppingCommon.shoppingApplication.service.CategoryService;
 import am.shoppingCommon.shoppingApplication.service.OrderService;
 import am.shoppingCommon.shoppingApplication.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -47,8 +48,8 @@ public class AdminEndpoint {
     @GetMapping("/all")
     public ResponseEntity<AllUsersPageDto> allUsersPage(@AuthenticationPrincipal CurrentUser currentUser) {
         AllUsersPageDto allUsersPageDto = new AllUsersPageDto();
-        allUsersPageDto.setCurrentUser(UserMapper.userToUserDto(currentUser.getUser()));
-        allUsersPageDto.setUserDtoList(UserMapper.userDtoListMap(userService.findAll()));
+        allUsersPageDto.setCurrentUser(UserMapper.userToUserDto(userService.findById(currentUser.getUser().getId())));
+        allUsersPageDto.setUserDtoList(UserMapper.userDtoListMap(userService.findAll(Pageable.ofSize(9)).getContent()));
         return ResponseEntity.ok(allUsersPageDto);
     }
 
