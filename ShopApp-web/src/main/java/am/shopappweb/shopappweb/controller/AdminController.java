@@ -1,13 +1,16 @@
 package am.shopappweb.shopappweb.controller;
 
+import am.shopappweb.shopappweb.security.CurrentUser;
 import am.shoppingCommon.shoppingApplication.dto.orderDto.OrderDto;
 import am.shoppingCommon.shoppingApplication.dto.userDto.UserDto;
 import am.shoppingCommon.shoppingApplication.entity.User;
 import am.shoppingCommon.shoppingApplication.mapper.CategoryMapper;
-import am.shopappweb.shopappweb.security.CurrentUser;
-import am.shoppingCommon.shoppingApplication.service.*;
 import am.shoppingCommon.shoppingApplication.mapper.UserMapper;
+import am.shoppingCommon.shoppingApplication.service.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -15,6 +18,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
 @RequiredArgsConstructor
@@ -55,13 +62,6 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @GetMapping("/all")
-    public String allUsersPage(ModelMap modelMap,
-                               @AuthenticationPrincipal CurrentUser currentUser) {
-        modelMap.addAttribute("currentUser", UserMapper.userToUserDto(userService.findByIdWithAddresses(currentUser.getUser().getId())));
-        modelMap.addAttribute("users", UserMapper.userDtoListMap(userService.findAll()));
-        return "allUsers";
-    }
 
     @GetMapping("/add/product")
     public String addProductAdminPage(ModelMap modelMap, @AuthenticationPrincipal CurrentUser currentUser) {
@@ -70,6 +70,13 @@ public class AdminController {
         modelMap.addAttribute("notifications", notificationService.last3Notifications(currentUser.getUser().getId()));
         return "admin/add-product";
     }
+    @GetMapping("/add/category")
+    public String addCategoryAdminPage(ModelMap modelMap, @AuthenticationPrincipal CurrentUser currentUser) {
+        modelMap.addAttribute("user", userService.findByIdWithAddresses(currentUser.getUser().getId()));
+        modelMap.addAttribute("notifications", notificationService.last3Notifications(currentUser.getUser().getId()));
+        return "admin/add-category";
+    }
+
 
 
     @GetMapping("/edit/order/{id}")
@@ -96,13 +103,27 @@ public class AdminController {
     }
 
     @GetMapping("/users")
-    public String adminUsersPage(@AuthenticationPrincipal CurrentUser currentUser, ModelMap modelMap) {
-        modelMap.addAttribute("currentUser", userService.findByIdWithAddresses(currentUser.getUser().getId()));
-        modelMap.addAttribute("orders", orderService.ordersLimit10());
-        modelMap.addAttribute("users", userService.findAll());
+    public String adminUsersPage(@AuthenticationPrincipal CurrentUser currentUser, ModelMap modelMap, @RequestParam("page") Optional<Integer> page,
+                                 @RequestParam("size") Optional<Integer> size) {
+        modelMap.addAttribute("user", userService.findByIdWithAddresses(currentUser.getUser().getId()));
         modelMap.addAttribute("notifications", notificationService.last3Notifications(currentUser.getUser().getId()));
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(9);
+        Pageable pageable = PageRequest.of(currentPage - 1, pageSize);
+        Page<User> result = userService.findAll(pageable);
+        int totalPages = result.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+            modelMap.addAttribute("pageNumbers", pageNumbers);
+        }
+        modelMap.addAttribute("totalPages", totalPages);
+        modelMap.addAttribute("currentPage", currentPage);
+        modelMap.addAttribute("users", result);
         return "/admin/user-list";
     }
+
 
     @GetMapping("/block/{id}")
     public String blockUser(@PathVariable("id") int id, @AuthenticationPrincipal CurrentUser currentUser) {
