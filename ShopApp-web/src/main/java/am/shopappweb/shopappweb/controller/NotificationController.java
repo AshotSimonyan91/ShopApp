@@ -19,7 +19,9 @@ public class NotificationController {
     private final UserService userService;
 
     @GetMapping("/send")
-    public String sendNotificationPage() {
+    public String sendNotificationPage(ModelMap modelMap,@AuthenticationPrincipal CurrentUser currentUser) {
+        modelMap.addAttribute("user", userService.findByIdWithAddresses(currentUser.getUser().getId()));
+        modelMap.addAttribute("notifications", notificationService.last3Notifications(currentUser.getUser().getId()));
         return "admin/send-notification";
     }
 

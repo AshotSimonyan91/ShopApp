@@ -6,7 +6,8 @@ import am.shoppingCommon.shoppingApplication.dto.userDto.UpdatePasswordDto;
 import am.shoppingCommon.shoppingApplication.dto.userDto.UserRegisterDto;
 import am.shoppingCommon.shoppingApplication.entity.User;
 import org.springframework.web.multipart.MultipartFile;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
@@ -15,7 +16,7 @@ public interface UserService {
 
     User findByEmail(String email);
 
-    List<User> findAll();
+    Page<User> findAll(Pageable pageable);
 
     void updateUser(MultipartFile multipartFile, User user, User currentUser) throws IOException;
 

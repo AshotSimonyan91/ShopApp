@@ -17,11 +17,6 @@ import java.io.IOException;
 public class CategoriesController {
     private final CategoryService categoryService;
 
-    @GetMapping("/add")
-    public String addCategoryPage() {
-        return "addCategory";
-    }
-
     @PostMapping("/add")
     public String addCategory(@ModelAttribute CategoryDto categoryDto, @RequestParam("pic") MultipartFile multipartFile) throws IOException {
         categoryService.save(categoryDto, multipartFile);
