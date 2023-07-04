@@ -1,7 +1,6 @@
 package am.shopappRest.shoppingApplicationRest.endpoint;
 
 import am.shoppingCommon.shoppingApplication.dto.categoryDto.CategoryDto;
-import am.shoppingCommon.shoppingApplication.entity.Category;
 import am.shoppingCommon.shoppingApplication.mapper.CategoryMapper;
 import am.shoppingCommon.shoppingApplication.service.CategoryService;
 import lombok.RequiredArgsConstructor;
@@ -17,14 +16,16 @@ import java.io.IOException;
 public class CategoriesEndpoint {
     private final CategoryService categoryService;
 
+
     @PostMapping("/add")
     public ResponseEntity<CategoryDto> addCategory(@RequestBody CategoryDto categoryDto) {
         return ResponseEntity.ok(CategoryMapper.categoryToDto(categoryService.save(categoryDto)));
     }
 
     @PostMapping("/{id}/image")
-    public ResponseEntity<?> addCategory(@PathVariable("id") int id,
-                                         @RequestParam("pic") MultipartFile multipartFile) throws IOException {
+    public ResponseEntity<CategoryDto> addCategory(@PathVariable("id") int id,
+                                                   @RequestParam("pic") MultipartFile multipartFile) throws IOException {
+//        body.setImage(siteURL + "/getImage?profilePic=" + body.getImage());
         return ResponseEntity.ok(CategoryMapper.categoryToDto(categoryService.save(id, multipartFile)));
     }
 

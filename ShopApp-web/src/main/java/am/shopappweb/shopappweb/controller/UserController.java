@@ -11,7 +11,6 @@ import am.shoppingCommon.shoppingApplication.entity.User;
 import am.shoppingCommon.shoppingApplication.mapper.OrderMapper;
 import am.shoppingCommon.shoppingApplication.mapper.UserMapper;
 import am.shoppingCommon.shoppingApplication.service.MailService;
-import am.shoppingCommon.shoppingApplication.service.NotificationService;
 import am.shoppingCommon.shoppingApplication.service.OrderService;
 import am.shoppingCommon.shoppingApplication.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +37,7 @@ public class UserController {
     private final UserService userService;
     private final OrderService orderService;
 
-    @Value("${site.url}")
+    @Value("${site.url.web}")
     private String siteUrl;
 
     @GetMapping("/register")

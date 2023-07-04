@@ -10,7 +10,6 @@ import java.util.List;
 /**
  * Created by Ashot Simonyan on 08.06.23.
  */
-
 public class CategoryMapper {
 
     public static Category dtoToCategory(CategoryDto categoryDto) {

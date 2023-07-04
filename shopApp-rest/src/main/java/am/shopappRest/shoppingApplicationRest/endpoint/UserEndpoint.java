@@ -44,7 +44,7 @@ public class UserEndpoint {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenUtil tokenUtil;
 
-    @Value("${site.url}")
+    @Value("${site.url.rest}")
     private String siteUrl;
 
     @PostMapping("/auth")
