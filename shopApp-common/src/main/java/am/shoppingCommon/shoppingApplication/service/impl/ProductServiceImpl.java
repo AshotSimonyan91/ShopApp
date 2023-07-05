@@ -1,17 +1,15 @@
 package am.shoppingCommon.shoppingApplication.service.impl;
 
-
+import am.shoppingCommon.shoppingApplication.dto.productDto.CreateProductRequestDto;
 import am.shoppingCommon.shoppingApplication.dto.productDto.FilterProductDto;
 import am.shoppingCommon.shoppingApplication.dto.productDto.ProductDto;
-import am.shoppingCommon.shoppingApplication.entity.QProduct;
-import am.shoppingCommon.shoppingApplication.dto.productDto.ProductDto;
-import am.shoppingCommon.shoppingApplication.entity.User;
-import am.shoppingCommon.shoppingApplication.service.ProductService;
-import am.shoppingCommon.shoppingApplication.dto.productDto.CreateProductRequestDto;
 import am.shoppingCommon.shoppingApplication.entity.Image;
 import am.shoppingCommon.shoppingApplication.entity.Product;
+import am.shoppingCommon.shoppingApplication.entity.QProduct;
+import am.shoppingCommon.shoppingApplication.entity.User;
 import am.shoppingCommon.shoppingApplication.mapper.ProductMapper;
 import am.shoppingCommon.shoppingApplication.repository.ProductRepository;
+import am.shoppingCommon.shoppingApplication.service.ProductService;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.PathBuilder;
@@ -130,9 +128,9 @@ public class ProductServiceImpl implements ProductService {
         return byId.map(ProductMapper::mapToDto).orElse(null);
     }
 
-
+    @Override
     public List<ProductDto> search(int page, int size,
-                                FilterProductDto filterProductDto) {
+                                   FilterProductDto filterProductDto) {
         List<Product> all = searchProductByFilter(page, size, filterProductDto);
 
         List<ProductDto> productDtoList = ProductMapper.mapProductList(all);
@@ -161,7 +159,7 @@ public class ProductServiceImpl implements ProductService {
 
         PathBuilder<Object> orderByExpression = new PathBuilder<Object>(QProduct.class, filterProductDto.getSortBy());
 
-        from.orderBy( new OrderSpecifier("asc".equalsIgnoreCase(filterProductDto.getSortDirection()) ? Order.ASC
+        from.orderBy(new OrderSpecifier("asc".equalsIgnoreCase(filterProductDto.getSortDirection()) ? Order.ASC
                 : Order.DESC, orderByExpression));
 
         return from.fetch();
