@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface ProductService {
-    List<Product> searchProductByFilter(int page, int size, FilterProductDto filterProductDto);
+    List<ProductDto> search(int page, int size, FilterProductDto filterProductDto);
 
     Page<ProductDto> findAllProducts(Pageable pageable);
 
@@ -30,14 +30,10 @@ public interface ProductService {
 
 
     ProductDto save(CreateProductRequestDto product, MultipartFile[] files, User user) throws IOException;
+
     ProductDto save(CreateProductRequestDto product, User user);
+
     ProductDto save(int id, MultipartFile[] files) throws IOException;
-
-
-
-    Product findById(int id);
-
-    List<ProductDto> filter(int page, int size, FilterProductDto filterProductDto);
 
     ProductDto findById(int id);
 
