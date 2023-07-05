@@ -103,12 +103,6 @@
                             <version>1.5.3.Final</version>
                         </path>
                         <path>
-                            <groupId>com.querydsl</groupId>
-                            <artifactId>querydsl-apt</artifactId>
-                            <version>${querydsl.version}</version>
-                            <classifier>jakarta</classifier>
-                        </path>
-                        <path>
                             <groupId>jakarta.persistence</groupId>
                             <artifactId>jakarta.persistence-api</artifactId>
                             <version>3.1.0</version>

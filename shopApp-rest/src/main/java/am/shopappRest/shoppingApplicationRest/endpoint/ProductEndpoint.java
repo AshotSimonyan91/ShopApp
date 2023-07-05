@@ -87,7 +87,7 @@ public class ProductEndpoint {
             @RequestParam(name = "size", defaultValue = "20") int size,
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestBody FilterProductDto filterProductDto) {
-        return ResponseEntity.ok(productService.filter(page, size, filterProductDto));
+        return ResponseEntity.ok(productService.search(page, size, filterProductDto));
     }
 
 
