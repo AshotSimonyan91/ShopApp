@@ -4,6 +4,8 @@ import am.shopappRest.shoppingApplicationRest.restDto.productRequestDto.CurrentP
 import am.shopappRest.shoppingApplicationRest.restDto.productRequestDto.ProductPaginationDto;
 import am.shopappRest.shoppingApplicationRest.security.CurrentUser;
 import am.shoppingCommon.shoppingApplication.dto.productDto.CreateProductRequestDto;
+import am.shoppingCommon.shoppingApplication.dto.productDto.FilterProductDto;
+import am.shoppingCommon.shoppingApplication.dto.productDto.ProductDto;
 import am.shoppingCommon.shoppingApplication.entity.Product;
 import am.shoppingCommon.shoppingApplication.mapper.CommentMapper;
 import am.shoppingCommon.shoppingApplication.mapper.ProductMapper;
@@ -34,7 +36,6 @@ import java.util.stream.IntStream;
 public class ProductEndpoint {
 
     private final ProductService productService;
-    private final CategoryService categoryService;
     private final CommentService commentService;
 
     @GetMapping
@@ -71,5 +72,13 @@ public class ProductEndpoint {
         productService.save(createProductRequestDto, files, currentUser.getUser());
         return ResponseEntity.ok().build();
     }
+    @PostMapping("/search")
+    public ResponseEntity<List<ProductDto>> getByFilter(
+            @RequestParam(name = "size", defaultValue = "20") int size,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestBody FilterProductDto filterProductDto) {
+        return ResponseEntity.ok(productService.filter(page, size, filterProductDto));
+    }
+
 
 }

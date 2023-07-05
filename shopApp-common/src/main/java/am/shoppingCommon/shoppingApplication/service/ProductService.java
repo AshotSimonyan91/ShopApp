@@ -2,6 +2,8 @@ package am.shoppingCommon.shoppingApplication.service;
 
 
 import am.shoppingCommon.shoppingApplication.dto.productDto.CreateProductRequestDto;
+import am.shoppingCommon.shoppingApplication.dto.productDto.FilterProductDto;
+import am.shoppingCommon.shoppingApplication.dto.productDto.ProductDto;
 import am.shoppingCommon.shoppingApplication.entity.Product;
 import am.shoppingCommon.shoppingApplication.entity.User;
 import org.springframework.data.domain.Page;
@@ -27,4 +29,7 @@ public interface ProductService {
     Product findBy_Id(int productId);
 
     Product findById(int id);
+
+    List<ProductDto> filter(int page, int size, FilterProductDto filterProductDto);
+
 }

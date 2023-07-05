@@ -23,6 +23,25 @@
         <module>ShopApp-web</module>
     </modules>
 
+<dependencyManagement>
+   <dependencies>
+       <dependency>
+           <groupId>am.shop</groupId>
+           <artifactId>ShopApp-web</artifactId>
+           <version>${project.version}</version>
+       </dependency>
+       <dependency>
+           <groupId>am.shop</groupId>
+           <artifactId>shopApp-rest</artifactId>
+           <version>${project.version}</version>
+       </dependency>
+       <dependency>
+           <groupId>am.shop</groupId>
+           <artifactId>shopApp-common</artifactId>
+           <version>${project.version}</version>
+       </dependency>
+   </dependencies>
+</dependencyManagement>
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>

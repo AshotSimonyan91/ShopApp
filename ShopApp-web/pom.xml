@@ -7,19 +7,20 @@
         <artifactId>ShopApp</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <groupId>am.ShopApp-web</groupId>
+
     <artifactId>ShopApp-web</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
     <name>ShopApp-web</name>
     <description>ShopApp-web</description>
+
+
     <properties>
         <java.version>17</java.version>
     </properties>
+
     <dependencies>
         <dependency>
-            <groupId>am.shopApp-common</groupId>
+            <groupId>am.shop</groupId>
             <artifactId>shopApp-common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
