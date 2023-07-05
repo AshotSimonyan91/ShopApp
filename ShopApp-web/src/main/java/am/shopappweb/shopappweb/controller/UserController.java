@@ -3,7 +3,9 @@ package am.shopappweb.shopappweb.controller;
 
 import am.shopappweb.shopappweb.security.CurrentUser;
 import am.shoppingCommon.shoppingApplication.dto.addressDto.AddressDto;
+import am.shoppingCommon.shoppingApplication.dto.orderDto.OrderDto;
 import am.shoppingCommon.shoppingApplication.dto.userDto.UpdatePasswordDto;
+import am.shoppingCommon.shoppingApplication.dto.userDto.UserDto;
 import am.shoppingCommon.shoppingApplication.dto.userDto.UserRegisterDto;
 import am.shoppingCommon.shoppingApplication.dto.userDto.UserUpdateDto;
 import am.shoppingCommon.shoppingApplication.entity.Order;
@@ -51,7 +53,7 @@ public class UserController {
         if (errors.hasErrors()) {
             return "register";
         }
-        User user = userService.save(userRegisterDto);
+        UserDto user = userService.save(userRegisterDto);
         if (user != null) {
             mailService.sendMail(userRegisterDto.getEmail(), "Welcome",
                     "Hi " + userRegisterDto.getName() +
@@ -96,16 +98,15 @@ public class UserController {
     @GetMapping("/order")
     public String userOrderPage(@AuthenticationPrincipal CurrentUser currentUser,
                                 ModelMap modelMap) {
-        List<Order> allByUserId = orderService.findAllByUserId(currentUser.getUser().getId());
         modelMap.addAttribute("user", userService.findByIdWithAddresses(currentUser.getUser().getId()));
-        modelMap.addAttribute(OrderMapper.listOrderToListOrderDto(allByUserId));
+        modelMap.addAttribute(orderService.findAllByUserId(currentUser.getUser().getId()));
         return "account-orders";
     }
 
     @GetMapping("/payment")
     public String userPaymentPage(@AuthenticationPrincipal CurrentUser currentUser,
                                   ModelMap modelMap) {
-        modelMap.addAttribute("user", UserMapper.userToUserDto(currentUser.getUser()));
+        modelMap.addAttribute("user", userService.findById(currentUser.getUser().getId()));
         return "account-payment";
     }
 
@@ -122,7 +123,7 @@ public class UserController {
 
     @PostMapping("/forgotPassword")
     public String forgotPassword(@RequestParam("email") String email) {
-        User userByEmail = userService.findByEmail(email);
+        UserDto userByEmail = userService.findByEmail(email);
         if (userByEmail != null) {
             mailService.sendMail(userByEmail.getEmail(), "Welcome",
                     "Hi " + userByEmail.getName() +
@@ -172,7 +173,7 @@ public class UserController {
             modelmap.addAttribute("user", userService.findByIdWithAddresses(currentUser.getUser().getId()));
             return "account-address";
         }
-        userService.save(userService.saveAddress(currentUser.getUser(), addressDto));
+        userService.save(UserMapper.userDtoToUser(userService.saveAddress(currentUser.getUser(), addressDto)));
         modelmap.addAttribute("user", userService.findByIdWithAddresses(currentUser.getUser().getId()));
         return "account-address";
     }

@@ -3,6 +3,7 @@ package am.shopappweb.shopappweb.controller;
 
 import am.shoppingCommon.shoppingApplication.dto.categoryDto.CategoryDto;
 import am.shoppingCommon.shoppingApplication.dto.productDto.CreateProductRequestDto;
+import am.shoppingCommon.shoppingApplication.dto.productDto.ProductDto;
 import am.shoppingCommon.shoppingApplication.entity.Product;
 import am.shoppingCommon.shoppingApplication.mapper.CategoryMapper;
 import am.shopappweb.shopappweb.security.CurrentUser;
@@ -41,7 +42,7 @@ public class ProductController {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(9);
         Pageable pageable = PageRequest.of(currentPage - 1, pageSize);
-        Page<Product> result = productService.findAllProducts(pageable);
+        Page<ProductDto> result = productService.findAllProducts(pageable);
         int totalPages = result.getTotalPages();
         if (totalPages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
@@ -62,7 +63,7 @@ public class ProductController {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(9);
         Pageable pageable = PageRequest.of(currentPage - 1, pageSize);
-        Page<Product> result = productService.findAllProducts(pageable);
+        Page<ProductDto> result = productService.findAllProducts(pageable);
         int totalPages = result.getTotalPages();
         if (totalPages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
@@ -87,8 +88,7 @@ public class ProductController {
 
     @GetMapping("/add")
     public String addProductPage(ModelMap modelMap) {
-        List<CategoryDto> allCategory = CategoryMapper.categoryDtoList(categoryService.findAllCategory());
-        modelMap.addAttribute("categories", allCategory);
+        modelMap.addAttribute("categories", categoryService.findAllCategory());
         return "addProducts";
     }
 

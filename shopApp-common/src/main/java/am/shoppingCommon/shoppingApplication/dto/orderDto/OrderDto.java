@@ -1,8 +1,8 @@
 package am.shoppingCommon.shoppingApplication.dto.orderDto;
 
 
+import am.shoppingCommon.shoppingApplication.dto.userDto.UserDto;
 import am.shoppingCommon.shoppingApplication.entity.Status;
-import am.shoppingCommon.shoppingApplication.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,6 +21,6 @@ public class OrderDto {
     private LocalDateTime dateTime;
     private double totalAmount;
     private Status status;
-    private User user;
+    private UserDto user;
     private List<OrderItemDto> orderItems;
 }

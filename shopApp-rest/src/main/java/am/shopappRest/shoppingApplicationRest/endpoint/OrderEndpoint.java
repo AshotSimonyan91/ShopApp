@@ -27,15 +27,13 @@ public class OrderEndpoint {
 
     @GetMapping()
     public ResponseEntity<OrderDto> getOrders(@AuthenticationPrincipal CurrentUser currentUser) {
-        Optional<Order> byUserIdAndStatus = orderService
-                .findByUserIdAndStatus(currentUser.getUser().getId(), Status.PENDING);
-        return ResponseEntity.ok(OrderMapper.orderToOrderDto(byUserIdAndStatus.orElse(null)));
+        return ResponseEntity.ok(orderService.findByUserIdAndStatus(currentUser.getUser().getId(), Status.PENDING));
     }
 
     @PostMapping("/add")
     public ResponseEntity<List<OrderDto>> addOrder(@AuthenticationPrincipal CurrentUser currentUser) {
         orderService.save(currentUser.getUser().getId());
-        return ResponseEntity.ok(OrderMapper.listOrderToListOrderDto(orderService.findAllByUserId(currentUser.getUser().getId())));
+        return ResponseEntity.ok(orderService.findAllByUserId(currentUser.getUser().getId()));
     }
 
     @DeleteMapping("/remove")
@@ -43,6 +41,6 @@ public class OrderEndpoint {
                                                     @RequestParam("orderItem_id") int orderItem_id,
                                                     @AuthenticationPrincipal CurrentUser currentUser) {
         orderService.removeByProductIdAndOrderItemId(product_id, orderItem_id, currentUser.getUser().getId());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }

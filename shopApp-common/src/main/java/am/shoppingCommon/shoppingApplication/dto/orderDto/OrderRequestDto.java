@@ -1,5 +1,6 @@
 package am.shoppingCommon.shoppingApplication.dto.orderDto;
 
+import am.shoppingCommon.shoppingApplication.dto.userDto.UserDto;
 import am.shoppingCommon.shoppingApplication.entity.OrderItem;
 import am.shoppingCommon.shoppingApplication.entity.Status;
 import am.shoppingCommon.shoppingApplication.entity.User;
@@ -20,6 +21,6 @@ public class OrderRequestDto {
     private LocalDateTime dateTime;
     private double totalAmount;
     private Status status;
-    private User user;
+    private UserDto user;
     private List<OrderItem> orderItems;
 }

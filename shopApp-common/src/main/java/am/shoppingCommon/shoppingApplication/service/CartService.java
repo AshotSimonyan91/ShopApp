@@ -13,7 +13,7 @@ public interface CartService {
 
     CartDto findAllByUser_id(int id);
 
-    void save(int id, User currentUser);
+    CartDto save(int id, User currentUser);
 
     void remove(int id, int productId, int count);
 

@@ -50,7 +50,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     @Transactional
-    public void save(int id, User user) {
+    public CartDto save(int id, User user) {
         Optional<Cart> cartOptional = cartRepository.findAllByUser_Id(user.getId());
         Cart cart = cartOptional.orElseGet(() -> createNewCart(user));
 
@@ -75,36 +75,9 @@ public class CartServiceImpl implements CartService {
             productRepository.save(product);
         }
 
-        cartRepository.save(cart);
+        Cart save = cartRepository.save(cart);
+        return CartMapper.convertToDto(save);
     }
-
-    private Cart createNewCart(User user) {
-        Cart cart = new Cart();
-        cart.setUser(user);
-        cart.setCartItems(new ArrayList<>());
-        return cart;
-    }
-
-    private CartItem findExistingCartItem(List<CartItem> cartItems, Product product) {
-        return cartItems.stream()
-                .filter(item -> item.getProduct().equals(product))
-                .findFirst()
-                .orElse(null);
-    }
-
-    private void incrementCartItem(CartItem cartItem) {
-        cartItem.setCount(cartItem.getCount() + 1);
-        cartItem.getProduct().setCount(cartItem.getProduct().getCount() - 1);
-    }
-
-    private CartItem createCartItem(Product product, Cart cart) {
-        CartItem cartItem = new CartItem();
-        cartItem.setCount(1);
-        cartItem.setProduct(product);
-        cartItem.setCart(cart);
-        return cartItem;
-    }
-
 
     @Override
     @Transactional
@@ -139,5 +112,31 @@ public class CartServiceImpl implements CartService {
             isValid = true;
         }
         return isValid;
+    }
+    private Cart createNewCart(User user) {
+        Cart cart = new Cart();
+        cart.setUser(user);
+        cart.setCartItems(new ArrayList<>());
+        return cart;
+    }
+
+    private CartItem findExistingCartItem(List<CartItem> cartItems, Product product) {
+        return cartItems.stream()
+                .filter(item -> item.getProduct().equals(product))
+                .findFirst()
+                .orElse(null);
+    }
+
+    private void incrementCartItem(CartItem cartItem) {
+        cartItem.setCount(cartItem.getCount() + 1);
+        cartItem.getProduct().setCount(cartItem.getProduct().getCount() - 1);
+    }
+
+    private CartItem createCartItem(Product product, Cart cart) {
+        CartItem cartItem = new CartItem();
+        cartItem.setCount(1);
+        cartItem.setProduct(product);
+        cartItem.setCart(cart);
+        return cartItem;
     }
 }

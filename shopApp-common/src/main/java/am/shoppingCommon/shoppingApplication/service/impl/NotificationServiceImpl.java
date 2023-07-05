@@ -1,9 +1,9 @@
 package am.shoppingCommon.shoppingApplication.service.impl;
 
 
+import am.shoppingCommon.shoppingApplication.dto.notificationDto.NotificationDto;
 import am.shoppingCommon.shoppingApplication.dto.notificationDto.NotificationRequestDto;
 import am.shoppingCommon.shoppingApplication.entity.Notification;
-import am.shoppingCommon.shoppingApplication.entity.Order;
 import am.shoppingCommon.shoppingApplication.entity.User;
 import am.shoppingCommon.shoppingApplication.mapper.NotificationMapper;
 import am.shoppingCommon.shoppingApplication.repository.NotificationRepository;
@@ -12,7 +12,6 @@ import am.shoppingCommon.shoppingApplication.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,8 +29,9 @@ public class NotificationServiceImpl implements NotificationService {
 
 
     @Override
-    public List<Notification> findAllByUserId(int id) {
-        return notificationRepository.findAllByUser_Id(id);
+    public List<NotificationDto> findAllByUserId(int id) {
+        List<Notification> allByUserId = notificationRepository.findAllByUser_Id(id);
+        return NotificationMapper.mapToListNotificationDto(allByUserId);
     }
 
     @Override
@@ -40,27 +40,30 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void save(NotificationRequestDto notificationRequestDto) {
+    public NotificationDto save(NotificationRequestDto notificationRequestDto) {
         notificationRequestDto.setEmail(notificationRequestDto.getEmail().trim());
         Optional<User> userOptional = userRepository.findByEmail(notificationRequestDto.getEmail());
         if (notificationRequestDto.getEmail() != null && notificationRequestDto.getMessage() != null && userOptional.isPresent()) {
             Notification notification = NotificationMapper.map(notificationRequestDto);
             notification.setUser(userOptional.get());
-            notificationRepository.save(notification);
+            Notification save = notificationRepository.save(notification);
+            return NotificationMapper.mapToDto(save);
+
         }
+        return null;
     }
 
     @Override
-    public List<Notification> notifications(int id) {
+    public List<NotificationDto> notifications(int id) {
         Pageable pageable = PageRequest.of(0, 20);
-        List<Notification> lastNotifications = notificationRepository.findAllByUserIdOrderByDateTimeDesc(id,pageable);
-        return lastNotifications;
+        List<Notification> lastNotifications = notificationRepository.findAllByUserIdOrderByDateTimeDesc(id, pageable);
+        return NotificationMapper.mapToListNotificationDto(lastNotifications);
     }
 
     @Override
-    public List<Notification> last3Notifications(int userId) {
+    public List<NotificationDto> last3Notifications(int userId) {
         Pageable pageable = PageRequest.of(0, 3);
-        List<Notification> lastNotifications = notificationRepository.findAllByUserIdOrderByDateTimeDesc(userId,pageable);
-        return lastNotifications;
+        List<Notification> lastNotifications = notificationRepository.findAllByUserIdOrderByDateTimeDesc(userId, pageable);
+        return NotificationMapper.mapToListNotificationDto(lastNotifications);
     }
 }

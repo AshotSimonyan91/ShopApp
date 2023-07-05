@@ -14,10 +14,10 @@ public class ImageMapper {
         if (imageDto == null) {
             return null;
         }
-        Image image = new Image();
-        image.setId(imageDto.getId());
-        image.setImage(imageDto.getImage());
-        return image;
+        return Image.builder()
+                .id(imageDto.getId())
+                .image(imageDto.getImage())
+                .build();
     }
 
     public static ImageDto imageToImageDto(Image image) {

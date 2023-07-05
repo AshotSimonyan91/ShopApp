@@ -1,5 +1,6 @@
 package am.shopappRest.shoppingApplicationRest.endpoint;
 
+import am.shoppingCommon.shoppingApplication.dto.notificationDto.NotificationDto;
 import am.shoppingCommon.shoppingApplication.dto.notificationDto.NotificationRequestDto;
 import am.shoppingCommon.shoppingApplication.service.NotificationService;
 import lombok.RequiredArgsConstructor;
@@ -17,15 +18,14 @@ public class NotificationEndpoint {
     private final NotificationService notificationService;
 
     @PostMapping("/send")
-    public ResponseEntity<?> sendNotification(@RequestBody NotificationRequestDto notificationRequestDto) {
-        notificationService.save(notificationRequestDto);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<NotificationDto> sendNotification(@RequestBody NotificationRequestDto notificationRequestDto) {
+        return ResponseEntity.ok(notificationService.save(notificationRequestDto));
     }
 
     @DeleteMapping("/remove")
-    public ResponseEntity<?> removeNotification(@RequestParam("id") int id){
+    public ResponseEntity<?> removeNotification(@RequestParam("id") int id) {
         notificationService.remove(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
 }

@@ -1,9 +1,7 @@
 package am.shoppingCommon.shoppingApplication.entity;
 
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -11,9 +9,11 @@ import java.util.List;
  * Created by Ashot Simonyan on 21.05.23.
  */
 
+@Data
 @Entity
-@Getter
-@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(of = {"id", "name"})
 @Table(name = "product")
 public class Product {
