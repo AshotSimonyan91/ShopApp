@@ -133,7 +133,7 @@ public class ProductServiceImpl implements ProductService {
 
     public List<ProductDto> search(int page, int size,
                                 FilterProductDto filterProductDto) {
-        List<Product> all = searchBooksByFilter(page, size, filterProductDto);
+        List<Product> all = searchProductByFilter(page, size, filterProductDto);
 
         List<ProductDto> productDtoList = ProductMapper.mapProductList(all);
         return productDtoList;
