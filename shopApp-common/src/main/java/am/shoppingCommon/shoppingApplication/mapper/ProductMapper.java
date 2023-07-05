@@ -172,5 +172,34 @@ public class ProductMapper {
                 .map(ProductMapper::mapToDto)
                 .toList();
     }
+
+    public static List<ProductDto> mapProductList(List<Product> all) {
+        if (all == null) {
+            return null;
+        }
+        List<ProductDto> productDtoList = new ArrayList<>();
+        ProductDto productDto = new ProductDto();
+        for (Product product : all) {
+            productDto.setId(product.getId());
+            productDto.setName(product.getName());
+            productDto.setProductCode(product.getProductCode());
+            productDto.setDescription(product.getDescription());
+            productDto.setPrice(product.getPrice());
+            List<Image> list = product.getImages();
+            List<ImageDto> imageDtos = new ArrayList<>();
+            for (Image image : list) {
+                imageDtos.add(ImageMapper.imageToImageDto(image));
+            }
+            productDto.setImages(imageDtos);
+            List<Category> categoryList = product.getCategories();
+            List<CategoryDto> categoryDtoList = new ArrayList<>();
+            for (Category category : categoryList) {
+                categoryDtoList.add(CategoryMapper.categoryToDto(category));
+            }
+            productDto.setCategories(categoryDtoList);
+        }
+        return productDtoList;
+
+    }
 }
 

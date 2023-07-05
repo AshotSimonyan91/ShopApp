@@ -4,6 +4,7 @@ import am.shopappRest.shoppingApplicationRest.restDto.productRequestDto.CurrentP
 import am.shopappRest.shoppingApplicationRest.restDto.productRequestDto.ProductPaginationDto;
 import am.shopappRest.shoppingApplicationRest.security.CurrentUser;
 import am.shoppingCommon.shoppingApplication.dto.productDto.CreateProductRequestDto;
+import am.shoppingCommon.shoppingApplication.dto.productDto.FilterProductDto;
 import am.shoppingCommon.shoppingApplication.dto.productDto.ProductDto;
 import am.shoppingCommon.shoppingApplication.entity.Product;
 import am.shoppingCommon.shoppingApplication.mapper.CommentMapper;
@@ -81,5 +82,13 @@ public class ProductEndpoint {
                 .forEach(imageDto -> imageDto.setImage(siteURL + "/getImage?profilePic=" + imageDto.getImage()));
         return ResponseEntity.ok(save);
     }
+    @PostMapping("/search")
+    public ResponseEntity<List<ProductDto>> getByFilter(
+            @RequestParam(name = "size", defaultValue = "20") int size,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestBody FilterProductDto filterProductDto) {
+        return ResponseEntity.ok(productService.filter(page, size, filterProductDto));
+    }
+
 
 }

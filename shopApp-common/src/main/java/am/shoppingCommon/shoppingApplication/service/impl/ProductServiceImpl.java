@@ -1,6 +1,9 @@
 package am.shoppingCommon.shoppingApplication.service.impl;
 
 
+import am.shoppingCommon.shoppingApplication.dto.productDto.FilterProductDto;
+import am.shoppingCommon.shoppingApplication.dto.productDto.ProductDto;
+import am.shoppingCommon.shoppingApplication.entity.QProduct;
 import am.shoppingCommon.shoppingApplication.dto.productDto.ProductDto;
 import am.shoppingCommon.shoppingApplication.entity.User;
 import am.shoppingCommon.shoppingApplication.service.ProductService;
@@ -9,6 +12,12 @@ import am.shoppingCommon.shoppingApplication.entity.Image;
 import am.shoppingCommon.shoppingApplication.entity.Product;
 import am.shoppingCommon.shoppingApplication.mapper.ProductMapper;
 import am.shoppingCommon.shoppingApplication.repository.ProductRepository;
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.PathBuilder;
+import com.querydsl.jpa.impl.JPAQuery;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -32,6 +41,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Value("${shopping-app.upload.image.path}")
     private String imageUploadPath;
+
+    @PersistenceContext
+    private final EntityManager entityManager;
 
     private final ProductRepository productRepository;
 
@@ -117,5 +129,43 @@ public class ProductServiceImpl implements ProductService {
         Optional<Product> byId = productRepository.findById(id);
         return byId.map(ProductMapper::mapToDto).orElse(null);
     }
+
+
+    public List<ProductDto> search(int page, int size,
+                                FilterProductDto filterProductDto) {
+        List<Product> all = searchBooksByFilter(page, size, filterProductDto);
+
+        List<ProductDto> productDtoList = ProductMapper.mapProductList(all);
+        return productDtoList;
+    }
+
+    private List<Product> searchBooksByFilter(int page, int size, FilterProductDto filterProductDto) {
+        QProduct qProduct = QProduct.product;
+        var query = new JPAQuery<Product>(entityManager);
+        JPAQuery<Product> from = query.from(qProduct);
+
+        if (filterProductDto.getSerialNumber() != null &&
+                !filterProductDto.getSerialNumber().isEmpty()) {
+            from.where(qProduct.productCode.contains(filterProductDto.getSerialNumber()));
+        }
+
+        if (filterProductDto.getMinPrice() > 0 && filterProductDto.getMaxPrice() > 0) {
+            from.where(qProduct.price.gt(filterProductDto.getMinPrice())
+                    .and(qProduct.price.lt(filterProductDto.getMaxPrice())));
+        }
+
+        if (page > 0) {
+            from.offset((long) page * size);
+        }
+        from.limit(size);
+
+        PathBuilder<Object> orderByExpression = new PathBuilder<Object>(QProduct.class, filterProductDto.getSortBy());
+
+        from.orderBy( new OrderSpecifier("asc".equalsIgnoreCase(filterProductDto.getSortDirection()) ? Order.ASC
+                : Order.DESC, orderByExpression));
+
+        return from.fetch();
+    }
+
 
 }
