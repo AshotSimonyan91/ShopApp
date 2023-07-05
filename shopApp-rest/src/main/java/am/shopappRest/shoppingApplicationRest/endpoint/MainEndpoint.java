@@ -1,6 +1,7 @@
 package am.shopappRest.shoppingApplicationRest.endpoint;
 
 import am.shoppingCommon.shoppingApplication.dto.categoryDto.CategoryDto;
+import am.shoppingCommon.shoppingApplication.dto.productDto.ProductDto;
 import am.shoppingCommon.shoppingApplication.entity.Product;
 import am.shoppingCommon.shoppingApplication.service.CategoryService;
 import am.shoppingCommon.shoppingApplication.service.MainService;
@@ -48,7 +49,7 @@ public class MainEndpoint {
                                       @RequestParam(value = "page", defaultValue = "1") Integer page,
                                       @RequestParam(value = "size", defaultValue = "9") Integer size) {
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<Product> result = productService.findByName(value, pageable);
+        Page<ProductDto> result = productService.findByName(value, pageable);
         SearchPaginationDto searchPaginationDto = new SearchPaginationDto();
         int totalPages = result.getTotalPages();
         if (totalPages > 0) {

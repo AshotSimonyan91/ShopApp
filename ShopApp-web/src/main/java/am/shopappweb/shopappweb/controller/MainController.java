@@ -2,6 +2,7 @@ package am.shopappweb.shopappweb.controller;
 
 
 import am.shopappweb.shopappweb.security.CurrentUser;
+import am.shoppingCommon.shoppingApplication.dto.productDto.ProductDto;
 import am.shoppingCommon.shoppingApplication.service.CategoryService;
 import am.shoppingCommon.shoppingApplication.service.MainService;
 import am.shoppingCommon.shoppingApplication.service.ProductService;
@@ -71,7 +72,7 @@ public class MainController {
                              @RequestParam(value = "size", defaultValue = "9") Integer size,
                              ModelMap modelMap) {
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<Product> result = productService.findByName(value, pageable);
+        Page<ProductDto> result = productService.findByName(value, pageable);
         int totalPages = result.getTotalPages();
         if (totalPages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)

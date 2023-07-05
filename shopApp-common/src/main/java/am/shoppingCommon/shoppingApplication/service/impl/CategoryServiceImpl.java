@@ -28,8 +28,9 @@ public class CategoryServiceImpl implements CategoryService {
     private String imageUploadPath;
 
     @Override
-    public List<Category> findAllCategory() {
-        return categoryRepository.findAll();
+    public List<CategoryDto> findAllCategory() {
+        List<Category> all = categoryRepository.findAll();
+        return CategoryMapper.categoryDtoList(all);
     }
 
     @Override
@@ -38,7 +39,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void save(CategoryDto categoryDto, MultipartFile multipartFile) throws IOException {
+    public CategoryDto save(CategoryDto categoryDto, MultipartFile multipartFile) throws IOException {
         Category category = CategoryMapper.dtoToCategory(categoryDto);
         if (multipartFile != null && !multipartFile.isEmpty()) {
             String fileName = System.nanoTime() + "_" + multipartFile.getOriginalFilename();
@@ -46,13 +47,38 @@ public class CategoryServiceImpl implements CategoryService {
             multipartFile.transferTo(file);
             category.setImage(fileName);
         }
-        categoryRepository.save(category);
+        Category save = categoryRepository.save(category);
+        return CategoryMapper.categoryToDto(save);
     }
 
     @Override
-    public Category findById(Integer id) {
+    public CategoryDto save(CategoryDto categoryDto) {
+        Category category = CategoryMapper.dtoToCategory(categoryDto);
+        Category save = categoryRepository.save(category);
+        return CategoryMapper.categoryToDto(save);
+    }
+
+    @Override
+    public CategoryDto save(int id, MultipartFile multipartFile) throws IOException {
+        Category category = categoryRepository.findById(id).orElse(null);
+        if (multipartFile != null && !multipartFile.isEmpty()) {
+            String fileName = System.nanoTime() + "_" + multipartFile.getOriginalFilename();
+            File file = new File(imageUploadPath + fileName);
+            multipartFile.transferTo(file);
+            category.setImage(fileName);
+        }
+        Category save = categoryRepository.save(category);
+        return CategoryMapper.categoryToDto(save);
+    }
+
+    @Override
+    public CategoryDto findById(Integer id) {
         Optional<Category> byId = categoryRepository.findById(id);
-        return byId.get();
+        if (byId.isPresent()) {
+            Category category = byId.get();
+            return CategoryMapper.categoryToDto(category);
+        }
+        return null;
     }
 
     public Map<String, List<CategoryDto>> getParentCategoriesWithChildren() {

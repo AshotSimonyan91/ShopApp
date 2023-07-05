@@ -9,10 +9,11 @@ import am.shoppingCommon.shoppingApplication.dto.productDto.ProductDto;
 import am.shoppingCommon.shoppingApplication.entity.Product;
 import am.shoppingCommon.shoppingApplication.mapper.CommentMapper;
 import am.shoppingCommon.shoppingApplication.mapper.ProductMapper;
-import am.shoppingCommon.shoppingApplication.service.CategoryService;
 import am.shoppingCommon.shoppingApplication.service.CommentService;
 import am.shoppingCommon.shoppingApplication.service.ProductService;
+import am.shoppingCommon.shoppingApplication.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -37,12 +38,14 @@ public class ProductEndpoint {
 
     private final ProductService productService;
     private final CommentService commentService;
+    @Value("${site.url.rest}")
+    private String siteURL;
 
     @GetMapping
     public ResponseEntity<ProductPaginationDto> getProductsWithPagination(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                                                           @RequestParam(value = "size", defaultValue = "9") Integer size) {
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<Product> result = productService.findAllProducts(pageable);
+        Page<ProductDto> result = productService.findAllProducts(pageable);
         ProductPaginationDto productPaginationDto = new ProductPaginationDto();
         int totalPages = result.getTotalPages();
         if (totalPages > 0) {
@@ -60,17 +63,24 @@ public class ProductEndpoint {
     @GetMapping("{id}")
     public ResponseEntity<CurrentProductDto> getCurrentProduct(@PathVariable("id") int id) {
         CurrentProductDto currentProductDto = new CurrentProductDto();
-        currentProductDto.setCreateProductResponseDto(ProductMapper.mapToResponseDto(productService.findById(id)));
-        currentProductDto.setCommentDtos(CommentMapper.map(commentService.findAllByLimit(id)));
+        currentProductDto.setProductDto(productService.findById(id));
+        currentProductDto.setCommentDtos(commentService.findAllByLimit(id));
         return ResponseEntity.ok(currentProductDto);
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> addProduct(@RequestBody CreateProductRequestDto createProductRequestDto,
-                                        @AuthenticationPrincipal CurrentUser currentUser,
-                                        @RequestParam("files") MultipartFile[] files) throws IOException {
-        productService.save(createProductRequestDto, files, currentUser.getUser());
-        return ResponseEntity.ok().build();
+    public ResponseEntity<ProductDto> addProduct(@RequestBody CreateProductRequestDto createProductRequestDto,
+                                                 @AuthenticationPrincipal CurrentUser currentUser) {
+        return ResponseEntity.ok(productService.save(createProductRequestDto, currentUser.getUser()));
+    }
+
+    @PostMapping("/{id}/image")
+    public ResponseEntity<ProductDto> addProductImage(@PathVariable("id") int id,
+                                                      @RequestParam("files") MultipartFile[] files) throws IOException {
+        ProductDto save = productService.save(id, files);
+        save.getImages().stream()
+                .forEach(imageDto -> imageDto.setImage(siteURL + "/getImage?profilePic=" + imageDto.getImage()));
+        return ResponseEntity.ok(save);
     }
     @PostMapping("/search")
     public ResponseEntity<List<ProductDto>> getByFilter(

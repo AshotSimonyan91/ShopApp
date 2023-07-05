@@ -1,24 +1,25 @@
-package am.shoppingCommon.shoppingApplication.dto.notificationDto;
+package am.shoppingCommon.shoppingApplication.dto.deliveryDto;
 
-
+import am.shoppingCommon.shoppingApplication.dto.orderDto.OrderDto;
 import am.shoppingCommon.shoppingApplication.dto.userDto.UserDto;
+import am.shoppingCommon.shoppingApplication.entity.Order;
 import am.shoppingCommon.shoppingApplication.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
+/**
+ * Created by Ashot Simonyan on 04.07.23.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class NotificationDto {
+public class DeliveryDto {
 
     private int id;
-    private String message;
-    private String subject;
-    private LocalDateTime dateTime;
+    private OrderDto order;
     private UserDto user;
 }
+

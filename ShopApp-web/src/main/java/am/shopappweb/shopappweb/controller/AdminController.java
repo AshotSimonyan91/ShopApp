@@ -52,7 +52,7 @@ public class AdminController {
     public String updateUserPage(@RequestParam("id") int id,
                                  ModelMap modelMap) {
         modelMap.addAttribute("userId", id);
-        modelMap.addAttribute("user", UserMapper.userToUserDto(userService.findById(id)));
+        modelMap.addAttribute("user", userService.findById(id));
         return "admin/user-update";
     }
 
@@ -65,7 +65,7 @@ public class AdminController {
 
     @GetMapping("/add/product")
     public String addProductAdminPage(ModelMap modelMap, @AuthenticationPrincipal CurrentUser currentUser) {
-        modelMap.addAttribute("categories", CategoryMapper.categoryDtoList(categoryService.findAllCategory()));
+        modelMap.addAttribute("categories", categoryService.findAllCategory());
         modelMap.addAttribute("user", userService.findByIdWithAddresses(currentUser.getUser().getId()));
         modelMap.addAttribute("notifications", notificationService.last3Notifications(currentUser.getUser().getId()));
         return "admin/add-product";
@@ -81,7 +81,7 @@ public class AdminController {
 
     @GetMapping("/edit/order/{id}")
     public String editOrderPage(@PathVariable("id") int id, @AuthenticationPrincipal CurrentUser currentUser, ModelMap modelMap) {
-        modelMap.addAttribute("user", UserMapper.userToUserDto(userService.findByIdWithAddresses(currentUser.getUser().getId())));
+        modelMap.addAttribute("user", userService.findByIdWithAddresses(currentUser.getUser().getId()));
         modelMap.addAttribute("order", orderService.orderById(id));
         modelMap.addAttribute("deliveries", userService.findAllDeliveries());
         return "admin/order-edit";
@@ -110,7 +110,7 @@ public class AdminController {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(9);
         Pageable pageable = PageRequest.of(currentPage - 1, pageSize);
-        Page<User> result = userService.findAll(pageable);
+        Page<UserDto> result = userService.findAll(pageable);
         int totalPages = result.getTotalPages();
         if (totalPages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)

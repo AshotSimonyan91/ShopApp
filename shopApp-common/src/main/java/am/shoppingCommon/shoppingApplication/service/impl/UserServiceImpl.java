@@ -1,6 +1,7 @@
 package am.shoppingCommon.shoppingApplication.service.impl;
 
 
+import am.shoppingCommon.shoppingApplication.dto.userDto.UserDto;
 import am.shoppingCommon.shoppingApplication.service.AddressService;
 import am.shoppingCommon.shoppingApplication.service.UserService;
 import am.shoppingCommon.shoppingApplication.dto.addressDto.AddressDto;
@@ -46,7 +47,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User save(UserRegisterDto userRegisterDto) {
+    public UserDto save(UserRegisterDto userRegisterDto) {
         Optional<User> byEmail = userRepository.findByEmail(userRegisterDto.getEmail());
         if (byEmail.isEmpty()) {
             User user = UserMapper.userRegisterDtoToUser(userRegisterDto);
@@ -56,27 +57,39 @@ public class UserServiceImpl implements UserService {
             user.setEnabled(false);
             user.setToken(UUID.randomUUID().toString());
             User savedUser = userRepository.save(user);
-            return savedUser;
+            return UserMapper.userToUserDto(savedUser);
         }
         return null;
     }
 
     @Override
-    public User save(User user) {
-        return userRepository.save(user);
+    public UserDto save(User user) {
+        User save = userRepository.save(user);
+        return UserMapper.userToUserDto(save);
     }
 
     @Override
-    public User saveAddress(User user, AddressDto addressDto) {
+    public UserDto saveAddress(User user, AddressDto addressDto) {
         User byId = userRepository.findById(user.getId()).orElse(null);
         List<Address> addresses = byId.getAddresses();
         addresses.add(AddressMapper.addressDtoToAddress(addressDto));
         byId.setAddresses(addresses);
-        return byId;
+        return UserMapper.userToUserDto(byId);
     }
 
     @Override
-    public User findByEmail(String email) {
+    public UserDto findByEmail(String email) {
+        Optional<User> byEmail = userRepository.findByEmail(email);
+        if (byEmail.isPresent()) {
+            User user = byEmail.get();
+            user.setToken(UUID.randomUUID().toString());
+            User save = userRepository.save(user);
+            return UserMapper.userToUserDto(save);
+        }
+        return null;
+    }
+
+    public User findByEmailForAuthentication(String email) {
         Optional<User> byEmail = userRepository.findByEmail(email);
         if (byEmail.isPresent()) {
             User user = byEmail.get();
@@ -87,14 +100,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<User> findAll(Pageable pageable) {
-        return userRepository.findAll(pageable);
+    public Page<UserDto> findAll(Pageable pageable) {
+        Page<User> all = userRepository.findAll(pageable);
+        return UserMapper.mapPageToDto(all);
     }
 
 
     @Override
     @Transactional
-    public void updateUser(MultipartFile multipartFile, User user, User currentUser) throws IOException {
+    public UserDto updateUser(MultipartFile multipartFile, User user, User currentUser) throws IOException {
         Optional<User> userOptional = userRepository.findById(currentUser.getId());
         if (userOptional.isPresent()) {
             User userOldData = userOptional.get();
@@ -128,10 +142,66 @@ public class UserServiceImpl implements UserService {
                 multipartFile.transferTo(file);
                 user.setProfilePic(fileName);
             }
-            userRepository.save(user);
+            User save = userRepository.save(user);
+            return UserMapper.userToUserDto(save);
         }
+        return null;
     }
 
+    @Override
+    @Transactional
+    public UserDto updateUser(User user, User currentUser) {
+        Optional<User> userOptional = userRepository.findById(currentUser.getId());
+        if (userOptional.isPresent()) {
+            User userOldData = userOptional.get();
+            if (user.getName() == null || user.getName().equals("")) {
+                user.setName(userOldData.getName());
+            }
+            if (user.getSurname() == null || user.getSurname().equals("")) {
+                user.setSurname(userOldData.getSurname());
+            }
+            if (user.getEmail() == null || user.getEmail().equals("")) {
+                user.setEmail(userOldData.getEmail());
+            }
+            if (user.getPhoneNumber() == null || user.getPhoneNumber().equals("")) {
+                user.setPhoneNumber(userOldData.getPhoneNumber());
+            }
+            if (user.getGender() == null) {
+                user.setGender(userOldData.getGender());
+            }
+            if (user.getRole() == null) {
+                user.setRole(userOldData.getRole());
+            }
+            if (userOldData.getProfilePic() != null) {
+                user.setProfilePic(userOldData.getProfilePic());
+            }
+            user.setEnabled(true);
+            user.setId(userOldData.getId());
+            user.setPassword(userOldData.getPassword());
+            User save = userRepository.save(user);
+            return UserMapper.userToUserDto(save);
+        }
+        return null;
+    }
+
+
+    @Override
+    @Transactional
+    public UserDto updateUser(MultipartFile multipartFile, User currentUser) throws IOException {
+        Optional<User> userOptional = userRepository.findById(currentUser.getId());
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            if (multipartFile != null && !multipartFile.isEmpty()) {
+                String fileName = System.nanoTime() + "_" + multipartFile.getOriginalFilename();
+                File file = new File(imageUploadPath + fileName);
+                multipartFile.transferTo(file);
+                user.setProfilePic(fileName);
+            }
+            User save = userRepository.save(user);
+            return UserMapper.userToUserDto(save);
+        }
+        return null;
+    }
 
     @Override
     public void removeById(int id) {
@@ -139,7 +209,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void removeAddressFromUserAndAddressTable(User user, int id) {
+    public UserDto removeAddressFromUserAndAddressTable(User user, int id) {
         User byId = userRepository.findById(user.getId()).orElse(null);
         List<Address> addresses = byId.getAddresses();
         Address address1 = null;
@@ -150,30 +220,34 @@ public class UserServiceImpl implements UserService {
         }
         addresses.remove(address1);
         byId.setAddresses(addresses);
-        userRepository.save(byId);
+        User save = userRepository.save(byId);
         addressService.delete(id);
+
+        return UserMapper.userToUserDto(save);
     }
 
     @Override
-    public User findById(int id) {
+    public UserDto findById(int id) {
         Optional<User> byId = userRepository.findById(id);
-        return byId.orElse(null);
+        return byId.map(UserMapper::userToUserDto).orElse(null);
     }
 
     @Override
-    public User findByIdWithAddresses(int id) {
+    public UserDto findByIdWithAddresses(int id) {
         Optional<User> byId = userRepository.findById(id);
-        return byId.get();
+        return byId.map(UserMapper::userToUserDto).orElse(null);
     }
 
 
     @Override
-    public void updatePassword(User user, UpdatePasswordDto updatePasswordDto) {
+    public UserDto updatePassword(User user, UpdatePasswordDto updatePasswordDto) {
         if (passwordEncoder.matches(updatePasswordDto.getOldPassword(), user.getPassword()) && updatePasswordDto.getPassword1().equals(updatePasswordDto.getPassword2())) {
             String encodedPassword = passwordEncoder.encode(updatePasswordDto.getPassword2());
             user.setPassword(encodedPassword);
-            userRepository.save(user);
+            User save = userRepository.save(user);
+            return UserMapper.userToUserDto(save);
         }
+        return null;
     }
 
     @Override
@@ -193,10 +267,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findAllDeliveries() {
+    public List<UserDto> findAllDeliveries() {
         List<User> byRole = userRepository.findByRole(Role.DELIVERY);
         if (!byRole.isEmpty()) {
-            return byRole;
+            return UserMapper.userDtoListMap(byRole);
         }
         return null;
     }

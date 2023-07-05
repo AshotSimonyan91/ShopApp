@@ -1,11 +1,14 @@
 package am.shopappweb.shopappweb.controller;
 
 
+import am.shoppingCommon.shoppingApplication.dto.userDto.UserDto;
 import am.shoppingCommon.shoppingApplication.entity.Order;
 import am.shoppingCommon.shoppingApplication.entity.Status;
+import am.shoppingCommon.shoppingApplication.entity.User;
 import am.shoppingCommon.shoppingApplication.mapper.OrderMapper;
 import am.shopappweb.shopappweb.security.CurrentUser;
 import am.shoppingCommon.shoppingApplication.service.OrderService;
+import am.shoppingCommon.shoppingApplication.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -22,13 +25,18 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class OrderController {
     private final OrderService orderService;
+    private final UserService userService;
 
     @GetMapping
     public String orderPage(ModelMap modelMap,
                             @AuthenticationPrincipal CurrentUser currentUser) {
-        Optional<Order> byUserIdAndStatus = orderService
-                .findByUserIdAndStatus(currentUser.getUser().getId(), Status.PENDING);
-        modelMap.addAttribute("order", OrderMapper.orderToOrderDto(byUserIdAndStatus.orElse(null)));
+        UserDto byId = userService.findById(currentUser.getUser().getId());
+        if (byId.getAddresses().size() == 0){
+            return "redirect:/user/address";
+        }
+        modelMap.addAttribute("order",orderService
+                .findByUserIdAndStatus(currentUser.getUser().getId(), Status.PENDING));
+        modelMap.addAttribute("user", byId);
         return "checkout";
     }
 

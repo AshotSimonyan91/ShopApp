@@ -14,11 +14,11 @@ public class OrderItemMapper {
         if (orderItemDto == null) {
             return null;
         }
-        OrderItem orderItem = new OrderItem();
-        orderItem.setId(orderItemDto.getId());
-        orderItem.setProduct(ProductMapper.map(orderItemDto.getProduct()));
-        orderItem.setCount(orderItemDto.getCount());
-        return orderItem;
+        return OrderItem.builder()
+                .id(orderItemDto.getId())
+                .product(ProductMapper.map(orderItemDto.getProduct()))
+                .count(orderItemDto.getCount())
+                .build();
     }
 
     public static OrderItemDto orderItemToOrderItemDto(OrderItem orderItem) {

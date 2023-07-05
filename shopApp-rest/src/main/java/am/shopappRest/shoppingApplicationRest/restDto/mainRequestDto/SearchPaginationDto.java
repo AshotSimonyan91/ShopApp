@@ -1,5 +1,6 @@
 package am.shopappRest.shoppingApplicationRest.restDto.mainRequestDto;
 
+import am.shoppingCommon.shoppingApplication.dto.productDto.ProductDto;
 import am.shoppingCommon.shoppingApplication.entity.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,7 +21,7 @@ import java.util.List;
 public class SearchPaginationDto {
 
     private String value;
-    private Page<Product> result;
+    private Page<ProductDto> result;
     private int page;
     private int totalPages;
     private List<Integer> pageNumbers;

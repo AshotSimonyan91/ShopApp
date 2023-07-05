@@ -35,21 +35,24 @@ public class OrderServiceImpl implements OrderService {
         List<Order> all = orderRepository.findAll();
         return OrderMapper.findAll(all);
     }
+
     @Override
-    public List<Order> findAllByUserId(int id) {
+    public List<OrderDto> findAllByUserId(int id) {
         Pageable pageable = PageRequest.of(0, 15);
         List<Order> last15Orders = orderRepository.findLast15OrdersByUserId(id, pageable);
-        return last15Orders;
+        return OrderMapper.listOrderToListOrderDto(last15Orders);
     }
 
     @Override
-    public Optional<Order> findById(int id) {
-        return orderRepository.findById(id);
-    }
-    @Override
-    public Order orderById(int id) {
+    public OrderDto findById(int id) {
         Optional<Order> byId = orderRepository.findById(id);
-        return byId.orElse(null);
+        return byId.map(OrderMapper::orderToOrderDto).orElse(null);
+    }
+
+    @Override
+    public OrderDto orderById(int id) {
+        Optional<Order> byId = orderRepository.findById(id);
+        return byId.map(OrderMapper::orderToOrderDto).orElse(null);
     }
 
     @Override
@@ -61,8 +64,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public Optional<Order> findByUserIdAndStatus(int id, Status status) {
-        return orderRepository.findByUserIdAndStatus(id, status);
+    public OrderDto findByUserIdAndStatus(int id, Status status) {
+        Optional<Order> byUserIdAndStatus = orderRepository.findByUserIdAndStatus(id, status);
+        return byUserIdAndStatus.map(OrderMapper::orderToOrderDto).orElse(null);
     }
 
     @Override
@@ -95,7 +99,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public void save(int userId) {
+    public OrderDto save(int userId) {
         Optional<User> userOptional = userRepository.findById(userId);
 
         if (userOptional.isPresent()) {
@@ -104,14 +108,18 @@ public class OrderServiceImpl implements OrderService {
 
             if (byUserIdAndStatus.isEmpty()) {
                 Order order = createNewOrder(user, userId);
-                orderRepository.save(order);
+                Order save = orderRepository.save(order);
+                cartRepository.deleteByUserId(userId);
+                return OrderMapper.orderToOrderDto(save);
             } else {
                 Order existingOrder = byUserIdAndStatus.get();
                 updateExistingOrder(existingOrder, userId);
-                orderRepository.save(existingOrder);
+                Order save = orderRepository.save(existingOrder);
+                cartRepository.deleteByUserId(userId);
+                return OrderMapper.orderToOrderDto(save);
             }
-            cartRepository.deleteByUserId(userId);
         }
+        return null;
     }
 
     private Order createNewOrder(User user, int userId) {

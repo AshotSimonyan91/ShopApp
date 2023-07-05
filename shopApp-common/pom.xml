@@ -8,6 +8,10 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>shopApp-common</artifactId>
+
+    <version>0.0.1-SNAPSHOT</version>
+
+
     <name>shopApp-common</name>
     <description>shopApp-common</description>
     <properties>

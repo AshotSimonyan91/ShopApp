@@ -4,6 +4,7 @@ package am.shoppingCommon.shoppingApplication.service.impl;
 import am.shoppingCommon.shoppingApplication.dto.productDto.FilterProductDto;
 import am.shoppingCommon.shoppingApplication.dto.productDto.ProductDto;
 import am.shoppingCommon.shoppingApplication.entity.QProduct;
+import am.shoppingCommon.shoppingApplication.dto.productDto.ProductDto;
 import am.shoppingCommon.shoppingApplication.entity.User;
 import am.shoppingCommon.shoppingApplication.service.ProductService;
 import am.shoppingCommon.shoppingApplication.dto.productDto.CreateProductRequestDto;
@@ -47,18 +48,21 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
 
     @Override
-    public Page<Product> findAllProducts(Pageable pageable) {
-        return productRepository.findAll(pageable);
+    public Page<ProductDto> findAllProducts(Pageable pageable) {
+        Page<Product> all = productRepository.findAll(pageable);
+        return ProductMapper.mapPageToDto(all);
     }
 
     @Override
-    public Page<Product> findByName(String name, Pageable pageable) {
-        return productRepository.findByNameContainingIgnoreCase(name, pageable);
+    public Page<ProductDto> findByName(String name, Pageable pageable) {
+        Page<Product> byNameContainingIgnoreCase = productRepository.findByNameContainingIgnoreCase(name, pageable);
+        return ProductMapper.mapPageToDto(byNameContainingIgnoreCase);
     }
 
     @Override
-    public List<Product> findAll() {
-        return productRepository.findAll();
+    public List<ProductDto> findAll() {
+        List<Product> all = productRepository.findAll();
+        return ProductMapper.mapToListProductDto(all);
     }
 
     @Override
@@ -69,7 +73,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public void save(CreateProductRequestDto productRequestDto, MultipartFile[] files, User user) throws IOException {
+    public ProductDto save(CreateProductRequestDto productRequestDto, MultipartFile[] files, User user) throws IOException {
         Product product = ProductMapper.map(productRequestDto);
         product.getCategories().removeIf(category -> category.getId() == 0);
         List<Image> imageList = new ArrayList<>();
@@ -85,19 +89,45 @@ public class ProductServiceImpl implements ProductService {
             }
         }
         product.setImages(imageList);
-        productRepository.save(product);
+        Product save = productRepository.save(product);
+
+        return ProductMapper.mapToDto(save);
     }
 
     @Override
-    public Product findBy_Id(int id) {
-        Optional<Product> byId = productRepository.findById(id);
-        return byId.orElse(null);
+    public ProductDto save(CreateProductRequestDto productRequestDto, User user) {
+        Product product = ProductMapper.map(productRequestDto);
+        product.getCategories().removeIf(category -> category.getId() == 0);
+        product.setUser(user);
+        Product save = productRepository.save(product);
+        return ProductMapper.mapToDto(save);
     }
 
     @Override
-    public Product findById(int id) {
+    @Transactional
+    public ProductDto save(int id, MultipartFile[] files) throws IOException {
+        Product product = productRepository.findById(id).orElse(null);
+        List<Image> imageList = new ArrayList<>();
+        for (MultipartFile multipartFile : files) {
+            if (multipartFile != null && !multipartFile.isEmpty()) {
+                String fileName = System.nanoTime() + "_" + multipartFile.getOriginalFilename();
+                File file = new File(imageUploadPath + fileName);
+                multipartFile.transferTo(file);
+                Image image = new Image();
+                image.setImage(fileName);
+                imageList.add(image);
+            }
+        }
+        product.setImages(imageList);
+        Product save = productRepository.save(product);
+        return ProductMapper.mapToDto(save);
+    }
+
+
+    @Override
+    public ProductDto findById(int id) {
         Optional<Product> byId = productRepository.findById(id);
-        return byId.orElse(null);
+        return byId.map(ProductMapper::mapToDto).orElse(null);
     }
 
 

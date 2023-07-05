@@ -2,7 +2,12 @@ package am.shoppingCommon.shoppingApplication.service.impl;
 
 import am.shoppingCommon.shoppingApplication.dto.orderDto.OrderDto;
 import am.shoppingCommon.shoppingApplication.dto.userDto.UserDto;
-import am.shoppingCommon.shoppingApplication.entity.*;
+import am.shoppingCommon.shoppingApplication.entity.Delivery;
+import am.shoppingCommon.shoppingApplication.entity.Order;
+import am.shoppingCommon.shoppingApplication.entity.Role;
+import am.shoppingCommon.shoppingApplication.entity.User;
+import am.shoppingCommon.shoppingApplication.mapper.OrderMapper;
+import am.shoppingCommon.shoppingApplication.mapper.UserMapper;
 import am.shoppingCommon.shoppingApplication.repository.DeliveryRepository;
 import am.shoppingCommon.shoppingApplication.repository.OrderRepository;
 import am.shoppingCommon.shoppingApplication.repository.UserRepository;
@@ -28,32 +33,36 @@ public class AdminServiceImpl implements AdminService {
     private String imageUploadPath;
 
     @Override
-    public void block(int id, User currentUser) {
+    public UserDto block(int id, User currentUser) {
         if (currentUser.getRole() == Role.ADMIN) {
             Optional<User> byId = userRepository.findById(id);
             if (byId.isPresent()) {
                 User user = byId.get();
                 user.setEnabled(false);
-                userRepository.save(user);
+                User save = userRepository.save(user);
+                return UserMapper.userToUserDto(save);
             }
         }
+        return null;
     }
 
     @Override
-    public void unBlock(int id, User currentUser) {
+    public UserDto unBlock(int id, User currentUser) {
         if (currentUser.getRole() == Role.ADMIN) {
             Optional<User> byId = userRepository.findById(id);
             if (byId.isPresent()) {
                 User user = byId.get();
                 user.setEnabled(true);
-                userRepository.save(user);
+                User save = userRepository.save(user);
+                return UserMapper.userToUserDto(save);
             }
         }
+        return null;
     }
 
     @Override
     @Transactional
-    public Order editOrder(OrderDto orderDto, int deliveryId, User currentUser) {
+    public OrderDto editOrder(OrderDto orderDto, int deliveryId, User currentUser) {
         if (currentUser.getRole() == Role.ADMIN) {
 
             Optional<Order> byId = orderRepository.findById(orderDto.getId());
@@ -68,7 +77,8 @@ public class AdminServiceImpl implements AdminService {
                 delivery.setUser(userOptional.get());
                 deliveryRepository.save(delivery);
 
-                return orderRepository.save(orderFromDb);
+                Order save = orderRepository.save(orderFromDb);
+                return OrderMapper.orderToOrderDto(save);
             }
         }
         return null;
@@ -76,7 +86,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     @Transactional
-    public void updateUser(UserDto userDto, MultipartFile multipartFile) throws IOException {
+    public UserDto updateUser(UserDto userDto, MultipartFile multipartFile) throws IOException {
         Optional<User> userOptional = userRepository.findById(userDto.getId());
         if (userOptional.isPresent() && userDto.getRole() != Role.ADMIN) {
             User user = userOptional.get();
@@ -85,9 +95,11 @@ public class AdminServiceImpl implements AdminService {
             user.setEmail(userDto.getEmail());
             user.setRole(userDto.getRole());
             user.setPhoneNumber(userDto.getPhoneNumber());
-            String fileName = ImageUtil.imageUpload(multipartFile,imageUploadPath);
+            String fileName = ImageUtil.imageUpload(multipartFile, imageUploadPath);
             user.setProfilePic(fileName);
-            userRepository.save(user);
+            User save = userRepository.save(user);
+            return UserMapper.userToUserDto(save);
         }
+        return userDto;
     }
 }

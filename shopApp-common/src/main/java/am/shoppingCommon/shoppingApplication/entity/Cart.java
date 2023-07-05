@@ -1,7 +1,10 @@
 package am.shoppingCommon.shoppingApplication.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -9,8 +12,11 @@ import java.util.List;
  * Created by Ashot Simonyan on 03.06.23.
  */
 
-@Entity
 @Data
+@Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Cart {
 
     @Id

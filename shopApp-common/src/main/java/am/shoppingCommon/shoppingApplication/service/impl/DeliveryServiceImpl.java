@@ -1,6 +1,8 @@
 package am.shoppingCommon.shoppingApplication.service.impl;
 
 
+import am.shoppingCommon.shoppingApplication.dto.deliveryDto.DeliveryDto;
+import am.shoppingCommon.shoppingApplication.mapper.DeliveryMapper;
 import am.shoppingCommon.shoppingApplication.service.DeliveryService;
 import am.shoppingCommon.shoppingApplication.entity.Delivery;
 import am.shoppingCommon.shoppingApplication.entity.Order;
@@ -28,18 +30,21 @@ public class DeliveryServiceImpl implements DeliveryService {
 
 
     @Override
-    public Page<Delivery> findAllByUserIdAndOrderStatus(int id, Status status, Pageable pageable) {
-        return deliveryRepository.findAllByUserIdAndOrderStatus(id, status, pageable);
+    public Page<DeliveryDto> findAllByUserIdAndOrderStatus(int id, Status status, Pageable pageable) {
+        Page<Delivery> allByUserIdAndOrderStatus = deliveryRepository.findAllByUserIdAndOrderStatus(id, status, pageable);
+        return DeliveryMapper.mapPageToDto(allByUserIdAndOrderStatus);
     }
 
     @Override
-    public Page<Delivery> findAllByOrderStatus(Status status, Pageable pageable) {
-        return deliveryRepository.findAllByOrderStatus(status, pageable);
+    public Page<DeliveryDto> findAllByOrderStatus(Status status, Pageable pageable) {
+        Page<Delivery> allByOrderStatus = deliveryRepository.findAllByOrderStatus(status, pageable);
+        return DeliveryMapper.mapPageToDto(allByOrderStatus);
     }
 
     @Override
-    public Optional<Delivery> findById(int id) {
-        return deliveryRepository.findById(id);
+    public DeliveryDto findById(int id) {
+        Optional<Delivery> byId = deliveryRepository.findById(id);
+        return byId.map(DeliveryMapper::mapToDto).orElse(null);
     }
 
     @Override
@@ -49,31 +54,37 @@ public class DeliveryServiceImpl implements DeliveryService {
 
     @Override
     @Transactional
-    public void save(int id) {
+    public DeliveryDto save(int id) {
         Optional<Order> byId = orderRepository.findById(id);
-        Order order = byId.orElse(null);
-        Delivery delivery = new Delivery();
-        delivery.setOrder(order);
-        deliveryRepository.save(delivery);
-        order.setStatus(Status.APPROVED);
+        if (byId.isPresent()) {
+            Order order = byId.get();
+            Delivery delivery = new Delivery();
+            delivery.setOrder(order);
+            Delivery save = deliveryRepository.save(delivery);
+            order.setStatus(Status.APPROVED);
+            return DeliveryMapper.mapToDto(save);
+        }
+        return null;
     }
 
     @Override
-    public void save(Delivery delivery) {
-        deliveryRepository.save(delivery);
+    public DeliveryDto save(Delivery delivery) {
+        Delivery save = deliveryRepository.save(delivery);
+        return DeliveryMapper.mapToDto(save);
     }
 
     @Override
-    public void chooseDelivery(User user, int id, Status status) {
+    public DeliveryDto chooseDelivery(User user, int id, Status status) {
         Delivery delivery = deliveryRepository.findById(id).orElse(null);
         delivery.setUser(user);
         delivery.getOrder().setStatus(status);
-        deliveryRepository.save(delivery);
+        Delivery save = deliveryRepository.save(delivery);
+        return DeliveryMapper.mapToDto(save);
     }
 
     @Override
-    public Delivery findByOrderId(int id) {
+    public DeliveryDto findByOrderId(int id) {
         Optional<Delivery> allByOrderId = deliveryRepository.findAllByOrder_Id(id);
-        return allByOrderId.orElse(null);
+        return allByOrderId.map(DeliveryMapper::mapToDto).orElse(null);
     }
 }

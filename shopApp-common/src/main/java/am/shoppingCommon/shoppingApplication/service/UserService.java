@@ -3,6 +3,7 @@ package am.shoppingCommon.shoppingApplication.service;
 
 import am.shoppingCommon.shoppingApplication.dto.addressDto.AddressDto;
 import am.shoppingCommon.shoppingApplication.dto.userDto.UpdatePasswordDto;
+import am.shoppingCommon.shoppingApplication.dto.userDto.UserDto;
 import am.shoppingCommon.shoppingApplication.dto.userDto.UserRegisterDto;
 import am.shoppingCommon.shoppingApplication.entity.User;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,11 +15,14 @@ import java.util.UUID;
 
 public interface UserService {
 
-    User findByEmail(String email);
+    UserDto findByEmail(String email);
+    User findByEmailForAuthentication(String email);
 
-    Page<User> findAll(Pageable pageable);
+    Page<UserDto> findAll(Pageable pageable);
 
-    void updateUser(MultipartFile multipartFile, User user, User currentUser) throws IOException;
+    UserDto updateUser(MultipartFile multipartFile, User user, User currentUser) throws IOException;
+    UserDto updateUser(User user, User currentUser);
+    UserDto updateUser(MultipartFile multipartFile, User currentUser) throws IOException;
 
     boolean changeUserPasswordTokenVerify(String email, String token);
 
@@ -26,24 +30,24 @@ public interface UserService {
 
     void remove(int id);
 
-    User save(UserRegisterDto user);
+    UserDto save(UserRegisterDto user);
 
-    User save(User user);
+    UserDto save(User user);
 
-    User saveAddress(User user, AddressDto addressDto);
+    UserDto saveAddress(User user, AddressDto addressDto);
 
     void removeById(int id);
 
-    void removeAddressFromUserAndAddressTable(User currentUser, int id);
+    UserDto removeAddressFromUserAndAddressTable(User currentUser, int id);
 
-    User findById(int id);
+    UserDto findById(int id);
 
-    User findByIdWithAddresses(int id);
+    UserDto findByIdWithAddresses(int id);
 
-    void updatePassword(User user, UpdatePasswordDto updatePasswordDto);
+    UserDto updatePassword(User user, UpdatePasswordDto updatePasswordDto);
 
     boolean verifyUserByEmail(String email, UUID token);
 
-    List<User> findAllDeliveries();
+    List<UserDto> findAllDeliveries();
 
 }

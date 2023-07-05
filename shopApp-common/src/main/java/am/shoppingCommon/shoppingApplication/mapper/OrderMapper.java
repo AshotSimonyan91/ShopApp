@@ -1,7 +1,6 @@
 package am.shoppingCommon.shoppingApplication.mapper;
 
 
-
 import am.shoppingCommon.shoppingApplication.dto.orderDto.OrderDto;
 import am.shoppingCommon.shoppingApplication.dto.orderDto.OrderItemDto;
 import am.shoppingCommon.shoppingApplication.dto.orderDto.OrderResponseDto;
@@ -18,41 +17,20 @@ public class OrderMapper {
         if (orderDto == null) {
             return null;
         }
-        Order order = new Order();
-        order.setDateTime(orderDto.getDateTime());
-        order.setTotalAmount(orderDto.getTotalAmount());
-        order.setStatus(orderDto.getStatus());
-        order.setUser(orderDto.getUser());
         List<OrderItemDto> orderItems = orderDto.getOrderItems();
-        List<OrderItem> orderItems1 = new ArrayList<>();
+        List<OrderItem> orderItemsNew = new ArrayList<>();
         for (OrderItemDto orderItem : orderItems) {
-            orderItems1.add(OrderItemMapper.orderItemDtoToOrderItem(orderItem));
+            orderItemsNew.add(OrderItemMapper.orderItemDtoToOrderItem(orderItem));
         }
-        order.setOrderItems(orderItems1);
-        return order;
+        return Order.builder()
+                .dateTime(orderDto.getDateTime())
+                .totalAmount(orderDto.getTotalAmount())
+                .status(orderDto.getStatus())
+                .user(UserMapper.userDtoToUser(orderDto.getUser()))
+                .orderItems(orderItemsNew)
+                .build();
     }
 
-
-    public static List<OrderResponseDto> findAll(List<Order> all) {
-        List<OrderResponseDto> orderDtoList = new ArrayList<>();
-        for (Order order : all) {
-            List<OrderItemDto> orderItemsDto = new ArrayList<>();
-            for (OrderItem orderItem : order.getOrderItems()) {
-                OrderItemDto orderItemDto = new OrderItemDto();
-                orderItemDto.setId(orderItem.getId());
-                orderItemDto.setProduct(ProductMapper.mapToResponseDto(orderItem.getProduct()));
-                orderItemDto.setCount(orderItem.getCount());
-                orderItemsDto.add(orderItemDto);
-            }
-            orderDtoList.add(OrderResponseDto.builder()
-                    .dateTime(order.getDateTime())
-                    .totalAmount(order.getTotalAmount())
-                    .orderItems(orderItemsDto)
-                    .dateTime(order.getDateTime())
-                    .build());
-        }
-        return orderDtoList;
-    }
 
     public static OrderDto orderToOrderDto(Order order) {
         if (order == null) {
@@ -69,7 +47,24 @@ public class OrderMapper {
                 .dateTime(order.getDateTime())
                 .totalAmount(order.getTotalAmount())
                 .status(order.getStatus())
-                .user(order.getUser())
+                .user(UserMapper.userToUserDto(order.getUser()))
+                .orderItems(orderItemDtos)
+                .build();
+    }
+
+    public static OrderResponseDto orderToOrderResponseDto(Order order) {
+        if (order == null) {
+            return null;
+        }
+        List<OrderItem> orderItems = order.getOrderItems();
+        List<OrderItemDto> orderItemDtos = new ArrayList<>();
+        for (OrderItem orderItem : orderItems) {
+            orderItemDtos.add(OrderItemMapper.orderItemToOrderItemDto(orderItem));
+        }
+        return OrderResponseDto
+                .builder()
+                .dateTime(order.getDateTime())
+                .totalAmount(order.getTotalAmount())
                 .orderItems(orderItemDtos)
                 .build();
     }
@@ -78,10 +73,18 @@ public class OrderMapper {
         if (orders == null) {
             return null;
         }
-        List<OrderDto> list = new ArrayList<>(orders.size());
-        for (Order order : orders) {
-            list.add(OrderMapper.orderToOrderDto(order));
+        return orders.stream()
+                .map(OrderMapper::orderToOrderDto)
+                .toList();
+    }
+
+    public static List<OrderResponseDto> findAll(List<Order> all) {
+        if (all == null) {
+            return null;
         }
-        return list;
+        return all.stream()
+                .map(OrderMapper::orderToOrderResponseDto)
+                .toList();
+
     }
 }
