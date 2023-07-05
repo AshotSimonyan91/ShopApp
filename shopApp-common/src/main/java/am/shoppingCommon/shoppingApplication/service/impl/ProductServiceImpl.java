@@ -139,7 +139,7 @@ public class ProductServiceImpl implements ProductService {
         return productDtoList;
     }
 
-    private List<Product> searchBooksByFilter(int page, int size, FilterProductDto filterProductDto) {
+    private List<Product> searchProductByFilter(int page, int size, FilterProductDto filterProductDto) {
         QProduct qProduct = QProduct.product;
         var query = new JPAQuery<Product>(entityManager);
         JPAQuery<Product> from = query.from(qProduct);

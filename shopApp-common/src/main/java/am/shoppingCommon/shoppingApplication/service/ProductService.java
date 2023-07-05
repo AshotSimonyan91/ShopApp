@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface ProductService {
+    List<Product> searchProductByFilter(int page, int size, FilterProductDto filterProductDto);
 
     Page<ProductDto> findAllProducts(Pageable pageable);
 
