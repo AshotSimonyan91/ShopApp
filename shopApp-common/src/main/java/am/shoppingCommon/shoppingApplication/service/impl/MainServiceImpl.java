@@ -2,6 +2,8 @@ package am.shoppingCommon.shoppingApplication.service.impl;
 
 
 
+import am.shoppingCommon.shoppingApplication.dto.productDto.CreateProductResponseDto;
+import am.shoppingCommon.shoppingApplication.mapper.ProductMapper;
 import am.shoppingCommon.shoppingApplication.service.MainService;
 import am.shoppingCommon.shoppingApplication.entity.Product;
 import am.shoppingCommon.shoppingApplication.repository.ProductRepository;
@@ -34,7 +36,8 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public List<Product> search(String value) {
-        return productRepository.findByNameContainingIgnoreCase(value);
+    public List<CreateProductResponseDto> search(String value) {
+        List<Product> byNameContainingIgnoreCase = productRepository.findByNameContainingIgnoreCase(value);
+        return ProductMapper.mapToListDto(byNameContainingIgnoreCase);
     }
 }

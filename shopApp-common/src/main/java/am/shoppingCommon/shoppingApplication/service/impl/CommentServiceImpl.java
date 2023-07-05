@@ -1,6 +1,7 @@
 package am.shoppingCommon.shoppingApplication.service.impl;
 
 
+import am.shoppingCommon.shoppingApplication.dto.commentDto.CommentDto;
 import am.shoppingCommon.shoppingApplication.service.CommentService;
 import am.shoppingCommon.shoppingApplication.dto.commentDto.CommentRequestDto;
 import am.shoppingCommon.shoppingApplication.dto.commentDto.CommentResponseDto;
@@ -38,16 +39,18 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void save(CommentRequestDto commentRequestDto, User user, int productId) {
+    public CommentDto save(CommentRequestDto commentRequestDto, User user, int productId) {
         if (commentRequestDto.getComment() != null && !commentRequestDto.getComment().equals("")) {
             Optional<Product> byId = productRepository.findById(productId);
             if (byId.isPresent()) {
                 Product product = byId.get();
                 Comment comment = CommentMapper.map(commentRequestDto, user);
                 comment.setProduct(product);
-                commentsRepository.save(comment);
+                Comment save = commentsRepository.save(comment);
+                return CommentMapper.toDto(save);
             }
         }
+        return null;
     }
 
     @Override
@@ -56,7 +59,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<Comment> findAllByLimit(int productId) {
-        return commentsRepository.findAllByProduct_Id(productId);
+    public List<CommentDto> findAllByLimit(int productId) {
+        List<Comment> allByProductId = commentsRepository.findAllByProduct_Id(productId);
+        return CommentMapper.mapToListCommentDto(allByProductId);
     }
 }

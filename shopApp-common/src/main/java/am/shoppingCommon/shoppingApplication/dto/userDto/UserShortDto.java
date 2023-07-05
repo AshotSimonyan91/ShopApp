@@ -3,6 +3,7 @@ package am.shoppingCommon.shoppingApplication.dto.userDto;
 import am.shoppingCommon.shoppingApplication.entity.Gender;
 import am.shoppingCommon.shoppingApplication.entity.Role;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class UserShortDto {
 
     private int id;

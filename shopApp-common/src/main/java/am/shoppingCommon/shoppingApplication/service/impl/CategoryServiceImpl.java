@@ -9,7 +9,6 @@ import am.shoppingCommon.shoppingApplication.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -29,8 +28,9 @@ public class CategoryServiceImpl implements CategoryService {
     private String imageUploadPath;
 
     @Override
-    public List<Category> findAllCategory() {
-        return categoryRepository.findAll();
+    public List<CategoryDto> findAllCategory() {
+        List<Category> all = categoryRepository.findAll();
+        return CategoryMapper.categoryDtoList(all);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category save(CategoryDto categoryDto, MultipartFile multipartFile) throws IOException {
+    public CategoryDto save(CategoryDto categoryDto, MultipartFile multipartFile) throws IOException {
         Category category = CategoryMapper.dtoToCategory(categoryDto);
         if (multipartFile != null && !multipartFile.isEmpty()) {
             String fileName = System.nanoTime() + "_" + multipartFile.getOriginalFilename();
@@ -47,17 +47,19 @@ public class CategoryServiceImpl implements CategoryService {
             multipartFile.transferTo(file);
             category.setImage(fileName);
         }
-        return categoryRepository.save(category);
+        Category save = categoryRepository.save(category);
+        return CategoryMapper.categoryToDto(save);
     }
 
     @Override
-    public Category save(CategoryDto categoryDto) {
+    public CategoryDto save(CategoryDto categoryDto) {
         Category category = CategoryMapper.dtoToCategory(categoryDto);
-        return categoryRepository.save(category);
+        Category save = categoryRepository.save(category);
+        return CategoryMapper.categoryToDto(save);
     }
 
     @Override
-    public Category save(int id, MultipartFile multipartFile) throws IOException {
+    public CategoryDto save(int id, MultipartFile multipartFile) throws IOException {
         Category category = categoryRepository.findById(id).orElse(null);
         if (multipartFile != null && !multipartFile.isEmpty()) {
             String fileName = System.nanoTime() + "_" + multipartFile.getOriginalFilename();
@@ -65,13 +67,18 @@ public class CategoryServiceImpl implements CategoryService {
             multipartFile.transferTo(file);
             category.setImage(fileName);
         }
-        return categoryRepository.save(category);
+        Category save = categoryRepository.save(category);
+        return CategoryMapper.categoryToDto(save);
     }
 
     @Override
-    public Category findById(Integer id) {
+    public CategoryDto findById(Integer id) {
         Optional<Category> byId = categoryRepository.findById(id);
-        return byId.get();
+        if (byId.isPresent()) {
+            Category category = byId.get();
+            return CategoryMapper.categoryToDto(category);
+        }
+        return null;
     }
 
     public Map<String, List<CategoryDto>> getParentCategoriesWithChildren() {

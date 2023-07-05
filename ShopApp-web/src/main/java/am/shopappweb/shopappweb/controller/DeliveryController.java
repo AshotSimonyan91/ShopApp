@@ -2,6 +2,7 @@ package am.shopappweb.shopappweb.controller;
 
 
 import am.shopappweb.shopappweb.security.CurrentUser;
+import am.shoppingCommon.shoppingApplication.dto.deliveryDto.DeliveryDto;
 import am.shoppingCommon.shoppingApplication.entity.Delivery;
 import am.shoppingCommon.shoppingApplication.entity.Status;
 import am.shoppingCommon.shoppingApplication.mapper.UserMapper;
@@ -55,7 +56,7 @@ public class DeliveryController {
                                     @AuthenticationPrincipal CurrentUser currentUser,
                                     @RequestParam("id") int id) {
         modelmap.addAttribute("user", userService.findByIdWithAddresses(currentUser.getUser().getId()));
-        modelmap.addAttribute("order", orderService.findById(id).orElse(null));
+        modelmap.addAttribute("order", orderService.findById(id));
         return "singleDeliveryOrderPage";
     }
 
@@ -67,7 +68,7 @@ public class DeliveryController {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(9);
         Pageable pageable = PageRequest.of(currentPage - 1, pageSize);
-        Page<Delivery> result = deliveryService.findAllByOrderStatus(Status.APPROVED, pageable);
+        Page<DeliveryDto> result = deliveryService.findAllByOrderStatus(Status.APPROVED, pageable);
         int totalPages = result.getTotalPages();
         if (totalPages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
@@ -78,7 +79,7 @@ public class DeliveryController {
         modelMap.addAttribute("totalPages", totalPages);
         modelMap.addAttribute("currentPage", currentPage);
         modelMap.addAttribute("deliveries1", result);
-        modelMap.addAttribute("user", UserMapper.userToUserDto(userService.findByIdWithAddresses(currentUser.getUser().getId())));
+        modelMap.addAttribute("user", userService.findByIdWithAddresses(currentUser.getUser().getId()));
         modelMap.addAttribute("deliveries2",
                 deliveryService.findAllByUserIdAndOrderStatus(currentUser.getUser().getId(), Status.IN_PROCESS, pageable).getContent());
         return "account-delivery";
@@ -94,7 +95,7 @@ public class DeliveryController {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(9);
         Pageable pageable = PageRequest.of(currentPage - 1, pageSize);
-        Page<Delivery> result = deliveryService.findAllByOrderStatus(Status.APPROVED, pageable);
+        Page<DeliveryDto> result = deliveryService.findAllByOrderStatus(Status.APPROVED, pageable);
         int totalPages = result.getTotalPages();
         if (totalPages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
@@ -105,7 +106,7 @@ public class DeliveryController {
         modelMap.addAttribute("totalPages", totalPages);
         modelMap.addAttribute("currentPage", currentPage);
         modelMap.addAttribute("deliveries1", result);
-        modelMap.addAttribute("user", UserMapper.userToUserDto(userService.findByIdWithAddresses(currentUser.getUser().getId())));
+        modelMap.addAttribute("user", userService.findByIdWithAddresses(currentUser.getUser().getId()));
         modelMap.addAttribute("deliveries2",
                 deliveryService.findAllByUserIdAndOrderStatus(currentUser.getUser().getId(), Status.IN_PROCESS, pageable).getContent());
         return "account-delivery";
@@ -120,7 +121,7 @@ public class DeliveryController {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(9);
         Pageable pageable = PageRequest.of(currentPage - 1, pageSize);
-        Page<Delivery> result = deliveryService.findAllByUserIdAndOrderStatus(currentUser.getUser().getId(), Status.IN_PROCESS, pageable);
+        Page<DeliveryDto> result = deliveryService.findAllByUserIdAndOrderStatus(currentUser.getUser().getId(), Status.IN_PROCESS, pageable);
         int totalPages = result.getTotalPages();
         if (totalPages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
@@ -131,7 +132,7 @@ public class DeliveryController {
         modelMap.addAttribute("totalPages", totalPages);
         modelMap.addAttribute("currentPage", currentPage);
         modelMap.addAttribute("deliveries2", result);
-        modelMap.addAttribute("user", UserMapper.userToUserDto(userService.findByIdWithAddresses(currentUser.getUser().getId())));
+        modelMap.addAttribute("user", userService.findByIdWithAddresses(currentUser.getUser().getId()));
         modelMap.addAttribute("deliveries1",
                 deliveryService.findAllByOrderStatus(Status.APPROVED, pageable).getContent());
         return "account-delivery-custom";
@@ -147,7 +148,7 @@ public class DeliveryController {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(9);
         Pageable pageable = PageRequest.of(currentPage - 1, pageSize);
-        Page<Delivery> result = deliveryService.findAllByUserIdAndOrderStatus(currentUser.getUser().getId(), Status.IN_PROCESS, pageable);
+        Page<DeliveryDto> result = deliveryService.findAllByUserIdAndOrderStatus(currentUser.getUser().getId(), Status.IN_PROCESS, pageable);
         int totalPages = result.getTotalPages();
         if (totalPages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
@@ -158,7 +159,7 @@ public class DeliveryController {
         modelMap.addAttribute("totalPages", totalPages);
         modelMap.addAttribute("currentPage", currentPage);
         modelMap.addAttribute("deliveries2", result);
-        modelMap.addAttribute("user",UserMapper.userToUserDto(userService.findByIdWithAddresses(currentUser.getUser().getId())));
+        modelMap.addAttribute("user", userService.findByIdWithAddresses(currentUser.getUser().getId()));
         modelMap.addAttribute("deliveries1",
                 deliveryService.findAllByOrderStatus(Status.APPROVED, pageable).getContent());
         return "account-delivery-custom";

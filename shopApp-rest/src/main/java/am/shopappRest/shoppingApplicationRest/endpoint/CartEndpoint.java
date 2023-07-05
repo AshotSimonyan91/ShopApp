@@ -28,9 +28,8 @@ public class CartEndpoint {
     }
 
     @GetMapping("/add/{productId}")
-    public ResponseEntity<?> saveCart(@PathVariable("productId") int id, @AuthenticationPrincipal CurrentUser currentUser) {
-        cartService.save(id, currentUser.getUser());
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<CartDto> saveCart(@PathVariable("productId") int id, @AuthenticationPrincipal CurrentUser currentUser) {
+        return ResponseEntity.ok(cartService.save(id, currentUser.getUser()));
     }
 
     @DeleteMapping("/remove")

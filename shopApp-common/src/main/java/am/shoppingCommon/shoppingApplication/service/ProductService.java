@@ -2,7 +2,7 @@ package am.shoppingCommon.shoppingApplication.service;
 
 
 import am.shoppingCommon.shoppingApplication.dto.productDto.CreateProductRequestDto;
-import am.shoppingCommon.shoppingApplication.entity.Product;
+import am.shoppingCommon.shoppingApplication.dto.productDto.ProductDto;
 import am.shoppingCommon.shoppingApplication.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,18 +13,18 @@ import java.util.List;
 
 public interface ProductService {
 
-    Page<Product> findAllProducts(Pageable pageable);
+    Page<ProductDto> findAllProducts(Pageable pageable);
 
-    Page<Product> findByName(String name,Pageable pageable);
+    Page<ProductDto> findByName(String name, Pageable pageable);
 
-    List<Product> findAll();
+    List<ProductDto> findAll();
 
     void remove(int id);
 
 
-    void save(CreateProductRequestDto product, MultipartFile[] files, User user) throws IOException;
-    Product save(CreateProductRequestDto product,User user);
-    Product save(int id,MultipartFile[] files) throws IOException;
+    ProductDto save(CreateProductRequestDto product, MultipartFile[] files, User user) throws IOException;
+    ProductDto save(CreateProductRequestDto product, User user);
+    ProductDto save(int id, MultipartFile[] files) throws IOException;
 
-    Product findById(int id);
+    ProductDto findById(int id);
 }

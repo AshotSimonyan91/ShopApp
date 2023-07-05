@@ -1,11 +1,12 @@
 package am.shoppingCommon.shoppingApplication.mapper;
 
 
-
 import am.shoppingCommon.shoppingApplication.dto.addressDto.AddressDto;
 import am.shoppingCommon.shoppingApplication.dto.userDto.*;
 import am.shoppingCommon.shoppingApplication.entity.Address;
 import am.shoppingCommon.shoppingApplication.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,147 +20,159 @@ public class UserMapper {
         if (dto == null) {
             return null;
         }
-        User user = new User();
-        user.setName(dto.getName());
-        user.setSurname(dto.getSurname());
-        user.setEmail(dto.getEmail());
-        user.setPassword(dto.getPassword());
-        return user;
+        return User.builder()
+                .name(dto.getName())
+                .surname(dto.getSurname())
+                .email(dto.getEmail())
+                .password(dto.getPassword())
+                .build();
     }
 
     public static User userRegisterDtoToUser(UserRegisterDto userRegisterDto) {
         if (userRegisterDto == null) {
             return null;
         }
-        User user = new User();
-        user.setName(userRegisterDto.getName());
-        user.setSurname(userRegisterDto.getSurname());
-        user.setEmail(userRegisterDto.getEmail());
-        user.setPassword(userRegisterDto.getPassword());
-        user.setGender(userRegisterDto.getGender());
-        return user;
+        return User.builder()
+                .name(userRegisterDto.getName())
+                .surname(userRegisterDto.getSurname())
+                .email(userRegisterDto.getEmail())
+                .password(userRegisterDto.getPassword())
+                .gender(userRegisterDto.getGender())
+                .build();
     }
 
     public static User userShortDtoToUser(UserShortDto userShortDto) {
         if (userShortDto == null) {
             return null;
         }
-        User user = new User();
-        user.setId(userShortDto.getId());
-        user.setName(userShortDto.getName());
-        user.setSurname(userShortDto.getSurname());
-        user.setEmail(userShortDto.getEmail());
-        user.setGender(userShortDto.getGender());
-        return user;
+        return User.builder()
+                .id(userShortDto.getId())
+                .name(userShortDto.getName())
+                .surname(userShortDto.getSurname())
+                .email(userShortDto.getEmail())
+                .gender(userShortDto.getGender())
+                .build();
     }
 
     public static User userDtoToUser(UserDto userDto) {
         if (userDto == null) {
             return null;
         }
-        User user = new User();
-        user.setId(userDto.getId());
-        user.setName(userDto.getName());
-        user.setSurname(userDto.getSurname());
-        user.setEmail(userDto.getEmail());
-        user.setGender(userDto.getGender());
-        user.setPhoneNumber(userDto.getPhoneNumber());
-        user.setProfilePic(userDto.getProfilePic());
-        user.setRole(userDto.getRole());
-        user.setGender(userDto.getGender());
         List<AddressDto> addresses = userDto.getAddresses();
-        List<Address> addresses1 = new ArrayList<>();
+        List<Address> addressesNew = new ArrayList<>();
         for (AddressDto address : addresses) {
-            addresses1.add(AddressMapper.addressDtoToAddress(address));
+            addressesNew.add(AddressMapper.addressDtoToAddress(address));
         }
-        user.setAddresses(addresses1);
-        return user;
+        return User.builder()
+                .id(userDto.getId())
+                .name(userDto.getName())
+                .surname(userDto.getSurname())
+                .email(userDto.getEmail())
+                .gender(userDto.getGender())
+                .phoneNumber(userDto.getPhoneNumber())
+                .profilePic(userDto.getProfilePic())
+                .role(userDto.getRole())
+                .enabled(userDto.isEnabled())
+                .token(userDto.getToken())
+                .addresses(addressesNew)
+                .build();
     }
+
     public static User userUpdateDtoToUser(UserUpdateDto userUpdateDto) {
         if (userUpdateDto == null) {
             return null;
         }
-        User user = new User();
-        user.setId(userUpdateDto.getId());
-        user.setName(userUpdateDto.getName());
-        user.setSurname(userUpdateDto.getSurname());
-        user.setEmail(userUpdateDto.getEmail());
-        user.setPhoneNumber(userUpdateDto.getPhoneNumber());
-        user.setProfilePic(userUpdateDto.getProfilePic());
-        return user;
+        return User.builder()
+                .id(userUpdateDto.getId())
+                .name(userUpdateDto.getName())
+                .surname(userUpdateDto.getSurname())
+                .email(userUpdateDto.getEmail())
+                .phoneNumber(userUpdateDto.getPhoneNumber())
+                .profilePic(userUpdateDto.getProfilePic())
+                .build();
     }
 
     public static UserRegisterDto userToUserRegisterDto(User user) {
         if (user == null) {
             return null;
         }
-        UserRegisterDto userRegisterDto = new UserRegisterDto();
-        userRegisterDto.setName(user.getName());
-        userRegisterDto.setSurname(user.getSurname());
-        userRegisterDto.setEmail(user.getEmail());
-        userRegisterDto.setPassword(user.getPassword());
-        userRegisterDto.setGender(user.getGender());
-        return userRegisterDto;
+        return UserRegisterDto.builder()
+                .name(user.getName())
+                .surname(user.getSurname())
+                .email(user.getEmail())
+                .password(user.getPassword())
+                .gender(user.getGender())
+                .build();
     }
 
     public static UserShortDto userToUserShortDto(User user) {
         if (user == null) {
             return null;
         }
-        UserShortDto userShortDto = new UserShortDto();
-        userShortDto.setId(user.getId());
-        userShortDto.setName(user.getName());
-        userShortDto.setSurname(user.getSurname());
-        userShortDto.setEmail(user.getEmail());
-        userShortDto.setProfilePic(user.getProfilePic());
-        userShortDto.setRole(user.getRole());
-        userShortDto.setGender(user.getGender());
-        return userShortDto;
+        return UserShortDto.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .surname(user.getSurname())
+                .email(user.getEmail())
+                .profilePic(user.getProfilePic())
+                .role(user.getRole())
+                .gender(user.getGender())
+                .build();
     }
 
     public static UserDto userToUserDto(User user) {
         if (user == null) {
             return null;
         }
-        UserDto userDto = new UserDto();
-        userDto.setId(user.getId());
-        userDto.setName(user.getName());
-        userDto.setSurname(user.getSurname());
-        userDto.setEmail(user.getEmail());
-        userDto.setGender(user.getGender());
-        userDto.setPhoneNumber(user.getPhoneNumber());
-        userDto.setProfilePic(user.getProfilePic());
-        userDto.setRole(user.getRole());
-        userDto.setGender(user.getGender());
         List<Address> addresses = user.getAddresses();
         List<AddressDto> addressDtos = new ArrayList<>();
         for (Address address : addresses) {
             addressDtos.add(AddressMapper.addressToAddressDto(address));
         }
-        userDto.setAddresses(addressDtos);
-        return userDto;
+        return UserDto.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .surname(user.getSurname())
+                .email(user.getEmail())
+                .gender(user.getGender())
+                .phoneNumber(user.getPhoneNumber())
+                .profilePic(user.getProfilePic())
+                .role(user.getRole())
+                .enabled(user.isEnabled())
+                .token(user.getToken())
+                .addresses(addressDtos)
+                .build();
     }
 
-    public static List<UserDto> userDtoListMap(List<User> userList){
-        if (userList == null){
+    public static List<UserDto> userDtoListMap(List<User> userList) {
+        if (userList == null) {
             return null;
         }
-        List<UserDto> userDtoList = new ArrayList<>();
-        for (User user : userList) {
-            userDtoList.add(UserMapper.userToUserDto(user));
-        }
-        return userDtoList;
+        return userList.stream()
+                .map(UserMapper::userToUserDto)
+                .toList();
     }
 
     public static User createUserRequestDtoMap(CreateUserRequestDto createUserRequestDto) {
-        if (createUserRequestDto == null){
+        if (createUserRequestDto == null) {
             return null;
         }
-        User user = new User();
-        user.setName(createUserRequestDto.getName());
-        user.setSurname(createUserRequestDto.getSurname());
-        user.setEmail(createUserRequestDto.getEmail());
-        user.setPassword(createUserRequestDto.getPassword());
-        return user;
+        return User.builder()
+                .name(createUserRequestDto.getName())
+                .surname(createUserRequestDto.getSurname())
+                .email(createUserRequestDto.getEmail())
+                .password(createUserRequestDto.getPassword())
+                .build();
+    }
+
+    public static Page<UserDto> mapPageToDto(Page<User> users) {
+        if (users == null) {
+            return null;
+        }
+        List<UserDto> list = users.getContent().stream()
+                .map(UserMapper::userToUserDto)
+                .toList();
+
+        return new PageImpl<>(list, users.getPageable(), users.getTotalElements());
     }
 }

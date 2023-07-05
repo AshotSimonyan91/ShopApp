@@ -28,10 +28,10 @@ public class AdminEndpoint {
 
     @GetMapping
     public ResponseEntity<AdminPageDto> adminPage(@AuthenticationPrincipal CurrentUser currentUser) {
-        AdminPageDto adminPageDto = new AdminPageDto();
-        adminPageDto.setUserDto(UserMapper.userToUserDto(userService.findById(currentUser.getUser().getId())));
-        adminPageDto.setOrderDtoList(orderService.ordersLimit10());
-        return ResponseEntity.ok(adminPageDto);
+        return ResponseEntity.ok(AdminPageDto.builder()
+                .userDto(userService.findById(currentUser.getUser().getId()))
+                .orderDtoList(orderService.ordersLimit10())
+                .build());
     }
 
     @DeleteMapping("remove")
@@ -42,19 +42,19 @@ public class AdminEndpoint {
 
     @GetMapping("update")
     public ResponseEntity<UserDto> updateUserPage(@AuthenticationPrincipal CurrentUser currentUser) {
-        return ResponseEntity.ok(UserMapper.userToUserDto(userService.findById(currentUser.getUser().getId())));
+        return ResponseEntity.ok(userService.findById(currentUser.getUser().getId()));
     }
 
     @GetMapping("/all")
     public ResponseEntity<AllUsersPageDto> allUsersPage(@AuthenticationPrincipal CurrentUser currentUser) {
-        AllUsersPageDto allUsersPageDto = new AllUsersPageDto();
-        allUsersPageDto.setCurrentUser(UserMapper.userToUserDto(userService.findById(currentUser.getUser().getId())));
-        allUsersPageDto.setUserDtoList(UserMapper.userDtoListMap(userService.findAll(Pageable.ofSize(9)).getContent()));
-        return ResponseEntity.ok(allUsersPageDto);
+        return ResponseEntity.ok(AllUsersPageDto.builder()
+                .currentUser(userService.findById(currentUser.getUser().getId()))
+                .userDtoList(userService.findAll(Pageable.ofSize(9)).getContent())
+                .build());
     }
 
     @GetMapping("/add/product")
     public ResponseEntity<List<CategoryDto>> addProductAdminPage() {
-        return ResponseEntity.ok(CategoryMapper.categoryDtoList(categoryService.findAllCategory()));
+        return ResponseEntity.ok(categoryService.findAllCategory());
     }
 }

@@ -2,6 +2,7 @@ package am.shoppingCommon.shoppingApplication.dto.userDto;
 
 import am.shoppingCommon.shoppingApplication.entity.Gender;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,6 +18,7 @@ import javax.validation.constraints.Size;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class UserRegisterDto {
 
     @NotNull
@@ -28,8 +30,8 @@ public class UserRegisterDto {
     @Email(regexp = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$",
             message = "Email is no valid")
     private String email;
-//    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$",
-//            message = "Should be min 8 character,include digit and capital letter")
+    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$",
+            message = "Should be min 8 character,include digit and capital letter")
     private String password;
     @NotNull(message = "Gender is required")
     private Gender gender;

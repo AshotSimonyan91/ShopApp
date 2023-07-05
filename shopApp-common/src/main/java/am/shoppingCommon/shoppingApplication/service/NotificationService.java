@@ -1,21 +1,21 @@
 package am.shoppingCommon.shoppingApplication.service;
 
 
+import am.shoppingCommon.shoppingApplication.dto.notificationDto.NotificationDto;
 import am.shoppingCommon.shoppingApplication.dto.notificationDto.NotificationRequestDto;
-import am.shoppingCommon.shoppingApplication.entity.Notification;
 
 import java.util.List;
 
 public interface NotificationService {
 
-    List<Notification> findAllByUserId(int id);
+    List<NotificationDto> findAllByUserId(int id);
 
     void remove(int id);
 
-    void save(NotificationRequestDto notificationRequestDto);
+    NotificationDto save(NotificationRequestDto notificationRequestDto);
 
-    List<Notification> notifications(int userId);
-    List<Notification> last3Notifications(int userId);
+    List<NotificationDto> notifications(int userId);
+    List<NotificationDto> last3Notifications(int userId);
 
 
 }

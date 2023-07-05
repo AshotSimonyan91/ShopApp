@@ -1,7 +1,7 @@
 package am.shoppingCommon.shoppingApplication.dto.commentDto;
 
+import am.shoppingCommon.shoppingApplication.dto.productDto.ProductDto;
 import am.shoppingCommon.shoppingApplication.dto.userDto.UserDto;
-import am.shoppingCommon.shoppingApplication.entity.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,5 +19,5 @@ public class CommentDto {
     private String comment;
     private LocalDateTime commentDateTime;
     private UserDto user;
-    private Product product;
+    private ProductDto product;
 }

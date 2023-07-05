@@ -1,7 +1,9 @@
 package am.shopappRest.shoppingApplicationRest.restDto.productRequestDto;
 
+import am.shoppingCommon.shoppingApplication.dto.commentDto.CommentDto;
 import am.shoppingCommon.shoppingApplication.dto.commentDto.CommentResponseDto;
 import am.shoppingCommon.shoppingApplication.dto.productDto.CreateProductResponseDto;
+import am.shoppingCommon.shoppingApplication.dto.productDto.ProductDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,6 +22,6 @@ import java.util.List;
 @Builder
 public class CurrentProductDto {
 
-    private CreateProductResponseDto createProductResponseDto;
-    private List<CommentResponseDto> commentDtos;
+    private ProductDto productDto;
+    private List<CommentDto> commentDtos;
 }

@@ -1,27 +1,26 @@
 package am.shoppingCommon.shoppingApplication.service;
 
 
+import am.shoppingCommon.shoppingApplication.dto.deliveryDto.DeliveryDto;
 import am.shoppingCommon.shoppingApplication.entity.Delivery;
 import am.shoppingCommon.shoppingApplication.entity.Status;
 import am.shoppingCommon.shoppingApplication.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.Optional;
-
 public interface DeliveryService {
 
-    Page<Delivery> findAllByUserIdAndOrderStatus(int id, Status status, Pageable pageable);
-    Page<Delivery> findAllByOrderStatus(Status status, Pageable pageable);
+    Page<DeliveryDto> findAllByUserIdAndOrderStatus(int id, Status status, Pageable pageable);
+    Page<DeliveryDto> findAllByOrderStatus(Status status, Pageable pageable);
 
-    Optional<Delivery> findById(int id);
+    DeliveryDto findById(int id);
 
     void remove(int id);
 
-    void save(int id);
-    void save(Delivery delivery);
+    DeliveryDto save(int id);
+    DeliveryDto save(Delivery delivery);
 
-    void chooseDelivery(User user, int id, Status status);
+    DeliveryDto chooseDelivery(User user, int id, Status status);
 
-    Delivery findByOrderId(int id);
+    DeliveryDto findByOrderId(int id);
 }

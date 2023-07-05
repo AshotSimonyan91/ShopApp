@@ -1,7 +1,10 @@
 package am.shoppingCommon.shoppingApplication.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
@@ -10,8 +13,11 @@ import java.time.LocalDateTime;
  * Created by Ashot Simonyan on 21.05.23.
  */
 
-@Entity
 @Data
+@Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "notification")
 public class Notification {
 

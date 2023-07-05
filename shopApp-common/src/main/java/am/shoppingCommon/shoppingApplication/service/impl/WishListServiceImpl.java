@@ -1,6 +1,8 @@
 package am.shoppingCommon.shoppingApplication.service.impl;
 
 
+import am.shoppingCommon.shoppingApplication.dto.wishlistDto.WishlistDto;
+import am.shoppingCommon.shoppingApplication.mapper.WishListMapper;
 import am.shoppingCommon.shoppingApplication.service.WishListService;
 import am.shoppingCommon.shoppingApplication.entity.Product;
 import am.shoppingCommon.shoppingApplication.entity.User;
@@ -28,13 +30,15 @@ public class WishListServiceImpl implements WishListService {
     private final ProductRepository productRepository;
 
     @Override
-    public List<WishList> findAll() {
-        return wishListRepository.findAll();
+    public List<WishlistDto> findAll() {
+        List<WishList> all = wishListRepository.findAll();
+        return WishListMapper.mapToListDto(all);
     }
 
     @Override
-    public WishList findByUserId(int id) {
-        return wishListRepository.findByUserId(id).orElse(null);
+    public WishlistDto findByUserId(int id) {
+        Optional<WishList> byUserId = wishListRepository.findByUserId(id);
+        return byUserId.map(WishListMapper::mapToDto).orElse(null);
     }
 
     @Override
@@ -60,17 +64,19 @@ public class WishListServiceImpl implements WishListService {
 
 
     @Override
-    public void save(WishList wishList) {
-        wishListRepository.save(wishList);
+    public WishlistDto save(WishList wishList) {
+        WishList save = wishListRepository.save(wishList);
+        return WishListMapper.mapToDto(save);
     }
 
     @Override
-    public Optional<WishList> findByProduct(Product product) {
-        return wishListRepository.findByProduct(product);
+    public WishlistDto findByProduct(Product product) {
+        Optional<WishList> byProduct = wishListRepository.findByProduct(product);
+        return byProduct.map(WishListMapper::mapToDto).orElse(null);
     }
 
     @Override
-    public void save(int productId, User user) {
+    public WishlistDto save(int productId, User user) {
         Optional<Product> byId = productRepository.findById(productId);
         if (byId.isPresent()) {
             Optional<WishList> byUserId = wishListRepository.findByUserId(user.getId());
@@ -80,14 +86,18 @@ public class WishListServiceImpl implements WishListService {
                 WishList wishList = new WishList();
                 wishList.setUser(user);
                 wishList.setProduct(products);
-                wishListRepository.save(wishList);
+                WishList save = wishListRepository.save(wishList);
+                return WishListMapper.mapToDto(save);
+
             } else {
                 WishList wishList = byUserId.get();
                 Set<Product> productset = wishList.getProduct();
                 productset.add(byId.get());
                 wishList.setProduct(productset);
-                wishListRepository.save(wishList);
+                WishList save = wishListRepository.save(wishList);
+                return WishListMapper.mapToDto(save);
             }
         }
+        return null;
     }
 }
