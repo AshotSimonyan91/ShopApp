@@ -3,6 +3,7 @@ package am.shoppingCommon.shoppingApplication.service.impl;
 
 import am.shoppingCommon.shoppingApplication.dto.deliveryDto.DeliveryDto;
 import am.shoppingCommon.shoppingApplication.mapper.DeliveryMapper;
+import am.shoppingCommon.shoppingApplication.repository.UserRepository;
 import am.shoppingCommon.shoppingApplication.service.DeliveryService;
 import am.shoppingCommon.shoppingApplication.entity.Delivery;
 import am.shoppingCommon.shoppingApplication.entity.Order;
@@ -27,6 +28,7 @@ public class DeliveryServiceImpl implements DeliveryService {
 
     private final DeliveryRepository deliveryRepository;
     private final OrderRepository orderRepository;
+    private final UserRepository userRepository;
 
 
     @Override
@@ -76,7 +78,8 @@ public class DeliveryServiceImpl implements DeliveryService {
     @Override
     public DeliveryDto chooseDelivery(User user, int id, Status status) {
         Delivery delivery = deliveryRepository.findById(id).orElse(null);
-        delivery.setUser(user);
+        Optional<User> byId = userRepository.findById(user.getId());
+        delivery.setUser(byId.orElse(null));
         delivery.getOrder().setStatus(status);
         Delivery save = deliveryRepository.save(delivery);
         return DeliveryMapper.mapToDto(save);

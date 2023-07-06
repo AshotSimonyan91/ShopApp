@@ -85,7 +85,7 @@ public class UserController {
     public String updateCurrentUser(@Valid @ModelAttribute UserUpdateDto userUpdateDto,
                                     @AuthenticationPrincipal CurrentUser currentUser,
                                     @RequestParam("profile_pic") MultipartFile multipartFile) throws IOException {
-        userService.updateUser(multipartFile, UserMapper.userUpdateDtoToUser(userUpdateDto), currentUser.getUser());
+        userService.updateUser(multipartFile, userUpdateDto, currentUser.getUser());
         return "redirect:/user";
     }
 
@@ -173,7 +173,7 @@ public class UserController {
             modelmap.addAttribute("user", userService.findByIdWithAddresses(currentUser.getUser().getId()));
             return "account-address";
         }
-        userService.save(UserMapper.userDtoToUser(userService.saveAddress(currentUser.getUser(), addressDto)));
+        userService.saveAddress(currentUser.getUser(), addressDto);
         modelmap.addAttribute("user", userService.findByIdWithAddresses(currentUser.getUser().getId()));
         return "account-address";
     }

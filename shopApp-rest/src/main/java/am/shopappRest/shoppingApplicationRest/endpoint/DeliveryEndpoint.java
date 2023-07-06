@@ -6,11 +6,7 @@ import am.shopappRest.shoppingApplicationRest.security.CurrentUser;
 import am.shoppingCommon.shoppingApplication.dto.deliveryDto.DeliveryDto;
 import am.shoppingCommon.shoppingApplication.dto.orderDto.OrderDto;
 import am.shoppingCommon.shoppingApplication.dto.userDto.UserDto;
-import am.shoppingCommon.shoppingApplication.entity.Delivery;
-import am.shoppingCommon.shoppingApplication.entity.Order;
 import am.shoppingCommon.shoppingApplication.entity.Status;
-import am.shoppingCommon.shoppingApplication.entity.User;
-import am.shoppingCommon.shoppingApplication.mapper.OrderMapper;
 import am.shoppingCommon.shoppingApplication.mapper.UserMapper;
 import am.shoppingCommon.shoppingApplication.service.DeliveryService;
 import am.shoppingCommon.shoppingApplication.service.OrderService;
@@ -23,8 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/delivery")

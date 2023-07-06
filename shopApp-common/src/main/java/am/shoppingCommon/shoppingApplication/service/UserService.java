@@ -5,6 +5,7 @@ import am.shoppingCommon.shoppingApplication.dto.addressDto.AddressDto;
 import am.shoppingCommon.shoppingApplication.dto.userDto.UpdatePasswordDto;
 import am.shoppingCommon.shoppingApplication.dto.userDto.UserDto;
 import am.shoppingCommon.shoppingApplication.dto.userDto.UserRegisterDto;
+import am.shoppingCommon.shoppingApplication.dto.userDto.UserUpdateDto;
 import am.shoppingCommon.shoppingApplication.entity.User;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.data.domain.Page;
@@ -20,7 +21,7 @@ public interface UserService {
 
     Page<UserDto> findAll(Pageable pageable);
 
-    UserDto updateUser(MultipartFile multipartFile, User user, User currentUser) throws IOException;
+    UserDto updateUser(MultipartFile multipartFile, UserUpdateDto userUpdateDto, User currentUser) throws IOException;
     UserDto updateUser(User user, User currentUser);
     UserDto updateUser(MultipartFile multipartFile, User currentUser) throws IOException;
 

@@ -3,9 +3,7 @@ package am.shopappweb.shopappweb.controller;
 
 import am.shopappweb.shopappweb.security.CurrentUser;
 import am.shoppingCommon.shoppingApplication.dto.deliveryDto.DeliveryDto;
-import am.shoppingCommon.shoppingApplication.entity.Delivery;
 import am.shoppingCommon.shoppingApplication.entity.Status;
-import am.shoppingCommon.shoppingApplication.mapper.UserMapper;
 import am.shoppingCommon.shoppingApplication.service.DeliveryService;
 import am.shoppingCommon.shoppingApplication.service.OrderService;
 import am.shoppingCommon.shoppingApplication.service.UserService;
@@ -60,7 +58,7 @@ public class DeliveryController {
         return "singleDeliveryOrderPage";
     }
 
-    @GetMapping("")
+    @GetMapping
     public String deliveryPage(@AuthenticationPrincipal CurrentUser currentUser,
                                @RequestParam("page") Optional<Integer> page,
                                @RequestParam("size") Optional<Integer> size,
