@@ -2,6 +2,7 @@ package am.shoppingCommon.shoppingApplication.service.impl;
 
 
 import am.shoppingCommon.shoppingApplication.dto.userDto.UserDto;
+import am.shoppingCommon.shoppingApplication.dto.userDto.UserUpdateDto;
 import am.shoppingCommon.shoppingApplication.service.AddressService;
 import am.shoppingCommon.shoppingApplication.service.UserService;
 import am.shoppingCommon.shoppingApplication.dto.addressDto.AddressDto;
@@ -70,11 +71,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto saveAddress(User user, AddressDto addressDto) {
-        User byId = userRepository.findById(user.getId()).orElse(null);
-        List<Address> addresses = byId.getAddresses();
+        User userFromDb = userRepository.findById(user.getId()).orElse(null);
+        List<Address> addresses = userFromDb.getAddresses();
         addresses.add(AddressMapper.addressDtoToAddress(addressDto));
-        byId.setAddresses(addresses);
-        return UserMapper.userToUserDto(byId);
+        userFromDb.setAddresses(addresses);
+        userRepository.save(userFromDb);
+        return UserMapper.userToUserDto(userFromDb);
     }
 
     @Override
@@ -108,8 +110,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserDto updateUser(MultipartFile multipartFile, User user, User currentUser) throws IOException {
+    public UserDto updateUser(MultipartFile multipartFile, UserUpdateDto userUpdateDto, User currentUser) throws IOException {
         Optional<User> userOptional = userRepository.findById(currentUser.getId());
+        User user = UserMapper.userUpdateDtoToUser(userUpdateDto);
         if (userOptional.isPresent()) {
             User userOldData = userOptional.get();
             if (user.getName() == null || user.getName().equals("")) {
@@ -136,6 +139,7 @@ public class UserServiceImpl implements UserService {
             user.setEnabled(true);
             user.setId(userOldData.getId());
             user.setPassword(userOldData.getPassword());
+            user.setAddresses(userOldData.getAddresses());
             if (multipartFile != null && !multipartFile.isEmpty()) {
                 String fileName = System.nanoTime() + "_" + multipartFile.getOriginalFilename();
                 File file = new File(imageUploadPath + fileName);

@@ -83,14 +83,14 @@ public class CategoryServiceImpl implements CategoryService {
 
     public Map<String, List<CategoryDto>> getParentCategoriesWithChildren() {
         List<Category> categories = categoryRepository.findAll();
-        List<CategoryDto> categoryDtos = new ArrayList<>();
+        List<CategoryDto> categoryDtoList = new ArrayList<>();
         for (Category category : categories) {
-            categoryDtos.add(CategoryMapper.categoryToDto(category));
+            categoryDtoList.add(CategoryMapper.categoryToDto(category));
         }
 
         Map<String, List<CategoryDto>> parentCategoriesMap = new HashMap<>();
 
-        for (CategoryDto categoryDto : categoryDtos) {
+        for (CategoryDto categoryDto : categoryDtoList) {
             String parentCategory = categoryDto.getParentCategory();
             if (!parentCategoriesMap.containsKey(parentCategory)) {
                 parentCategoriesMap.put(parentCategory, new ArrayList<>());

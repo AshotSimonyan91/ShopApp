@@ -9,6 +9,7 @@ import am.shoppingCommon.shoppingApplication.entity.QProduct;
 import am.shoppingCommon.shoppingApplication.entity.User;
 import am.shoppingCommon.shoppingApplication.mapper.ProductMapper;
 import am.shoppingCommon.shoppingApplication.repository.ProductRepository;
+import am.shoppingCommon.shoppingApplication.repository.UserRepository;
 import am.shoppingCommon.shoppingApplication.service.ProductService;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
@@ -45,6 +46,8 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
 
+    private final UserRepository userRepository;
+
     @Override
     public Page<ProductDto> findAllProducts(Pageable pageable) {
         Page<Product> all = productRepository.findAll(pageable);
@@ -75,15 +78,18 @@ public class ProductServiceImpl implements ProductService {
         Product product = ProductMapper.map(productRequestDto);
         product.getCategories().removeIf(category -> category.getId() == 0);
         List<Image> imageList = new ArrayList<>();
-        product.setUser(user);
-        for (MultipartFile multipartFile : files) {
-            if (multipartFile != null && !multipartFile.isEmpty()) {
-                String fileName = System.nanoTime() + "_" + multipartFile.getOriginalFilename();
-                File file = new File(imageUploadPath + fileName);
-                multipartFile.transferTo(file);
-                Image image = new Image();
-                image.setImage(fileName);
-                imageList.add(image);
+        Optional<User> byId = userRepository.findById(user.getId());
+        if (byId.isPresent()) {
+            product.setUser(byId.get());
+            for (MultipartFile multipartFile : files) {
+                if (multipartFile != null && !multipartFile.isEmpty()) {
+                    String fileName = System.nanoTime() + "_" + multipartFile.getOriginalFilename();
+                    File file = new File(imageUploadPath + fileName);
+                    multipartFile.transferTo(file);
+                    Image image = new Image();
+                    image.setImage(fileName);
+                    imageList.add(image);
+                }
             }
         }
         product.setImages(imageList);
@@ -126,6 +132,12 @@ public class ProductServiceImpl implements ProductService {
     public ProductDto findById(int id) {
         Optional<Product> byId = productRepository.findById(id);
         return byId.map(ProductMapper::mapToDto).orElse(null);
+    }
+
+    @Override
+    public Page<ProductDto> findByCategory(Pageable pageable, String category) {
+        Page<Product> products = productRepository.findAllByCategoriesName(category, pageable);
+        return ProductMapper.mapPageToDto(products);
     }
 
     @Override

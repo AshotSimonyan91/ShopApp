@@ -2,13 +2,8 @@ package am.shoppingCommon.shoppingApplication.service;
 
 
 import am.shoppingCommon.shoppingApplication.dto.productDto.CreateProductRequestDto;
-
 import am.shoppingCommon.shoppingApplication.dto.productDto.FilterProductDto;
 import am.shoppingCommon.shoppingApplication.dto.productDto.ProductDto;
-import am.shoppingCommon.shoppingApplication.entity.Product;
-
-import am.shoppingCommon.shoppingApplication.dto.productDto.ProductDto;
-
 import am.shoppingCommon.shoppingApplication.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,4 +31,5 @@ public interface ProductService {
 
     ProductDto findById(int id);
 
+    Page<ProductDto> findByCategory(Pageable pageable,String Category);
 }

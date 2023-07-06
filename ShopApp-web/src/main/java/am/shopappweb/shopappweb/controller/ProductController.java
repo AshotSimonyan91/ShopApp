@@ -1,12 +1,9 @@
 package am.shopappweb.shopappweb.controller;
 
 
-import am.shoppingCommon.shoppingApplication.dto.categoryDto.CategoryDto;
+import am.shopappweb.shopappweb.security.CurrentUser;
 import am.shoppingCommon.shoppingApplication.dto.productDto.CreateProductRequestDto;
 import am.shoppingCommon.shoppingApplication.dto.productDto.ProductDto;
-import am.shoppingCommon.shoppingApplication.entity.Product;
-import am.shoppingCommon.shoppingApplication.mapper.CategoryMapper;
-import am.shopappweb.shopappweb.security.CurrentUser;
 import am.shoppingCommon.shoppingApplication.service.CategoryService;
 import am.shoppingCommon.shoppingApplication.service.CommentService;
 import am.shoppingCommon.shoppingApplication.service.ProductService;
@@ -14,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -85,6 +83,29 @@ public class ProductController {
         modelmap.addAttribute("comments", commentService.findAllByLimit(id));
         return "singleProductPage";
     }
+
+    @GetMapping("/search/{category}")
+    public String getProductByCategoryName(ModelMap modelMap, @PathVariable("category") String category,
+                                       @RequestParam("page") Optional<Integer> page,
+                                       @RequestParam("size") Optional<Integer> size) {
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(9);
+        Sort sort = Sort.by(Sort.Direction.DESC, "id");
+        Pageable pageable = PageRequest.of(currentPage - 1, pageSize, sort);
+        Page<ProductDto> result = productService.findByCategory(pageable, category);
+        int totalPages = result.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+            modelMap.addAttribute("pageNumbers", pageNumbers);
+        }
+        modelMap.addAttribute("totalPages", totalPages);
+        modelMap.addAttribute("currentPage", currentPage);
+        modelMap.addAttribute("products", result);
+        return "products";
+    }
+
 
     @GetMapping("/add")
     public String addProductPage(ModelMap modelMap) {

@@ -3,6 +3,7 @@ package am.shoppingCommon.shoppingApplication.service.impl;
 
 import am.shoppingCommon.shoppingApplication.dto.wishlistDto.WishlistDto;
 import am.shoppingCommon.shoppingApplication.mapper.WishListMapper;
+import am.shoppingCommon.shoppingApplication.repository.UserRepository;
 import am.shoppingCommon.shoppingApplication.service.WishListService;
 import am.shoppingCommon.shoppingApplication.entity.Product;
 import am.shoppingCommon.shoppingApplication.entity.User;
@@ -28,6 +29,7 @@ public class WishListServiceImpl implements WishListService {
 
     private final WishListRepository wishListRepository;
     private final ProductRepository productRepository;
+    private final UserRepository userRepository;
 
     @Override
     public List<WishlistDto> findAll() {
@@ -84,7 +86,8 @@ public class WishListServiceImpl implements WishListService {
                 Set<Product> products = new HashSet<>();
                 products.add(byId.get());
                 WishList wishList = new WishList();
-                wishList.setUser(user);
+                Optional<User> userOptional = userRepository.findById(user.getId());
+                wishList.setUser(userOptional.orElse(null));
                 wishList.setProduct(products);
                 WishList save = wishListRepository.save(wishList);
                 return WishListMapper.mapToDto(save);

@@ -25,6 +25,7 @@ public class Product {
     private String name;
     @Column(nullable = false)
     private String productCode;
+    private String brand;
     @Column(columnDefinition = "text")
     private String description;
     @Column(nullable = false)

@@ -273,6 +273,10 @@
         <addPrimaryKey constraintName="pk_wishlist_product" tableName="wishlist_product"
                        columnNames="wishlist_id,product_id"/>
     </changeSet>
-
+     <changeSet id="2" author="HrantMeselyan">
+         <addColumn tableName="product">
+             <column name="brand" type="VARCHAR(255)"/>
+         </addColumn>
+     </changeSet>
 
 </databaseChangeLog>

@@ -502,7 +502,7 @@
                     <div class="col-lg-6 d-lg-block collapse h-search" id="header_06_search">
                         <form action="/search" method="get"><!-- Search input -->
                             <input class="form-control" type="text" name="value"
-                                                           placeholder="What are you looking for?">
+                                   placeholder="What are you looking for?">
                             <!-- Search button -->
                             <button type="submit" class="btn shadow-none"><i class="fi-search"></i></button>
                         </form>
@@ -2027,8 +2027,9 @@
                     <div class="col-sm-6 col-md-4 col-lg-3">
                         <div class="p-2 rounded d-flex align-items-center position-relative hover-scale"
                              style="background-color: #eee;">
-                            <div class="col px-4"><h5 class="mb-0 text-dark"><a href="index-08.html#"
-                                                                                class="stretched-link text-reset">Accessories</a>
+                            <div class="col px-4"><h5 class="mb-0 text-dark"><a
+                                    th:href="@{/products/search/{category}(category='accessories')}"
+                                    class="stretched-link text-reset">Accessories</a>
                             </h5><span>2 items</span></div>
                             <div class="avatar avatar-xl hover-scale-in"><img height="80"
                                                                               src="/img/electronic/accessories.png"
