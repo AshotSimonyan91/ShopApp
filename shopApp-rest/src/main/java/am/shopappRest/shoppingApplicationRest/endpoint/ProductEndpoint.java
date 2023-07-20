@@ -64,7 +64,6 @@ public class ProductEndpoint {
     public ResponseEntity<CurrentProductDto> getCurrentProduct(@PathVariable("id") int id) {
         CurrentProductDto currentProductDto = new CurrentProductDto();
         currentProductDto.setProductDto(productService.findById(id));
-        currentProductDto.setCommentDtos(commentService.findAllByLimit(id));
         return ResponseEntity.ok(currentProductDto);
     }
 
