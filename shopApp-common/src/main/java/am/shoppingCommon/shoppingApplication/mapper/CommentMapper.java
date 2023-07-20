@@ -10,14 +10,12 @@ import am.shoppingCommon.shoppingApplication.entity.User;
 import java.util.List;
 
 public class CommentMapper {
+
     public static Comment map(CommentRequestDto commentRequestDto, User user) {
-        if (commentRequestDto == null) {
-            return null;
-        }
-        return Comment.builder()
-                .comment(commentRequestDto.getComment())
-                .user(user)
-                .build();
+        Comment comment = new Comment();
+        comment.setComment(commentRequestDto.getComment());
+        comment.setUser(user);
+        return comment;
     }
 
     public static List<CommentResponseDto> map(List<Comment> comments) {

@@ -2,6 +2,7 @@ package am.shoppingCommon.shoppingApplication.service.impl;
 
 
 import am.shoppingCommon.shoppingApplication.dto.commentDto.CommentDto;
+import am.shoppingCommon.shoppingApplication.repository.UserRepository;
 import am.shoppingCommon.shoppingApplication.service.CommentService;
 import am.shoppingCommon.shoppingApplication.dto.commentDto.CommentRequestDto;
 import am.shoppingCommon.shoppingApplication.dto.commentDto.CommentResponseDto;
@@ -26,26 +27,22 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentsRepository commentsRepository;
     private final ProductRepository productRepository;
-
-
-    @Override
-    public List<CommentResponseDto> findAllCategory() {
-        return CommentMapper.map(commentsRepository.findAll());
-    }
+    private final UserRepository userRepository;
 
     @Override
     public void remove(int id) {
         commentsRepository.deleteById(id);
     }
 
-    @Override
     public CommentDto save(CommentRequestDto commentRequestDto, User user, int productId) {
         if (commentRequestDto.getComment() != null && !commentRequestDto.getComment().equals("")) {
             Optional<Product> byId = productRepository.findById(productId);
             if (byId.isPresent()) {
                 Product product = byId.get();
-                Comment comment = CommentMapper.map(commentRequestDto, user);
+                Optional<User> userOptional = userRepository.findById(user.getId());
+                Comment comment = CommentMapper.map(commentRequestDto, userOptional.orElse(null));
                 comment.setProduct(product);
+                commentsRepository.save(comment);
                 Comment save = commentsRepository.save(comment);
                 return CommentMapper.toDto(save);
             }
@@ -54,13 +51,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentResponseDto> findAllByProductId(int id) {
-        return CommentMapper.map(commentsRepository.findAllByProduct_Id(id));
-    }
-
-    @Override
-    public List<CommentDto> findAllByLimit(int productId) {
+    public List<Comment> findAllByLimit(int productId) {
         List<Comment> allByProductId = commentsRepository.findAllByProduct_Id(productId);
-        return CommentMapper.mapToListCommentDto(allByProductId);
+        return allByProductId;
     }
 }
