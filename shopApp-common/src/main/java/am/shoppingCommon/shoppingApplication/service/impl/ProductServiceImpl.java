@@ -145,7 +145,7 @@ public class ProductServiceImpl implements ProductService {
                                    FilterProductDto filterProductDto) {
         List<Product> all = searchProductByFilter(page, size, filterProductDto);
 
-        List<ProductDto> productDtoList = ProductMapper.mapProductList(all);
+        List<ProductDto> productDtoList = ProductMapper.mapToListProductDto(all);
         return productDtoList;
     }
 
@@ -154,14 +154,13 @@ public class ProductServiceImpl implements ProductService {
         var query = new JPAQuery<Product>(entityManager);
         JPAQuery<Product> from = query.from(qProduct);
 
-        if (filterProductDto.getSerialNumber() != null &&
-                !filterProductDto.getSerialNumber().isEmpty()) {
-            from.where(qProduct.productCode.contains(filterProductDto.getSerialNumber()));
-        }
-
         if (filterProductDto.getMinPrice() > 0 && filterProductDto.getMaxPrice() > 0) {
             from.where(qProduct.price.gt(filterProductDto.getMinPrice())
                     .and(qProduct.price.lt(filterProductDto.getMaxPrice())));
+        }
+        if (filterProductDto.getProductCode() != null &&
+                !filterProductDto.getProductCode().isEmpty()) {
+            from.where(qProduct.productCode.contains(filterProductDto.getProductCode()));
         }
 
         if (page > 0) {

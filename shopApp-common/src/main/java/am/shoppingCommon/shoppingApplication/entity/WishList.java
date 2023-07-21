@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -31,5 +32,5 @@ public class WishList {
     @JoinTable(name = "wishlist_product",
             joinColumns = @JoinColumn(name = "wishlist_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private Set<Product> product;
+    private Set<Product> product = new HashSet<>();
 }
