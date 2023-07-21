@@ -1,5 +1,6 @@
 package am.shoppingCommon.shoppingApplication.dto.productDto;
 
+import am.shoppingCommon.shoppingApplication.entity.Category;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +15,7 @@ public class FilterProductDto {
     private String productCode;
     private double minPrice;
     private double maxPrice;
-//    private List<Integer> categoryIds;
+    private Category category;
     private String sortBy;
     private String sortDirection;
 }

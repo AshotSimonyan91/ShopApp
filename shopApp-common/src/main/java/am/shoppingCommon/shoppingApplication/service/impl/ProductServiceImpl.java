@@ -154,6 +154,10 @@ public class ProductServiceImpl implements ProductService {
         var query = new JPAQuery<Product>(entityManager);
         JPAQuery<Product> from = query.from(qProduct);
 
+        if (filterProductDto.getBrand() != null &&
+                !filterProductDto.getBrand().isEmpty()) {
+            from.where(qProduct.brand.contains(filterProductDto.getBrand()));
+        }
         if (filterProductDto.getMinPrice() > 0 && filterProductDto.getMaxPrice() > 0) {
             from.where(qProduct.price.gt(filterProductDto.getMinPrice())
                     .and(qProduct.price.lt(filterProductDto.getMaxPrice())));
