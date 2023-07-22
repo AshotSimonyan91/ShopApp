@@ -8,6 +8,7 @@ import am.shoppingCommon.shoppingApplication.entity.*;
 import am.shoppingCommon.shoppingApplication.mapper.OrderMapper;
 import am.shoppingCommon.shoppingApplication.repository.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ import java.util.Optional;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class OrderServiceImpl implements OrderService {
     private final UserRepository userRepository;
     private final OrderRepository orderRepository;
@@ -41,12 +43,6 @@ public class OrderServiceImpl implements OrderService {
         Pageable pageable = PageRequest.of(0, 15);
         List<Order> last15Orders = orderRepository.findLast15OrdersByUserId(id, pageable);
         return OrderMapper.listOrderToListOrderDto(last15Orders);
-    }
-
-    @Override
-    public OrderDto findById(int id) {
-        Optional<Order> byId = orderRepository.findById(id);
-        return byId.map(OrderMapper::orderToOrderDto).orElse(null);
     }
 
     @Override
@@ -94,6 +90,7 @@ public class OrderServiceImpl implements OrderService {
 
                 orderItemRepository.deleteByProduct_IdAndId(productId, orderItemId);
             }
+            log.info("orderItem is deleted from order by ID: {}" ,orderItem.getOrder().getId());
         }
     }
 
@@ -110,12 +107,14 @@ public class OrderServiceImpl implements OrderService {
                 Order order = createNewOrder(user, userId);
                 Order save = orderRepository.save(order);
                 cartRepository.deleteByUserId(userId);
+                log.info("new order is created by ID: {}" ,save.getId());
                 return OrderMapper.orderToOrderDto(save);
             } else {
                 Order existingOrder = byUserIdAndStatus.get();
                 updateExistingOrder(existingOrder, userId);
                 Order save = orderRepository.save(existingOrder);
                 cartRepository.deleteByUserId(userId);
+                log.info("order is updated by ID: {}" ,save.getId());
                 return OrderMapper.orderToOrderDto(save);
             }
         }

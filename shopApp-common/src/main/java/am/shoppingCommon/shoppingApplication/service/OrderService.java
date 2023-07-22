@@ -20,8 +20,6 @@ public interface OrderService {
 
     List<OrderDto> findAllByUserId(int id);
 
-    OrderDto findById(int id);
-
     List<OrderDto> ordersLimit10();
 
     OrderDto orderById(int id);

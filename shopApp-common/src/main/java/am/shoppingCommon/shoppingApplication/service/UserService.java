@@ -22,7 +22,6 @@ public interface UserService {
     Page<UserDto> findAll(Pageable pageable);
 
     UserDto updateUser(MultipartFile multipartFile, UserUpdateDto userUpdateDto, User currentUser) throws IOException;
-    UserDto updateUser(User user, User currentUser);
     UserDto updateUser(MultipartFile multipartFile, User currentUser) throws IOException;
 
     boolean changeUserPasswordTokenVerify(String email, String token);
@@ -32,8 +31,6 @@ public interface UserService {
     void remove(int id);
 
     UserDto save(UserRegisterDto user);
-
-    UserDto save(User user);
 
     UserDto saveAddress(User user, AddressDto addressDto);
 

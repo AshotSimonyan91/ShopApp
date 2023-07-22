@@ -16,6 +16,7 @@ import am.shoppingCommon.shoppingApplication.service.MailService;
 import am.shoppingCommon.shoppingApplication.service.NotificationService;
 import am.shoppingCommon.shoppingApplication.service.OrderService;
 import am.shoppingCommon.shoppingApplication.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
@@ -59,16 +59,13 @@ public class UserEndpoint {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserShortDto> register(@RequestBody UserRegisterDto userRegisterDto) {
+    public ResponseEntity<UserDto> register(@RequestBody UserRegisterDto userRegisterDto) {
         UserDto byEmail = userService.findByEmail(userRegisterDto.getEmail());
         if (byEmail != null) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
-        User user = UserMapper.userRegisterDtoToUser(userRegisterDto);
-        user.setPassword(passwordEncoder.encode(userRegisterDto.getPassword()));
-        user.setRole(Role.USER);
-        userService.save(user);
-        return ResponseEntity.ok(UserMapper.userToUserShortDto(user));
+        userService.save(userRegisterDto);
+        return ResponseEntity.ok(UserMapper.userRegisterDtoToUerDto(userRegisterDto));
     }
 
     @GetMapping()
@@ -78,19 +75,19 @@ public class UserEndpoint {
 
     @PutMapping("/updatePassword")
     public ResponseEntity<UserDto> updatePassword(@Valid @RequestBody UpdatePasswordDto updatePasswordDto,
-                                            @AuthenticationPrincipal CurrentUser currentUser) {
+                                                  @AuthenticationPrincipal CurrentUser currentUser) {
         return ResponseEntity.ok(userService.updatePassword(currentUser.getUser(), updatePasswordDto));
     }
 
     @PutMapping("/updateUserData")
     public ResponseEntity<UserDto> updateCurrentUserData(@Valid @RequestBody UserUpdateDto userUpdateDto,
-                                                              @AuthenticationPrincipal CurrentUser currentUser){
-        return ResponseEntity.ok(userService.updateUser(UserMapper.userUpdateDtoToUser(userUpdateDto), currentUser.getUser()));
+                                                         @AuthenticationPrincipal CurrentUser currentUser, @RequestParam("profile_pic") MultipartFile multipartFile) throws IOException {
+        return ResponseEntity.ok(userService.updateUser(multipartFile,userUpdateDto,currentUser.getUser()));
     }
 
     @PostMapping("/updateUserData/image")
     public ResponseEntity<UserDto> updateCurrentUserImage(@AuthenticationPrincipal CurrentUser currentUser,
-                                                              @RequestParam("profile_pic") MultipartFile multipartFile) throws IOException {
+                                                          @RequestParam("profile_pic") MultipartFile multipartFile) throws IOException {
         UserDto body = userService.updateUser(multipartFile, currentUser.getUser());
         body.setProfilePic(siteUrl + "/getImage?profilePic=" + body.getProfilePic());
         return ResponseEntity.ok(body);
@@ -142,7 +139,7 @@ public class UserEndpoint {
     @PostMapping("/address")
     public ResponseEntity<UserDto> addUserAddress(@AuthenticationPrincipal CurrentUser currentUser,
                                                   @RequestBody AddressDto addressDto) {
-        return ResponseEntity.ok(userService.save(UserMapper.userDtoToUser(userService.saveAddress(currentUser.getUser(), addressDto))));
+        return ResponseEntity.ok(userService.saveAddress(currentUser.getUser(), addressDto));
     }
 
     @DeleteMapping("/address/delete")

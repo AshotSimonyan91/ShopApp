@@ -25,10 +25,6 @@ public interface ProductService {
 
     ProductDto save(CreateProductRequestDto product, MultipartFile[] files, User user) throws IOException;
 
-    ProductDto save(CreateProductRequestDto product, User user);
-
-    ProductDto save(int id, MultipartFile[] files) throws IOException;
-
     ProductDto findById(int id);
 
     Page<ProductDto> findByCategory(Pageable pageable,String Category);

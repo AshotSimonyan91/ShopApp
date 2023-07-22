@@ -15,6 +15,7 @@ import am.shoppingCommon.shoppingApplication.mapper.AddressMapper;
 import am.shoppingCommon.shoppingApplication.mapper.UserMapper;
 import am.shoppingCommon.shoppingApplication.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,6 +35,7 @@ import java.util.UUID;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -58,15 +60,10 @@ public class UserServiceImpl implements UserService {
             user.setEnabled(false);
             user.setToken(UUID.randomUUID().toString());
             User savedUser = userRepository.save(user);
+            log.info("User is created by ID: {}", savedUser.getId());
             return UserMapper.userToUserDto(savedUser);
         }
         return null;
-    }
-
-    @Override
-    public UserDto save(User user) {
-        User save = userRepository.save(user);
-        return UserMapper.userToUserDto(save);
     }
 
     @Override
@@ -76,6 +73,7 @@ public class UserServiceImpl implements UserService {
         addresses.add(AddressMapper.addressDtoToAddress(addressDto));
         userFromDb.setAddresses(addresses);
         userRepository.save(userFromDb);
+        log.info("User address is created by userID: {}", user.getId());
         return UserMapper.userToUserDto(userFromDb);
     }
 
@@ -147,47 +145,11 @@ public class UserServiceImpl implements UserService {
                 user.setProfilePic(fileName);
             }
             User save = userRepository.save(user);
+            log.info("User is updated by ID: {}", save.getId());
             return UserMapper.userToUserDto(save);
         }
         return null;
     }
-
-    @Override
-    @Transactional
-    public UserDto updateUser(User user, User currentUser) {
-        Optional<User> userOptional = userRepository.findById(currentUser.getId());
-        if (userOptional.isPresent()) {
-            User userOldData = userOptional.get();
-            if (user.getName() == null || user.getName().equals("")) {
-                user.setName(userOldData.getName());
-            }
-            if (user.getSurname() == null || user.getSurname().equals("")) {
-                user.setSurname(userOldData.getSurname());
-            }
-            if (user.getEmail() == null || user.getEmail().equals("")) {
-                user.setEmail(userOldData.getEmail());
-            }
-            if (user.getPhoneNumber() == null || user.getPhoneNumber().equals("")) {
-                user.setPhoneNumber(userOldData.getPhoneNumber());
-            }
-            if (user.getGender() == null) {
-                user.setGender(userOldData.getGender());
-            }
-            if (user.getRole() == null) {
-                user.setRole(userOldData.getRole());
-            }
-            if (userOldData.getProfilePic() != null) {
-                user.setProfilePic(userOldData.getProfilePic());
-            }
-            user.setEnabled(true);
-            user.setId(userOldData.getId());
-            user.setPassword(userOldData.getPassword());
-            User save = userRepository.save(user);
-            return UserMapper.userToUserDto(save);
-        }
-        return null;
-    }
-
 
     @Override
     @Transactional
@@ -226,7 +188,7 @@ public class UserServiceImpl implements UserService {
         byId.setAddresses(addresses);
         User save = userRepository.save(byId);
         addressService.delete(id);
-
+        log.info("Address is removed by user: {}", user.getId() + " " + user.getName());
         return UserMapper.userToUserDto(save);
     }
 
@@ -249,6 +211,7 @@ public class UserServiceImpl implements UserService {
             String encodedPassword = passwordEncoder.encode(updatePasswordDto.getPassword2());
             user.setPassword(encodedPassword);
             User save = userRepository.save(user);
+            log.info("user password is updated by ID: {}", save.getId());
             return UserMapper.userToUserDto(save);
         }
         return null;
@@ -306,15 +269,5 @@ public class UserServiceImpl implements UserService {
             }
         }
         return isChanged;
-    }
-
-    public void deleteProfilePicture(String existingProfilePic) {
-        if (existingProfilePic != null) {
-            File file = new File(imageUploadPath + existingProfilePic);
-            if (file.exists()) {
-                boolean delete = file.delete();
-                System.out.println(delete);
-            }
-        }
     }
 }

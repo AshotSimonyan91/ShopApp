@@ -1,7 +1,6 @@
 package am.shopappweb.shopappweb.controller;
 
 
-import am.shoppingCommon.shoppingApplication.mapper.WishListMapper;
 import am.shopappweb.shopappweb.security.CurrentUser;
 import am.shoppingCommon.shoppingApplication.service.WishListService;
 import lombok.RequiredArgsConstructor;

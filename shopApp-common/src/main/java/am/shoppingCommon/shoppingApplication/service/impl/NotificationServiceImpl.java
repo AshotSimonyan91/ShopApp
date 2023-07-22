@@ -10,6 +10,7 @@ import am.shoppingCommon.shoppingApplication.repository.NotificationRepository;
 import am.shoppingCommon.shoppingApplication.repository.UserRepository;
 import am.shoppingCommon.shoppingApplication.service.NotificationService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ import java.util.Optional;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class NotificationServiceImpl implements NotificationService {
 
     private final UserRepository userRepository;
@@ -47,6 +49,7 @@ public class NotificationServiceImpl implements NotificationService {
             Notification notification = NotificationMapper.map(notificationRequestDto);
             notification.setUser(userOptional.get());
             Notification save = notificationRepository.save(notification);
+            log.info("notification is created by ID : {} & by user ID{}", save.getId(), save.getUser().getId());
             return NotificationMapper.mapToDto(save);
 
         }

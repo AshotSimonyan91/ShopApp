@@ -54,7 +54,7 @@ public class DeliveryEndpoint {
                                                           @AuthenticationPrincipal CurrentUser currentUser,
                                                           @RequestParam("id") int id) {
         UserDto byIdWithAddresses = userService.findByIdWithAddresses(currentUser.getUser().getId());
-        OrderDto order = orderService.findById(id);
+        OrderDto order = orderService.orderById(id);
         if (order != null) {
             OrderPageDto orderPageDto = new OrderPageDto();
             orderPageDto.setOrderDto(order);

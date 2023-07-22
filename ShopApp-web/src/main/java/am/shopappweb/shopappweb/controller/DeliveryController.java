@@ -54,7 +54,7 @@ public class DeliveryController {
                                     @AuthenticationPrincipal CurrentUser currentUser,
                                     @RequestParam("id") int id) {
         modelmap.addAttribute("user", userService.findByIdWithAddresses(currentUser.getUser().getId()));
-        modelmap.addAttribute("order", orderService.findById(id));
+        modelmap.addAttribute("order", orderService.orderById(id));
         return "singleDeliveryOrderPage";
     }
 
