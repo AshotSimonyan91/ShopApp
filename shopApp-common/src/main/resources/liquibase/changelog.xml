@@ -278,5 +278,23 @@
              <column name="brand" type="VARCHAR(255)"/>
          </addColumn>
      </changeSet>
-
+    <changeSet id="3" author="HrantMeselyan">
+        <addColumn tableName="product">
+            <column name="review" type="int"/>
+        </addColumn>
+    </changeSet>
+   <changeSet id="4" author="HrantMeselyan">
+    <createTable tableName="product_review">
+        <column name="id" type="int" autoIncrement="true">
+            <constraints nullable="false" primaryKey="true"/>
+        </column>
+        <column name="product_id" type="int">
+            <constraints nullable="false" foreignKeyName="fk_product_product_view" references="product(id)"/>
+        </column>
+        <column name="user_id" type="int">
+            <constraints nullable="false" foreignKeyName="fk_user_product_view" references="user(id)"/>
+        </column>
+        <column name="last_review" type="DATE" />
+    </createTable>
+</changeSet>
 </databaseChangeLog>

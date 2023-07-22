@@ -3,6 +3,7 @@ package am.shoppingCommon.shoppingApplication.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -26,6 +27,7 @@ public class Product {
     @Column(nullable = false)
     private String productCode;
     private String brand;
+    private Long review;
     @Column(columnDefinition = "text")
     private String description;
     @Column(nullable = false)

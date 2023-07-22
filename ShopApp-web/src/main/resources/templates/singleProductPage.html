@@ -34,61 +34,24 @@
                     <div class="products-title mb-2"><h4 class="h4" th:text="${currentProduct.name}"></h4></div>
                     <div class="rating-star text small pb-4"><i class="bi bi-star-fill active"></i> <i
                             class="bi bi-star-fill active"></i> <i class="bi bi-star-fill active"></i> <i
-                            class="bi bi-star-fill active"></i> <i class="bi bi-star"></i> <small>(4 Reviews
-                        )</small></div>
+                            class="bi bi-star-fill active"></i> <i class="bi bi-star"></i> <span
+                            th:text="'Reviews (' + ${currentProduct.review} + ')'"></span></div>
                     <div class="product-description">
                         <p th:text="${currentProduct.description}"></p></div>
-                    <div class="product-attribute"><label class="fs-6 text-mode pb-2 fw-500">Size</label>
-                        <div class="nav-thumbs nav mb-3">
-                            <div class="form-check radio-text form-check-inline me-2"><input
-                                    class="form-check-input" type="radio" name="size_d3" id="xs_2" checked="">
-                                <label class="radio-text-label" for="xs_2">XS</label></div>
-                            <div class="form-check radio-text form-check-inline me-2"><input
-                                    class="form-check-input" type="radio" name="size_d3" id="s_2"> <label
-                                    class="radio-text-label" for="s_2">S</label></div>
-                            <div class="form-check radio-text form-check-inline me-2"><input
-                                    class="form-check-input" type="radio" name="size_d3" id="m_2"> <label
-                                    class="radio-text-label" for="m_2">M</label></div>
-                            <div class="form-check radio-text form-check-inline me-2"><input
-                                    class="form-check-input" type="radio" name="size_d3" id="l_2"> <label
-                                    class="radio-text-label" for="l_2">L</label></div>
-                        </div>
-                        <label class="fs-6 text-mode pb-2 fw-500">Color</label>
-                        <div class="nav-thumbs nav mb-3">
-                            <div class="form-check radio-color large form-check-inline me-2"><input
-                                    class="form-check-input" type="radio" name="color_1" id="color_01"
-                                    checked=""> <label class="radio-color-label" for="color_01"><span
-                                    style="background-color: #126532;"></span></label></div>
-                            <div class="form-check radio-color large form-check-inline me-2"><input
-                                    class="form-check-input" type="radio" name="color_1" id="color_2"> <label
-                                    class="radio-color-label" for="color_2"><span
-                                    style="background-color: #ff9922;"></span></label></div>
-                            <div class="form-check radio-color large form-check-inline me-2"><input
-                                    class="form-check-input" type="radio" name="color_1" id="color_3"> <label
-                                    class="radio-color-label" for="color_3"><span
-                                    style="background-color: #326598;"></span></label></div>
-                            <div class="form-check radio-color large form-check-inline me-2"><input
-                                    class="form-check-input" type="radio" name="color_1" id="color_4"> <label
-                                    class="radio-color-label" for="color_4"><span
-                                    style="background-color: #126578;"></span></label></div>
-                        </div>
-                    </div>
                     <div class="count-down count-down-02 mb-3" data-countdown="January 01, 2024 15:00:00"></div>
                     <div class="product-price fs-3 fw-500 mb-2">
                                 <span class="text-primary"
                                       th:text="${currentProduct.price}">$28.<small>50</small></span>
                     </div>
                     <div class="product-detail-actions d-flex flex-wrap pt-3">
-                        <div class="cart-qty me-3 mb-3">
-                            <div class="dec qty-btn qty_btn">-</div>
-                            <input class="cart-qty-input form-control" type="text" name="qtybutton" value="1">
-                            <div class="inc qty-btn qty_btn">+</div>
-                        </div>
                         <div class="cart-button mb-3 d-flex">
-                            <button class="btn btn-mode me-3"><i class="fi-shopping-cart"></i> Add to cart
-                            </button>
-                            <button class="btn btn-outline-mode me-3"><i class="fi-heart"></i></button>
-                            <button class="btn btn-outline-mode"><i class="fi-repeat"></i></button>
+                            <a th:href="@{/cart/add/{productId}(productId=${currentProduct.id})}">
+                                <button class="btn btn-mode me-3"><i class="fi-shopping-cart"></i> Add to cart
+                                </button>
+                            </a>
+                            <a th:href="@{/wishList/add(productId=${currentProduct.id})}">
+                                <button class="btn btn-outline-mode me-3"><i class="fi-heart"></i></button>
+                            </a>
                         </div>
                     </div>
                     <div class="product-info-buttons nav pt-4"><a href="product-details.html#" class="me-3"
@@ -125,14 +88,17 @@
         <div class="col-md-12">
             <h2>Comments</h2>
             <form action="/comments/add" method="post" class="margin-bottom-20">
-                <textarea placeholder="comment" style="resize: none; border-radius: 8px; padding: 3px 0px 0px 8px;" name="comment" rows="2" cols="50" required></textarea><br>
+                <textarea placeholder="comment" style="resize: none; border-radius: 8px; padding: 3px 0px 0px 8px;"
+                          name="comment" rows="2" cols="50" required></textarea><br>
                 <input type="hidden" th:value="${currentProduct.id}" name="id">
                 <input type="submit" value="add" class="add-comment-button">
             </form>
             <ul class="comment-list">
                 <li th:each="comment : ${comments}" class="comment-item">
-                    <img th:src="@{/getImage(profilePic=${comment.user.profilePic})}"   class="user-image"  alt="User Image" width="50" height="50">
-                     <span th:text="${#temporals.format(comment.dateTime, 'dd MMM yyyy HH:mm')}"> : </span><span th:text=" ' ' + ${comment.user.name}"></span>
+                    <img th:src="@{/getImage(profilePic=${comment.user.profilePic})}" class="user-image"
+                         alt="User Image" width="50" height="50">
+                    <span th:text="${#temporals.format(comment.dateTime, 'dd MMM yyyy HH:mm')}"> : </span><span
+                        th:text=" ' ' + ${comment.user.name}"></span>
                     <span th:text="${comment.comment}"></span>
                 </li>
             </ul>

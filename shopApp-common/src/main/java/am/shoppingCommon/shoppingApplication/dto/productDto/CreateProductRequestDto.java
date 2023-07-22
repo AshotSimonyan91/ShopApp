@@ -16,6 +16,7 @@ import java.util.List;
 public class CreateProductRequestDto {
 
     private String name;
+    private String brand;
     private String productCode;
     private String description;
     private int count;

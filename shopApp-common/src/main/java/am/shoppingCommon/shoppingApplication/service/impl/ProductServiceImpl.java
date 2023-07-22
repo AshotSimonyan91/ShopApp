@@ -3,12 +3,10 @@ package am.shoppingCommon.shoppingApplication.service.impl;
 import am.shoppingCommon.shoppingApplication.dto.productDto.CreateProductRequestDto;
 import am.shoppingCommon.shoppingApplication.dto.productDto.FilterProductDto;
 import am.shoppingCommon.shoppingApplication.dto.productDto.ProductDto;
-import am.shoppingCommon.shoppingApplication.entity.Image;
-import am.shoppingCommon.shoppingApplication.entity.Product;
-import am.shoppingCommon.shoppingApplication.entity.QProduct;
-import am.shoppingCommon.shoppingApplication.entity.User;
+import am.shoppingCommon.shoppingApplication.entity.*;
 import am.shoppingCommon.shoppingApplication.mapper.ProductMapper;
 import am.shoppingCommon.shoppingApplication.repository.ProductRepository;
+import am.shoppingCommon.shoppingApplication.repository.ProductReviewRepository;
 import am.shoppingCommon.shoppingApplication.repository.UserRepository;
 import am.shoppingCommon.shoppingApplication.service.ProductService;
 import com.querydsl.core.types.Order;
@@ -22,15 +20,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.util.*;
 
 /**
  * Created by Ashot Simonyan on 21.05.23.
@@ -49,6 +47,8 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
 
     private final UserRepository userRepository;
+
+    private final ProductReviewRepository productReviewRepository;
 
     @Override
     public Page<ProductDto> findAllProducts(Pageable pageable) {
@@ -96,15 +96,51 @@ public class ProductServiceImpl implements ProductService {
             }
         }
         product.setImages(imageList);
+        product.setReview(1L);
         Product save = productRepository.save(product);
         log.info("product is saved by ID: {}", save.getId());
         return ProductMapper.mapToDto(save);
     }
 
     @Override
-    public ProductDto findById(int id) {
-        Optional<Product> byId = productRepository.findById(id);
-        return byId.map(ProductMapper::mapToDto).orElse(null);
+    public ProductDto findById(int id, User user) {
+        Optional<Product> productOptional = productRepository.findById(id);
+        if (productOptional.isPresent()) {
+            Product product = productOptional.get();
+            if (!hasUserReviewedProductToday(product, user)) {
+                saveProductReview(product, user);
+            }
+            return ProductMapper.mapToDto(product);
+        }
+        return null;
+    }
+
+    private boolean hasUserReviewedProductToday(Product product, User user) {
+        if (product != null) {
+            Optional<ProductReview> productReviewOptional = productReviewRepository.findByProductIdAndUserId(product.getId(), user.getId());
+            if (productReviewOptional.isPresent()) {
+                ProductReview productReview = productReviewOptional.get();
+                return LocalDate.now().equals(productReview.getLastReview());
+            }
+        }
+        return false;
+    }
+
+    @Async
+    public void saveProductReview(Product product, User user) {
+        Optional<ProductReview> productReviewOptional = productReviewRepository.findByProductIdAndUserId(product.getId(), user.getId());
+        ProductReview productReview;
+        if (productReviewOptional.isPresent()) {
+            productReview = productReviewOptional.get();
+        } else {
+            productReview = new ProductReview();
+            productReview.setProduct(product);
+            productReview.setUser(user);
+        }
+        product.setReview(product.getReview() + 1);
+        productReview.setLastReview(LocalDate.now());
+        productRepository.save(product);
+        productReviewRepository.save(productReview);
     }
 
     @Override
@@ -148,6 +184,4 @@ public class ProductServiceImpl implements ProductService {
 
         return from.fetch();
     }
-
-
 }

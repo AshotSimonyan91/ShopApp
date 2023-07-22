@@ -4,7 +4,6 @@ package am.shoppingCommon.shoppingApplication.dto.productDto;
 import am.shoppingCommon.shoppingApplication.dto.categoryDto.CategoryDto;
 import am.shoppingCommon.shoppingApplication.dto.imageDto.ImageDto;
 import am.shoppingCommon.shoppingApplication.dto.userDto.UserDto;
-import am.shoppingCommon.shoppingApplication.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,6 +19,8 @@ public class ProductDto {
 
     private int id;
     private String name;
+    private String brand;
+    private Long review;
     private String productCode;
     private String description;
     private double price;
