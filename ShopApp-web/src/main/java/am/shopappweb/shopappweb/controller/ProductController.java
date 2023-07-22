@@ -76,9 +76,8 @@ public class ProductController {
     }
 
     @GetMapping("{id}")
-    public String currentProductPage(ModelMap modelmap,
-                                     @PathVariable("id") int id) {
-        modelmap.addAttribute("currentProduct", productService.findById(id));
+    public String currentProductPage(@PathVariable("id") int id, @AuthenticationPrincipal CurrentUser currentUser,ModelMap modelmap) {
+        modelmap.addAttribute("currentProduct", productService.findById(id,currentUser.getUser()));
         modelmap.addAttribute("products", productService.findAll());
         modelmap.addAttribute("comments", commentService.findAllByLimit(id));
         return "singleProductPage";

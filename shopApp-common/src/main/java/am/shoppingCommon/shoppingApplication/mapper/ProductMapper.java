@@ -136,6 +136,8 @@ public class ProductMapper {
         return ProductDto.builder()
                 .id(entity.getId())
                 .name(entity.getName())
+                .brand(entity.getBrand())
+                .review(entity.getReview())
                 .productCode(entity.getProductCode())
                 .description(entity.getDescription())
                 .price(entity.getPrice())

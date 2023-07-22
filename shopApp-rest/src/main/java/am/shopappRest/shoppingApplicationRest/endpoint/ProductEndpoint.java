@@ -6,12 +6,8 @@ import am.shopappRest.shoppingApplicationRest.security.CurrentUser;
 import am.shoppingCommon.shoppingApplication.dto.productDto.CreateProductRequestDto;
 import am.shoppingCommon.shoppingApplication.dto.productDto.FilterProductDto;
 import am.shoppingCommon.shoppingApplication.dto.productDto.ProductDto;
-import am.shoppingCommon.shoppingApplication.entity.Product;
-import am.shoppingCommon.shoppingApplication.mapper.CommentMapper;
-import am.shoppingCommon.shoppingApplication.mapper.ProductMapper;
 import am.shoppingCommon.shoppingApplication.service.CommentService;
 import am.shoppingCommon.shoppingApplication.service.ProductService;
-import am.shoppingCommon.shoppingApplication.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -60,7 +56,7 @@ public class ProductEndpoint {
     @GetMapping("{id}")
     public ResponseEntity<CurrentProductDto> getCurrentProduct(@PathVariable("id") int id) {
         CurrentProductDto currentProductDto = new CurrentProductDto();
-        currentProductDto.setProductDto(productService.findById(id));
+        currentProductDto.setProductDto(productService.findById(id, currentUser.getUser()));
         return ResponseEntity.ok(currentProductDto);
     }
 
