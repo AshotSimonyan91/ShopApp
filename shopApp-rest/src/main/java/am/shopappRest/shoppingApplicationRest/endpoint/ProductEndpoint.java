@@ -42,16 +42,13 @@ public class ProductEndpoint {
     private String siteURL;
 
     @GetMapping
-    public ResponseEntity<ProductPaginationDto> getProductsWithPagination(@RequestParam(value = "page", defaultValue = "1") Integer page,
-                                                                          @RequestParam(value = "size", defaultValue = "9") Integer size) {
+    public ResponseEntity<ProductPaginationDto> getProductsWithPagination(@RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "9") Integer size) {
         Pageable pageable = PageRequest.of(page - 1, size);
         Page<ProductDto> result = productService.findAllProducts(pageable);
         ProductPaginationDto productPaginationDto = new ProductPaginationDto();
         int totalPages = result.getTotalPages();
         if (totalPages > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
-                    .boxed()
-                    .collect(Collectors.toList());
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
             productPaginationDto.setPageNumbers(pageNumbers);
         }
         productPaginationDto.setTotalPages(totalPages);
@@ -68,24 +65,12 @@ public class ProductEndpoint {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<ProductDto> addProduct(@RequestBody CreateProductRequestDto createProductRequestDto,
-                                                 @AuthenticationPrincipal CurrentUser currentUser) {
-        return ResponseEntity.ok(productService.save(createProductRequestDto, currentUser.getUser()));
+    public ResponseEntity<ProductDto> addProduct(@RequestBody CreateProductRequestDto createProductRequestDto, @AuthenticationPrincipal CurrentUser currentUser, @RequestParam("files") MultipartFile[] files) throws IOException {
+        return ResponseEntity.ok(productService.save(createProductRequestDto,files,currentUser.getUser()));
     }
 
-    @PostMapping("/{id}/image")
-    public ResponseEntity<ProductDto> addProductImage(@PathVariable("id") int id,
-                                                      @RequestParam("files") MultipartFile[] files) throws IOException {
-        ProductDto save = productService.save(id, files);
-        save.getImages().stream()
-                .forEach(imageDto -> imageDto.setImage(siteURL + "/getImage?profilePic=" + imageDto.getImage()));
-        return ResponseEntity.ok(save);
-    }
     @PostMapping("/search")
-    public ResponseEntity<List<ProductDto>> getByFilter(
-            @RequestParam(name = "size", defaultValue = "20") int size,
-            @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestBody FilterProductDto filterProductDto) {
+    public ResponseEntity<List<ProductDto>> getByFilter(@RequestParam(name = "size", defaultValue = "20") int size, @RequestParam(value = "page", defaultValue = "0") int page, @RequestBody FilterProductDto filterProductDto) {
         return ResponseEntity.ok(productService.search(page, size, filterProductDto));
     }
 

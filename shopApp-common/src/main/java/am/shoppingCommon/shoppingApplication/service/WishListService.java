@@ -4,7 +4,6 @@ package am.shoppingCommon.shoppingApplication.service;
 import am.shoppingCommon.shoppingApplication.dto.wishlistDto.WishlistDto;
 import am.shoppingCommon.shoppingApplication.entity.Product;
 import am.shoppingCommon.shoppingApplication.entity.User;
-import am.shoppingCommon.shoppingApplication.entity.WishList;
 
 import java.util.List;
 
@@ -16,8 +15,6 @@ public interface WishListService {
     void remove(int id);
 
     void remove(int id, User user);
-
-    WishlistDto save(WishList wishList);
 
     WishlistDto findByProduct(Product product);
 

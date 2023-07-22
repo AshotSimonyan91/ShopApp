@@ -14,6 +14,7 @@ import am.shoppingCommon.shoppingApplication.repository.UserRepository;
 import am.shoppingCommon.shoppingApplication.service.AdminService;
 import am.shoppingCommon.shoppingApplication.util.ImageUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +25,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class AdminServiceImpl implements AdminService {
     private final UserRepository userRepository;
     private final OrderRepository orderRepository;
@@ -40,6 +42,7 @@ public class AdminServiceImpl implements AdminService {
                 User user = byId.get();
                 user.setEnabled(false);
                 User save = userRepository.save(user);
+                log.info("user by ID : {} is blocked", id);
                 return UserMapper.userToUserDto(save);
             }
         }
@@ -54,6 +57,7 @@ public class AdminServiceImpl implements AdminService {
                 User user = byId.get();
                 user.setEnabled(true);
                 User save = userRepository.save(user);
+                log.info("user by ID : {} is unblocked", id);
                 return UserMapper.userToUserDto(save);
             }
         }
@@ -78,6 +82,7 @@ public class AdminServiceImpl implements AdminService {
                 deliveryRepository.save(delivery);
 
                 Order save = orderRepository.save(orderFromDb);
+                log.info("order by admin is updated by ID : {} ", save.getId());
                 return OrderMapper.orderToOrderDto(save);
             }
         }
@@ -98,6 +103,7 @@ public class AdminServiceImpl implements AdminService {
             String fileName = ImageUtil.imageUpload(multipartFile, imageUploadPath);
             user.setProfilePic(fileName);
             User save = userRepository.save(user);
+            log.info("user is updated by ID : {} ", save.getId());
             return UserMapper.userToUserDto(save);
         }
         return userDto;

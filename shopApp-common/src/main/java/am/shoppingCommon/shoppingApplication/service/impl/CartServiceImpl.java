@@ -13,6 +13,7 @@ import am.shoppingCommon.shoppingApplication.repository.CartRepository;
 import am.shoppingCommon.shoppingApplication.repository.ProductRepository;
 import am.shoppingCommon.shoppingApplication.service.CartService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +23,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CartServiceImpl implements CartService {
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
@@ -74,8 +76,8 @@ public class CartServiceImpl implements CartService {
             cartItemRepository.saveAll(cartItems);
             productRepository.save(product);
         }
-
         Cart save = cartRepository.save(cart);
+        log.info("cart is saved by userID: {} & by cartId :{}", user.getId(), id);
         return CartMapper.convertToDto(save);
     }
 
@@ -89,6 +91,8 @@ public class CartServiceImpl implements CartService {
             product.setCount(product.getCount() + count);
         }
         cartItemRepository.deleteByCart_IdAndProduct_Id(byId.get().getId(), productId);
+        log.info("cartItem is deleted by ID: {}", cartId);
+
     }
 
 
@@ -111,8 +115,10 @@ public class CartServiceImpl implements CartService {
             cartItem.setCount(counts.get(i));
             isValid = true;
         }
+        log.info("cartItem count is updated by IDs: {}", cartItemIds);
         return isValid;
     }
+
     private Cart createNewCart(User user) {
         Cart cart = new Cart();
         cart.setUser(user);

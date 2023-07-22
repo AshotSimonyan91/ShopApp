@@ -40,6 +40,17 @@ public class UserMapper {
                 .gender(userRegisterDto.getGender())
                 .build();
     }
+    public static UserDto userRegisterDtoToUerDto(UserRegisterDto userRegisterDto) {
+        if (userRegisterDto == null) {
+            return null;
+        }
+        return UserDto.builder()
+                .name(userRegisterDto.getName())
+                .surname(userRegisterDto.getSurname())
+                .email(userRegisterDto.getEmail())
+                .gender(userRegisterDto.getGender())
+                .build();
+    }
 
     public static User userShortDtoToUser(UserShortDto userShortDto) {
         if (userShortDto == null) {

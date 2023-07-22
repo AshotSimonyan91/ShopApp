@@ -12,6 +12,7 @@ import am.shoppingCommon.shoppingApplication.repository.ProductRepository;
 import am.shoppingCommon.shoppingApplication.repository.WishListRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -25,6 +26,7 @@ import java.util.Set;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class WishListServiceImpl implements WishListService {
 
     private final WishListRepository wishListRepository;
@@ -46,6 +48,7 @@ public class WishListServiceImpl implements WishListService {
     @Override
     public void remove(int id) {
         wishListRepository.deleteById(id);
+        log.info("wishlist is deleted by ID: {}", id);
     }
 
     @Override
@@ -59,16 +62,10 @@ public class WishListServiceImpl implements WishListService {
                 product.remove(byId.get());
                 wishList.setProduct(product);
                 wishListRepository.save(wishList);
+                log.info("from wishlist is deleted product by ID: {} from user :{}", id, user.getId());
             }
         }
 
-    }
-
-
-    @Override
-    public WishlistDto save(WishList wishList) {
-        WishList save = wishListRepository.save(wishList);
-        return WishListMapper.mapToDto(save);
     }
 
     @Override
@@ -90,6 +87,7 @@ public class WishListServiceImpl implements WishListService {
                 wishList.setUser(userOptional.orElse(null));
                 wishList.setProduct(products);
                 WishList save = wishListRepository.save(wishList);
+                log.info("wishlist is created by wishListID: {}", save.getId());
                 return WishListMapper.mapToDto(save);
 
             } else {
@@ -98,6 +96,7 @@ public class WishListServiceImpl implements WishListService {
                 productset.add(byId.get());
                 wishList.setProduct(productset);
                 WishList save = wishListRepository.save(wishList);
+                log.info("wishlist is updated by wishListID: {}", save.getId());
                 return WishListMapper.mapToDto(save);
             }
         }

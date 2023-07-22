@@ -18,6 +18,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,6 +37,7 @@ import java.util.Optional;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ProductServiceImpl implements ProductService {
 
     @Value("${shopping-app.upload.image.path}")
@@ -69,6 +71,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void remove(int id) {
         productRepository.deleteById(id);
+        log.info("product is removed by ID: {}", id);
     }
 
 
@@ -94,39 +97,9 @@ public class ProductServiceImpl implements ProductService {
         }
         product.setImages(imageList);
         Product save = productRepository.save(product);
-
+        log.info("product is saved by ID: {}", save.getId());
         return ProductMapper.mapToDto(save);
     }
-
-    @Override
-    public ProductDto save(CreateProductRequestDto productRequestDto, User user) {
-        Product product = ProductMapper.map(productRequestDto);
-        product.getCategories().removeIf(category -> category.getId() == 0);
-        product.setUser(user);
-        Product save = productRepository.save(product);
-        return ProductMapper.mapToDto(save);
-    }
-
-    @Override
-    @Transactional
-    public ProductDto save(int id, MultipartFile[] files) throws IOException {
-        Product product = productRepository.findById(id).orElse(null);
-        List<Image> imageList = new ArrayList<>();
-        for (MultipartFile multipartFile : files) {
-            if (multipartFile != null && !multipartFile.isEmpty()) {
-                String fileName = System.nanoTime() + "_" + multipartFile.getOriginalFilename();
-                File file = new File(imageUploadPath + fileName);
-                multipartFile.transferTo(file);
-                Image image = new Image();
-                image.setImage(fileName);
-                imageList.add(image);
-            }
-        }
-        product.setImages(imageList);
-        Product save = productRepository.save(product);
-        return ProductMapper.mapToDto(save);
-    }
-
 
     @Override
     public ProductDto findById(int id) {
