@@ -18,9 +18,9 @@ public class ProductReview {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @OneToOne
+    @ManyToOne
     private Product product;
-    @OneToOne
+    @ManyToOne
     private User user;
     private LocalDate lastReview;
 }

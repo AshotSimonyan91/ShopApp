@@ -96,7 +96,7 @@ public class ProductServiceImpl implements ProductService {
             }
         }
         product.setImages(imageList);
-        product.setReview(1L);
+        product.setReview(0L);
         Product save = productRepository.save(product);
         log.info("product is saved by ID: {}", save.getId());
         return ProductMapper.mapToDto(save);
