@@ -48,7 +48,6 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
-    @NotBlank(message = "Gender is required")
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Gender gender;

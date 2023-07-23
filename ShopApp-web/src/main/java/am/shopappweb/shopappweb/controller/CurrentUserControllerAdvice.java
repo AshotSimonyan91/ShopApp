@@ -2,6 +2,7 @@ package am.shopappweb.shopappweb.controller;
 
 
 import am.shopappweb.shopappweb.security.CurrentUser;
+import am.shoppingCommon.shoppingApplication.dto.userDto.UserRegisterDto;
 import am.shoppingCommon.shoppingApplication.service.CartService;
 import am.shoppingCommon.shoppingApplication.service.UserService;
 import am.shoppingCommon.shoppingApplication.dto.cartDto.CartItemDto;
@@ -41,22 +42,29 @@ public class CurrentUserControllerAdvice {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ModelAndView handleIllegalArgument(MethodArgumentNotValidException methodArgumentNotValidException,
                                               @AuthenticationPrincipal CurrentUser currentUser,
-                                              BindingResult errors){
+                                              BindingResult errors) {
         ModelAndView modelAndView = new ModelAndView();
         List<FieldError> fieldErrors = methodArgumentNotValidException.getBindingResult().getFieldErrors();
 
         for (FieldError fieldError : fieldErrors) {
-            modelAndView.addObject(fieldError.getField()+"_",fieldError.getDefaultMessage());
+            modelAndView.addObject(fieldError.getField() + "_", fieldError.getDefaultMessage());
         }
         Object target = errors.getTarget();
         if (target instanceof UserUpdateDto) {
-            modelAndView.addObject("updatePasswordDto",new UpdatePasswordDto());
-        }else {
-            modelAndView.addObject("userUpdateDto",new UserUpdateDto());
+            modelAndView.addObject("updatePasswordDto", new UpdatePasswordDto());
+            modelAndView.addObject("user", userService.findByIdWithAddresses(currentUser.getUser().getId()));
+            modelAndView.setViewName("singleUserPage");
+
+        } else if (target instanceof UpdatePasswordDto) {
+            modelAndView.addObject("userUpdateDto", new UserUpdateDto());
+            modelAndView.addObject("user", userService.findByIdWithAddresses(currentUser.getUser().getId()));
+            modelAndView.setViewName("singleUserPage");
+        }
+        else if (target instanceof UserRegisterDto) {
+            modelAndView.addObject("userRegisterDto", new UserRegisterDto());
+            modelAndView.setViewName("register");
         }
         modelAndView.addObject(toLowerCase(errors.getTarget().getClass().getSimpleName()), errors.getTarget());
-        modelAndView.addObject("user", userService.findByIdWithAddresses(currentUser.getUser().getId()));
-        modelAndView.setViewName("singleUserPage");
         return modelAndView;
     }
 
