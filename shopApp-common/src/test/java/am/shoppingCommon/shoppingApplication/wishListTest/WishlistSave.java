@@ -1,4 +1,4 @@
-package am.shoppingCommon.shoppingApplication.WishList;
+package am.shoppingCommon.shoppingApplication.wishListTest;
 
 import am.shoppingCommon.shoppingApplication.dto.wishlistDto.WishlistDto;
 import am.shoppingCommon.shoppingApplication.entity.Address;
@@ -44,7 +44,7 @@ class WishlistSave {
         addressList.add(address);
         user.setAddresses(addressList);
         String test = "test";
-        Product product = new Product(1,test,test,test,test,400,400,user,null,null);
+        Product product = new Product(1,test,test,test,1L,test,100,100,null,null,null);
         WishList emptyWishlist = new WishList();
         emptyWishlist.setUser(user);
         Set<Product> products = new HashSet<>();

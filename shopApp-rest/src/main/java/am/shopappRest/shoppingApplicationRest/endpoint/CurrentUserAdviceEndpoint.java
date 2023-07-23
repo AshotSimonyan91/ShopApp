@@ -10,6 +10,8 @@ import am.shoppingCommon.shoppingApplication.entity.User;
 import am.shoppingCommon.shoppingApplication.mapper.UserMapper;
 import am.shoppingCommon.shoppingApplication.service.CartService;
 import am.shoppingCommon.shoppingApplication.service.UserService;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -55,11 +57,12 @@ public class CurrentUserAdviceEndpoint {
         Object target = errors.getTarget();
         if (target instanceof UserUpdateDto) {
             modelAndView.addObject("updatePasswordDto", new UpdatePasswordDto());
+            modelAndView.addObject("user", userService.findByIdWithAddresses(currentUser.getUser().getId()));
         } else {
             modelAndView.addObject("userUpdateDto", new UserUpdateDto());
+            modelAndView.addObject("user", userService.findByIdWithAddresses(currentUser.getUser().getId()));
         }
         modelAndView.addObject(toLowerCase(errors.getTarget().getClass().getSimpleName()), errors.getTarget());
-        modelAndView.addObject("user", userService.findByIdWithAddresses(currentUser.getUser().getId()));
         return modelAndView;
     }
 

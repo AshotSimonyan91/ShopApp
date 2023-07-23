@@ -40,6 +40,7 @@ public class UserMapper {
                 .gender(userRegisterDto.getGender())
                 .build();
     }
+
     public static UserDto userRegisterDtoToUerDto(UserRegisterDto userRegisterDto) {
         if (userRegisterDto == null) {
             return null;
@@ -137,8 +138,10 @@ public class UserMapper {
         }
         List<Address> addresses = user.getAddresses();
         List<AddressDto> addressDtos = new ArrayList<>();
-        for (Address address : addresses) {
-            addressDtos.add(AddressMapper.addressToAddressDto(address));
+        if (addresses != null) {
+            for (Address address : addresses) {
+                addressDtos.add(AddressMapper.addressToAddressDto(address));
+            }
         }
         return UserDto.builder()
                 .id(user.getId())

@@ -1,4 +1,4 @@
-package am.shoppingCommon.shoppingApplication.WishList;
+package am.shoppingCommon.shoppingApplication.wishListTest;
 
 import am.shoppingCommon.shoppingApplication.entity.Product;
 import am.shoppingCommon.shoppingApplication.entity.User;

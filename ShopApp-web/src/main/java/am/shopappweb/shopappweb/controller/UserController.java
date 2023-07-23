@@ -35,8 +35,6 @@ public class UserController {
     private final UserService userService;
     private final OrderService orderService;
 
-    @Value("${site.url.web}")
-    private String siteUrl;
 
     @GetMapping("/register")
     public String registerPage(ModelMap modelMap) {
@@ -45,16 +43,10 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String register(@Valid @ModelAttribute UserRegisterDto userRegisterDto, Errors errors) {
-        if (errors.hasErrors()) {
-            return "register";
-        }
+    public String register(@Valid @ModelAttribute UserRegisterDto userRegisterDto) {
         UserDto user = userService.save(userRegisterDto);
         if (user != null) {
-            mailService.sendMail(userRegisterDto.getEmail(), "Welcome",
-                    "Hi " + userRegisterDto.getName() +
-                            " Welcome please verify your account by clicking " + siteUrl + "/user/verify?email=" + user.getEmail() + "&token=" + user.getToken()
-            );
+            mailService.sendMailForAuth(UserMapper.userDtoToUser(user));
         }
         return "redirect:/customLogin";
     }
@@ -118,19 +110,16 @@ public class UserController {
 
 
     @PostMapping("/forgotPassword")
-    public String forgotPassword(@RequestParam("email") String email) {
+    public String forgotPasswordSendEmail(@RequestParam("email") String email) {
         UserDto userByEmail = userService.findByEmail(email);
         if (userByEmail != null) {
-            mailService.sendMail(userByEmail.getEmail(), "Welcome",
-                    "Hi " + userByEmail.getName() +
-                            " Welcome please for change password by click " + siteUrl + "/user/changePassword?email=" + userByEmail.getEmail() + "&token=" + userByEmail.getToken()
-            );
+            mailService.sendMailForForgotPassword(UserMapper.userDtoToUser(userByEmail));
         }
         return "redirect:/";
     }
 
     @GetMapping("/changePassword")
-    public String changePassword(@RequestParam("email") String email,
+    public String changePasswordPage(@RequestParam("email") String email,
                                  @RequestParam("token") UUID token,
                                  ModelMap modelMap) {
         boolean isChanged = userService.changeUserPasswordTokenVerify(email, token.toString());

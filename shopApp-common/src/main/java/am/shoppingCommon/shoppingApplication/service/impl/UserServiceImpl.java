@@ -51,20 +51,27 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto save(UserRegisterDto userRegisterDto) {
-        Optional<User> byEmail = userRepository.findByEmail(userRegisterDto.getEmail());
-        if (byEmail.isEmpty()) {
-            User user = UserMapper.userRegisterDtoToUser(userRegisterDto);
-            String encodedPassword = passwordEncoder.encode(user.getPassword());
-            user.setPassword(encodedPassword);
-            user.setRole(Role.USER);
-            user.setEnabled(false);
-            user.setToken(UUID.randomUUID().toString());
-            User savedUser = userRepository.save(user);
-            log.info("User is created by ID: {}", savedUser.getId());
-            return UserMapper.userToUserDto(savedUser);
+        if (userRegisterDto == null) {
+            return null;
         }
-        return null;
+
+        Optional<User> byEmail = userRepository.findByEmail(userRegisterDto.getEmail());
+        if (byEmail.isPresent()) {
+            return null;
+        }
+        User user;
+        user = UserMapper.userRegisterDtoToUser(userRegisterDto);
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
+        user.setRole(Role.USER);
+        user.setEnabled(false);
+        user.setToken(UUID.randomUUID().toString());
+        user = userRepository.save(user);
+        log.info("User is created by ID: {}", user.getId());
+
+        return UserMapper.userToUserDto(user);
     }
+
 
     @Override
     public UserDto saveAddress(User user, AddressDto addressDto) {
