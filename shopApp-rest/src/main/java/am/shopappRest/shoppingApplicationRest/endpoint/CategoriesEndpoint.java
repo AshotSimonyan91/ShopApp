@@ -16,7 +16,7 @@ import java.io.IOException;
 public class CategoriesEndpoint {
     private final CategoryService categoryService;
 
-    @Value("${site.url.rest}")
+    @Value("${site.url.web}")
     private String siteURL;
 
     @PostMapping("/add")

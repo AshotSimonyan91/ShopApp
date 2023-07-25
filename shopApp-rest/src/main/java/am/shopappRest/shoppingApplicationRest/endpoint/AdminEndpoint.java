@@ -5,8 +5,6 @@ import am.shopappRest.shoppingApplicationRest.restDto.adminRequestDto.AllUsersPa
 import am.shopappRest.shoppingApplicationRest.security.CurrentUser;
 import am.shoppingCommon.shoppingApplication.dto.categoryDto.CategoryDto;
 import am.shoppingCommon.shoppingApplication.dto.userDto.UserDto;
-import am.shoppingCommon.shoppingApplication.mapper.CategoryMapper;
-import am.shoppingCommon.shoppingApplication.mapper.UserMapper;
 import am.shoppingCommon.shoppingApplication.service.CategoryService;
 import am.shoppingCommon.shoppingApplication.service.OrderService;
 import am.shoppingCommon.shoppingApplication.service.UserService;
