@@ -1,4 +1,4 @@
-package am.shopappRest.shoppingApplicationRest.UserRegisterTest;
+package am.shopappRest.shoppingApplicationRest.userIntegrationTest;
 
 import am.shoppingCommon.shoppingApplication.dto.userDto.UserRegisterDto;
 import am.shoppingCommon.shoppingApplication.entity.Gender;
@@ -14,12 +14,12 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -40,7 +40,19 @@ public class UserRegisterIntegrationTest {
     @Test
     @WithMockUser("user@company.com")
     void create() throws Exception {
-        createTestUser();
+        userRepository.deleteAll();
+        {
+            userRepository.save(User.builder()
+                    .id(1)
+                    .email("user@company.com")
+                    .name("poxos")
+                    .surname("poxosyan")
+                    .password("poxos")
+                    .role(Role.USER)
+                    .enabled(true)
+                    .gender(Gender.FEMALE)
+                    .build());
+        }
         UserRegisterDto userRegisterDto = UserRegisterDto.builder()
                 .email("author1@mail.com")
                 .name("Poxos")
@@ -54,22 +66,34 @@ public class UserRegisterIntegrationTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .content(jsonAuthor)
                 ).andExpect(status().is(200))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.email").value("author1@mail.com"));
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.email").value("author1@mail.com"));
         Optional<User> byEmail = userRepository.findByEmail("author1@mail.com");
         assertTrue(byEmail.isPresent());
     }
 
-    private void createTestUser() {
-        userRepository.save(User.builder()
-                .id(1)
+    @Test
+    @WithMockUser("user@company.com")
+    void createWithEx() throws Exception {
+        UserRegisterDto userRegisterDto = UserRegisterDto.builder()
                 .email("user@company.com")
-                .name("poxos")
-                .surname("poxosyan")
-                .password("poxos")
-                .role(Role.USER)
-                .enabled(true)
-                .gender(Gender.FEMALE)
-                .build());
+                .name("John")
+                .surname("Doe")
+                .password("test123")
+                .gender(Gender.MALE)
+                .build();
+
+        String jsonUser = objectMapper.writeValueAsString(userRegisterDto);
+
+        mockMvc.perform(post("/user/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(jsonUser)
+                )
+                .andExpect(status().isConflict());
+
+        Optional<User> existingUser = userRepository.findByEmail("user@company.com");
+        assertTrue(existingUser.isPresent());
     }
+
 }
