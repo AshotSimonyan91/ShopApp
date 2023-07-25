@@ -33,8 +33,7 @@ import java.util.stream.IntStream;
 public class ProductEndpoint {
 
     private final ProductService productService;
-    private final CommentService commentService;
-    @Value("${site.url.rest}")
+    @Value("${site.url.web}")
     private String siteURL;
 
     @GetMapping
@@ -54,7 +53,7 @@ public class ProductEndpoint {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<CurrentProductDto> getCurrentProduct(@PathVariable("id") int id) {
+    public ResponseEntity<CurrentProductDto> getCurrentProduct(@PathVariable("id") int id,@AuthenticationPrincipal CurrentUser currentUser) {
         CurrentProductDto currentProductDto = new CurrentProductDto();
         currentProductDto.setProductDto(productService.findById(id, currentUser.getUser()));
         return ResponseEntity.ok(currentProductDto);

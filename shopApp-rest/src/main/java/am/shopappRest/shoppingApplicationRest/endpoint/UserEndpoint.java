@@ -44,7 +44,7 @@ public class UserEndpoint {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenUtil tokenUtil;
 
-    @Value("${site.url.rest}")
+    @Value("${site.url.web}")
     private String siteUrl;
 
     @PostMapping("/auth")
@@ -118,10 +118,7 @@ public class UserEndpoint {
     public ResponseEntity<String> forgotPassword(@RequestParam("email") String email) {
         UserDto userByEmail = userService.findByEmail(email);
         if (userByEmail != null) {
-            mailService.sendMail(userByEmail.getEmail(), "Welcome",
-                    "Hi " + userByEmail.getName() +
-                            " Welcome please for change password by click " + siteUrl + "/user/changePassword?email=" + userByEmail.getEmail() + "&token=" + userByEmail.getToken()
-            );
+            mailService.sendMailForForgotPassword(UserMapper.userDtoToUser(userByEmail));
             return ResponseEntity.ok(userByEmail.getToken());
         }
         return ResponseEntity.notFound().build();
