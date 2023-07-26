@@ -297,4 +297,52 @@
         <column name="last_review" type="DATE" />
     </createTable>
 </changeSet>
+    <changeSet id="5" author="HrantMeselyan">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="fk_product_images_image" />
+            </not>
+        </preConditions>
+        <dropForeignKeyConstraint baseTableName="product_images" constraintName="fk_product_images_image" />
+    </changeSet>
+
+    <changeSet id="6" author="HrantMeselyan">
+        <addForeignKeyConstraint baseTableName="product_images"
+                                 constraintName="fk_product_images_image2"
+                                 referencedTableName="image"
+                                 baseColumnNames="images_id"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE" />
+    </changeSet>
+    <changeSet id="7" author="HrantMeselyan">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="fk_product_images_product" />
+            </not>
+        </preConditions>
+        <dropForeignKeyConstraint baseTableName="product_images" constraintName="fk_product_images_product" />
+    </changeSet>
+
+    <changeSet id="8" author="HrantMeselyan">
+        <addForeignKeyConstraint baseTableName="product_images"
+                                 constraintName="fk_product_images_product2"
+                                 referencedTableName="product"
+                                 baseColumnNames="product_id"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE" />
+    </changeSet>
+
+    <changeSet id="9" author="HrantMeselyan">
+        <preConditions onFail="MARK_RAN">
+            <foreignKeyConstraintExists foreignKeyName="fk_product_images_image" />
+        </preConditions>
+        <dropForeignKeyConstraint baseTableName="product_images" constraintName="fk_product_images_image" />
+    </changeSet>
+
+    <changeSet id="10" author="HrantMeselyan">
+        <preConditions onFail="MARK_RAN">
+            <foreignKeyConstraintExists foreignKeyName="fk_product_images_product" />
+        </preConditions>
+        <dropForeignKeyConstraint baseTableName="product_images" constraintName="fk_product_images_product" />
+    </changeSet>
 </databaseChangeLog>
