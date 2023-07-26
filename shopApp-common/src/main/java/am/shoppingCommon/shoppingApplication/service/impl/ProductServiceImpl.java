@@ -9,6 +9,7 @@ import am.shoppingCommon.shoppingApplication.repository.ProductRepository;
 import am.shoppingCommon.shoppingApplication.repository.ProductReviewRepository;
 import am.shoppingCommon.shoppingApplication.repository.UserRepository;
 import am.shoppingCommon.shoppingApplication.service.ProductService;
+import am.shoppingCommon.shoppingApplication.util.ImageUtil;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.PathBuilder;
@@ -25,10 +26,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by Ashot Simonyan on 21.05.23.
@@ -92,11 +94,8 @@ public class ProductServiceImpl implements ProductService {
             product.setUser(byId.get());
             for (MultipartFile multipartFile : files) {
                 if (multipartFile != null && !multipartFile.isEmpty()) {
-                    String fileName = System.nanoTime() + "_" + multipartFile.getOriginalFilename();
-                    File file = new File(imageUploadPath + fileName);
-                    multipartFile.transferTo(file);
                     Image image = new Image();
-                    image.setImage(fileName);
+                    image.setImage(ImageUtil.imageUploadWithResize(multipartFile,imageUploadPath));
                     imageList.add(image);
                 }
             }

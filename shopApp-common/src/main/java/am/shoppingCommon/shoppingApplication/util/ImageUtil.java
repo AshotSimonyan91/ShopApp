@@ -22,14 +22,14 @@ public class ImageUtil {
     }
 
 
-    public static String imageUploadWithResize(MultipartFile multipartFile,String imageUploadPath) throws IOException {
+    public static String imageUploadWithResize(MultipartFile multipartFile, String imageUploadPath) throws IOException {
         String fileName = "";
         if (multipartFile != null && !multipartFile.isEmpty()) {
             fileName = System.nanoTime() + "_" + multipartFile.getOriginalFilename();
             File file = new File(imageUploadPath + fileName);
 
             // Resize and save the image
-            resizeAndSaveImage(multipartFile, 450, 338, file);
+            resizeAndSaveImage(multipartFile, 1280, 720, file);
         }
         return fileName;
     }
@@ -40,6 +40,9 @@ public class ImageUtil {
         // Create a resized image with the specified dimensions
         BufferedImage resizedImage = new BufferedImage(targetWidth, targetHeight, img.getType());
         Graphics2D g2d = resizedImage.createGraphics();
+
+        // Use bicubic interpolation for better image quality
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
         g2d.drawImage(img, 0, 0, targetWidth, targetHeight, null);
         g2d.dispose();
 
@@ -60,4 +63,5 @@ public class ImageUtil {
 
         return formatName;
     }
+
 }
