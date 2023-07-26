@@ -29,6 +29,7 @@ public class ProductMapper {
         }
         return Product.builder()
                 .name(dto.getName())
+                .brand(dto.getBrand())
                 .productCode(dto.getProductCode())
                 .description(dto.getDescription())
                 .count(dto.getCount())

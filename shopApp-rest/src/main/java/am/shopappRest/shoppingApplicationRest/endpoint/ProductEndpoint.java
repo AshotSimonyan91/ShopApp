@@ -6,7 +6,6 @@ import am.shopappRest.shoppingApplicationRest.security.CurrentUser;
 import am.shoppingCommon.shoppingApplication.dto.productDto.CreateProductRequestDto;
 import am.shoppingCommon.shoppingApplication.dto.productDto.FilterProductDto;
 import am.shoppingCommon.shoppingApplication.dto.productDto.ProductDto;
-import am.shoppingCommon.shoppingApplication.service.CommentService;
 import am.shoppingCommon.shoppingApplication.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
