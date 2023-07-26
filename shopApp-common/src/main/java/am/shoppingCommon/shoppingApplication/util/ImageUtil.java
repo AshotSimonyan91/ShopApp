@@ -28,7 +28,6 @@ public class ImageUtil {
             fileName = System.nanoTime() + "_" + multipartFile.getOriginalFilename();
             File file = new File(imageUploadPath + fileName);
 
-            // Resize and save the image
             resizeAndSaveImage(multipartFile, 1280, 720, file);
         }
         return fileName;
