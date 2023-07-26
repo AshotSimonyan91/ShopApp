@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface ProductService {
+    List<ProductDto> findTrendingProducts();
     List<ProductDto> search(int page, int size, FilterProductDto filterProductDto);
 
     Page<ProductDto> findAllProducts(Pageable pageable);

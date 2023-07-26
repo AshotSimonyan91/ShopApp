@@ -1,9 +1,6 @@
 package am.shopappRest.shoppingApplicationRest.commentIntegrationTest;
 
-
 import am.shopappRest.shoppingApplicationRest.security.CurrentUser;
-import am.shoppingCommon.shoppingApplication.dto.commentDto.CommentDto;
-import am.shoppingCommon.shoppingApplication.dto.commentDto.CommentRequestDto;
 import am.shoppingCommon.shoppingApplication.entity.*;
 import am.shoppingCommon.shoppingApplication.repository.CommentsRepository;
 import am.shoppingCommon.shoppingApplication.repository.ProductRepository;
@@ -21,21 +18,19 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import java.time.LocalDateTime;
+
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-public class CommentAddTest {
+public class CommentRemoveTest {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @Autowired
     private CommentsRepository commentRepository;
@@ -46,35 +41,34 @@ public class CommentAddTest {
     private UserRepository userRepository;
 
     @Test
-    void addCommentTest() throws Exception {
+    void removeCommentTest() throws Exception {
         User basicUser = new User(50,"Basic User", "Surname","user@shopApp.com", "password",null,null, Role.USER,null,true,null,null);
         CurrentUser currentUser = new CurrentUser(basicUser);
         Authentication authentication = new UsernamePasswordAuthenticationToken(currentUser, null, currentUser.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        CommentRequestDto commentRequestDto = new CommentRequestDto();
-        commentRequestDto.setComment("This is a test comment.");
 
+        Comment comment = new Comment();
+        comment.setId(1);
+        comment.setComment("asdad");
+        comment.setUser(createUser("email","pass","name"));
+        comment.setDateTime(LocalDateTime.now());
+        comment.setProduct(createProduct(5));
 
-        MvcResult mvcResult = mockMvc.perform(post("/comments/add")
-                        .param("id", String.valueOf(createProduct(123).getId()))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .flashAttr("commentRequestDto", commentRequestDto)) // Set commentRequestDto as @ModelAttribute
-                .andExpect(status().isOk())
+        commentRepository.save(comment);
+
+        MvcResult mvcResult = mockMvc.perform(delete("/comments/remove")
+                        .param("comment_id", String.valueOf(comment.getId()))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent())
                 .andReturn();
 
-        CommentDto commentDto = objectMapper.readValue(
-                mvcResult.getResponse().getContentAsString(),
-                CommentDto.class
-        );
-
-        assertNotNull(commentDto);
-        Comment savedComment = commentRepository.findById(commentDto.getId()).orElse(null);
-        assertNotNull(savedComment);
-        assertEquals(commentRequestDto.getComment(), savedComment.getComment());
+        Comment deletedComment = commentRepository.findById(comment.getId()).orElse(null);
+        assertNull(deletedComment, "Comment should be removed from the database");
         commentRepository.deleteAll();
         productRepository.deleteAll();
         userRepository.deleteAll();
+
     }
 
     private Product createProduct(int id) {
@@ -101,7 +95,4 @@ public class CommentAddTest {
                 .addresses(null)
                 .build());
     }
-
 }
-
-
