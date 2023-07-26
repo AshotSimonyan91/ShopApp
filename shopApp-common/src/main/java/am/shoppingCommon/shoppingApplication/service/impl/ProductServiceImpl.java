@@ -57,6 +57,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<ProductDto> findTrendingProducts() {
+        List<Product> top9ByOrderByReviewDesc = productRepository.findTop9ByOrderByReviewDesc();
+        return ProductMapper.mapProductList(top9ByOrderByReviewDesc);
+    }
+
+    @Override
     public Page<ProductDto> findByName(String name, Pageable pageable) {
         Page<Product> byNameContainingIgnoreCase = productRepository.findByNameContainingIgnoreCase(name, pageable);
         return ProductMapper.mapPageToDto(byNameContainingIgnoreCase);

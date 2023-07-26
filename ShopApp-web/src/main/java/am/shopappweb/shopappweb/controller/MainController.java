@@ -37,6 +37,7 @@ public class MainController {
     public String main(ModelMap modelmap) {
         Map<String, List<CategoryDto>> parentCategoriesMap = categoryService.getParentCategoriesWithChildren();
         modelmap.addAttribute("parentCategoriesMap", parentCategoriesMap);
+        modelmap.addAttribute("trendingProducts",productService.findTrendingProducts());
         return "index";
     }
 

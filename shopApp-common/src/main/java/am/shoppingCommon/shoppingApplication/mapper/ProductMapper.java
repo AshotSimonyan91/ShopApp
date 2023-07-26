@@ -180,8 +180,8 @@ public class ProductMapper {
             return null;
         }
         List<ProductDto> productDtoList = new ArrayList<>();
-        ProductDto productDto = new ProductDto();
         for (Product product : all) {
+            ProductDto productDto = new ProductDto();
             productDto.setId(product.getId());
             productDto.setName(product.getName());
             productDto.setProductCode(product.getProductCode());
@@ -199,9 +199,10 @@ public class ProductMapper {
                 categoryDtoList.add(CategoryMapper.categoryToDto(category));
             }
             productDto.setCategories(categoryDtoList);
+            productDtoList.add(productDto);
+
         }
         return productDtoList;
-
     }
 }
 
