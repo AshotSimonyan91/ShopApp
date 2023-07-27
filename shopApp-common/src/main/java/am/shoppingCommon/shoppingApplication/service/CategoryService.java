@@ -11,11 +11,11 @@ public interface CategoryService {
 
     List<CategoryDto> findAllCategory();
 
+    List<CategoryDto> findByParent(String parent);
+
     void remove(int id);
 
     CategoryDto save(CategoryDto categoryDto, MultipartFile multipartFile) throws IOException;
-    CategoryDto save(CategoryDto categoryDto);
-    CategoryDto save(int id, MultipartFile multipartFile) throws IOException;
 
     CategoryDto findById(Integer id);
 
