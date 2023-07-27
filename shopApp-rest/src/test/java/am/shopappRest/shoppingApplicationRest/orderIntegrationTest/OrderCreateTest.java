@@ -42,8 +42,10 @@ public class OrderCreateTest {
 
     @Test
     void addOrder() throws Exception {
-        createUser("email","name","s");
-        User basicUser = new User(47,"Basic User", "Surname","user@shopApp.com", "password",null,null, Role.USER,null,true,null,null);
+        createUser("mail","surname","name");
+        List<User> all = userRepository.findAll();
+        User user = all.get(0);
+        User basicUser = new User(user.getId(),"Basic User", "Surname","user@shopApp.com", "password",null,null, Role.USER,null,true,null,null);
         CurrentUser currentUser = new CurrentUser(basicUser);
         Authentication authentication = new UsernamePasswordAuthenticationToken(currentUser, null, currentUser.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);

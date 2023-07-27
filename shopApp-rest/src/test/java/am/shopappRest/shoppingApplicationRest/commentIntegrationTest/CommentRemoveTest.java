@@ -5,7 +5,6 @@ import am.shoppingCommon.shoppingApplication.entity.*;
 import am.shoppingCommon.shoppingApplication.repository.CommentsRepository;
 import am.shoppingCommon.shoppingApplication.repository.ProductRepository;
 import am.shoppingCommon.shoppingApplication.repository.UserRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -19,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -42,7 +42,10 @@ public class CommentRemoveTest {
 
     @Test
     void removeCommentTest() throws Exception {
-        User basicUser = new User(50,"Basic User", "Surname","user@shopApp.com", "password",null,null, Role.USER,null,true,null,null);
+        createUser("mail","surname","name");
+        List<User> all = userRepository.findAll();
+        User user = all.get(0);
+        User basicUser = new User(user.getId(),"Basic User", "Surname","user@shopApp.com", "password",null,null, Role.USER,null,true,null,null);
         CurrentUser currentUser = new CurrentUser(basicUser);
         Authentication authentication = new UsernamePasswordAuthenticationToken(currentUser, null, currentUser.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
