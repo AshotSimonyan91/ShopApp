@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Integer>, QuerydslPredicateExecutor<Product> {
     List<Product> findByNameContainingIgnoreCase(String name);
-    List<Product> findTop3ByCategoriesNameOrderBOrderByIdDesc(String categoryName);
+    List<Product> findTop3ByCategoriesNameOrderByIdDesc(String categoryName);
 
     Page<Product> findByNameContainingIgnoreCase(String name, Pageable pageable);
 
