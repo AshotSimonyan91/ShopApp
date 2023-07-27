@@ -2,7 +2,6 @@ package am.shopappweb.shopappweb.controller;
 
 
 import am.shopappweb.shopappweb.security.CurrentUser;
-import am.shoppingCommon.shoppingApplication.dto.categoryDto.CategoryDto;
 import am.shoppingCommon.shoppingApplication.dto.productDto.ProductDto;
 import am.shoppingCommon.shoppingApplication.entity.Role;
 import am.shoppingCommon.shoppingApplication.entity.User;
@@ -23,7 +22,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.IntStream;
 
 @Controller
@@ -35,9 +33,21 @@ public class MainController {
 
     @GetMapping("/")
     public String main(ModelMap modelmap) {
-        Map<String, List<CategoryDto>> parentCategoriesMap = categoryService.getParentCategoriesWithChildren();
-        modelmap.addAttribute("parentCategoriesMap", parentCategoriesMap);
         modelmap.addAttribute("trendingProducts",productService.findTrendingProducts());
+
+        modelmap.addAttribute("toys",categoryService.findByParent("toys"));
+        modelmap.addAttribute("giftForMens",categoryService.findByParent("giftForMens"));
+        modelmap.addAttribute("giftForWomen",categoryService.findByParent("giftForWomen"));
+        modelmap.addAttribute("watches",categoryService.findByParent("watches"));
+
+        modelmap.addAttribute("laptop",categoryService.findByParent("laptop"));
+        modelmap.addAttribute("phones",categoryService.findByParent("phones"));
+        modelmap.addAttribute("tv",categoryService.findByParent("tv"));
+        modelmap.addAttribute("lights",categoryService.findByParent("lights"));
+
+        modelmap.addAttribute("women",categoryService.findByParent("women"));
+        modelmap.addAttribute("livingRoom",categoryService.findByParent("livingRoom"));
+
         return "index";
     }
 

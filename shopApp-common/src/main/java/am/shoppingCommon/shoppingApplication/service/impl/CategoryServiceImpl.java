@@ -51,24 +51,9 @@ public class CategoryServiceImpl implements CategoryService {
         return CategoryMapper.categoryToDto(save);
     }
 
-    @Override
-    public CategoryDto save(CategoryDto categoryDto) {
-        Category category = CategoryMapper.dtoToCategory(categoryDto);
-        Category save = categoryRepository.save(category);
-        return CategoryMapper.categoryToDto(save);
-    }
-
-    @Override
-    public CategoryDto save(int id, MultipartFile multipartFile) throws IOException {
-        Category category = categoryRepository.findById(id).orElse(null);
-        if (multipartFile != null && !multipartFile.isEmpty()) {
-            String fileName = System.nanoTime() + "_" + multipartFile.getOriginalFilename();
-            File file = new File(imageUploadPath + fileName);
-            multipartFile.transferTo(file);
-            category.setImage(fileName);
-        }
-        Category save = categoryRepository.save(category);
-        return CategoryMapper.categoryToDto(save);
+    public List<CategoryDto> findByParent(String parent) {
+        List<Category> allByParentCategory = categoryRepository.findAllByParentCategory(parent);
+        return CategoryMapper.categoryDtoList(allByParentCategory);
     }
 
     @Override
@@ -100,4 +85,5 @@ public class CategoryServiceImpl implements CategoryService {
 
         return parentCategoriesMap;
     }
+
 }
