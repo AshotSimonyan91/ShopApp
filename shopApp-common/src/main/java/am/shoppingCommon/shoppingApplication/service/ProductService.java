@@ -18,6 +18,7 @@ public interface ProductService {
 
     Page<ProductDto> findAllProducts(Pageable pageable);
 
+    List<ProductDto> last3ByCategory(String category);
     Page<ProductDto> findByName(String name, Pageable pageable);
 
     List<ProductDto> findAll();

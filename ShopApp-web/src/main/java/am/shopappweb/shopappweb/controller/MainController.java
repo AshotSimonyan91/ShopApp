@@ -48,6 +48,8 @@ public class MainController {
         modelmap.addAttribute("women",categoryService.findByParent("women"));
         modelmap.addAttribute("livingRoom",categoryService.findByParent("livingRoom"));
 
+        modelmap.addAttribute("product",productService.last3ByCategory("asd"));
+
         return "index";
     }
 

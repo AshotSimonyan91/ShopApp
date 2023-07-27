@@ -59,6 +59,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<ProductDto> last3ByCategory(String category) {
+        List<Product> top3ByCategoriesNameOrderBOrderByIdDesc = productRepository.findTop3ByCategoriesNameOrderByIdDesc(category);
+        List<ProductDto> productDtoList = ProductMapper.mapProductList(top3ByCategoriesNameOrderBOrderByIdDesc);
+        return productDtoList;
+    }
+
+    @Override
     public List<ProductDto> findTrendingProducts() {
         List<Product> top9ByOrderByReviewDesc = productRepository.findTop9ByOrderByReviewDesc();
         return ProductMapper.mapProductList(top9ByOrderByReviewDesc);
@@ -162,6 +169,8 @@ public class ProductServiceImpl implements ProductService {
         List<ProductDto> productDtoList = ProductMapper.mapToListProductDto(all);
         return productDtoList;
     }
+
+
 
     private List<Product> searchProductByFilter(int page, int size, FilterProductDto filterProductDto) {
         QProduct qProduct = QProduct.product;
