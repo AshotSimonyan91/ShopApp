@@ -20,16 +20,8 @@ public class CategoriesEndpoint {
     private String siteURL;
 
     @PostMapping("/add")
-    public ResponseEntity<CategoryDto> addCategory(@RequestBody CategoryDto categoryDto) {
-        return ResponseEntity.ok(categoryService.save(categoryDto));
-    }
-
-    @PostMapping("/{id}/image")
-    public ResponseEntity<CategoryDto> addCategory(@PathVariable("id") int id,
-                                                   @RequestParam("pic") MultipartFile multipartFile) throws IOException {
-        CategoryDto save = categoryService.save(id, multipartFile);
-        save.setImage(siteURL + "/getImage?profilePic=" + save.getImage());
-        return ResponseEntity.ok(save);
+    public ResponseEntity<CategoryDto> addCategory(@RequestBody CategoryDto categoryDto, @RequestParam("pic") MultipartFile multipartFile) throws IOException {
+        return ResponseEntity.ok(categoryService.save(categoryDto,multipartFile));
     }
 
     @DeleteMapping("/remove")

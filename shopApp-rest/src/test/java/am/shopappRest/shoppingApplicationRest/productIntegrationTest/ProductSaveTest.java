@@ -101,7 +101,6 @@ public class ProductSaveTest {
                 .content(jsonRequest)
                 .with(user(currentUser)));
 
-        // Assert the response
         resultActions.andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.name").value("Test Product"))

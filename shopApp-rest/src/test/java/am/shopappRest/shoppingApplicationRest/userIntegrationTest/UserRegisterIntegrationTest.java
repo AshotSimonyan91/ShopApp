@@ -75,6 +75,8 @@ public class UserRegisterIntegrationTest {
     @Test
     @WithMockUser("user@company.com")
     void createWithEx() throws Exception {
+        userRepository.deleteAll();
+        createUser("user@company.com","John","Doe");
         UserRegisterDto userRegisterDto = UserRegisterDto.builder()
                 .email("user@company.com")
                 .name("John")
@@ -94,6 +96,19 @@ public class UserRegisterIntegrationTest {
 
         Optional<User> existingUser = userRepository.findByEmail("user@company.com");
         assertTrue(existingUser.isPresent());
+    }
+    private User createUser(String email, String name, String surname) {
+        return userRepository.save(User.builder()
+                .id(5)
+                .email(email)
+                .name(name)
+                .surname(surname)
+                .password("password")
+                .role(Role.USER)
+                .enabled(true)
+                .gender(Gender.FEMALE)
+                .addresses(null)
+                .build());
     }
 
 }

@@ -21,6 +21,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -47,7 +49,10 @@ public class CommentAddTest {
 
     @Test
     void addCommentTest() throws Exception {
-        User basicUser = new User(50,"Basic User", "Surname","user@shopApp.com", "password",null,null, Role.USER,null,true,null,null);
+        createUser("mail","surname","name");
+        List<User> all = userRepository.findAll();
+        User user = all.get(0);
+        User basicUser = new User(user.getId(),"Basic User", "Surname","user@shopApp.com", "password",null,null, Role.USER,null,true,null,null);
         CurrentUser currentUser = new CurrentUser(basicUser);
         Authentication authentication = new UsernamePasswordAuthenticationToken(currentUser, null, currentUser.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -59,7 +64,7 @@ public class CommentAddTest {
         MvcResult mvcResult = mockMvc.perform(post("/comments/add")
                         .param("id", String.valueOf(createProduct(123).getId()))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .flashAttr("commentRequestDto", commentRequestDto)) // Set commentRequestDto as @ModelAttribute
+                        .flashAttr("commentRequestDto", commentRequestDto))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -90,7 +95,6 @@ public class CommentAddTest {
 
     private User createUser(String email, String name, String surname) {
         return userRepository.save(User.builder()
-                .id(5)
                 .email(email)
                 .name(name)
                 .surname(surname)
