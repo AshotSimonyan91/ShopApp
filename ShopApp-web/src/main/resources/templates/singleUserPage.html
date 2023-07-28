@@ -53,9 +53,10 @@
                                     Photo</label> <input class="form-control" type="file" name="profile_pic">
                                 </div>
                                 <div class="col-sm-6 mb-3">
-                                    <label class="form-label">Email address<span class="text-danger">*</span></label>
+                                    <label class="form-label">Email <span class="text-danger">*</span></label>
                                     <input type="email" class="form-control" placeholder="E-mail" name="email"
                                            th:field="*{email}">
+                                    <span th:style="'color: red'" th:if="${emailInvalid}" th:text="${emailInvalid}"></span>
                                     <span th:if="${email_}">
                                     <span th:style="'color: red'" th:text="${email_}"></span>
                                 </span>

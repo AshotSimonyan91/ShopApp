@@ -38,7 +38,6 @@ public class CurrentUserControllerAdvice {
         }
         return null;
     }
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ModelAndView handleIllegalArgument(MethodArgumentNotValidException methodArgumentNotValidException,
                                               @AuthenticationPrincipal CurrentUser currentUser,
