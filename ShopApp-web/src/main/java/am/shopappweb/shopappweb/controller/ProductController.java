@@ -78,7 +78,7 @@ public class ProductController {
     @GetMapping("{id}")
     public String currentProductPage(@PathVariable("id") int id, @AuthenticationPrincipal CurrentUser currentUser,ModelMap modelmap) {
         modelmap.addAttribute("currentProduct", productService.findById(id,currentUser.getUser()));
-        modelmap.addAttribute("products", productService.findAll());
+        modelmap.addAttribute("products", productService.findTrendingProducts());
         modelmap.addAttribute("comments", commentService.findAllByLimit(id));
         return "singleProductPage";
     }
@@ -117,7 +117,7 @@ public class ProductController {
                              @AuthenticationPrincipal CurrentUser currentUser,
                              @RequestParam("files") MultipartFile[] files) throws IOException {
         productService.save(createProductRequestDto, files, currentUser.getUser());
-        return "redirect:/";
+        return "redirect:/admin/add/product";
     }
 
     @GetMapping("/remove")

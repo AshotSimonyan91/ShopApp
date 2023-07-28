@@ -144,7 +144,7 @@
                         <div class="product-card-2">
                             <div class="product-card-image">
                                 <div class="badge-ribbon"><span class="badge bg-info">Sale</span></div>
-                                <div class="product-wishlist"><a href="#"
+                                <div class="product-wishlist"><a th:href="@{/wishList/add(productId=${product.id})}"
                                                                  class="btn btn-outline-primary"><i
                                         class="fi-heart"></i></a></div>
                                 <div class="product-media"><a href="singleProductPage.html#"><img
@@ -152,12 +152,9 @@
                                         title=""
                                         alt=""></a>
                                     <div class="product-action nav justify-content-center"><a
-                                            href="singleProductPage.html#" class="btn btn-primary"><i
-                                            class="fi-shopping-cart"></i> </a><a href="#"
-                                                                                 class="btn btn-primary"><i
-                                            class="fi-repeat"></i> </a><a data-bs-toggle="modal"
-                                                                          data-bs-target="#px-quick-view"
-                                                                          href="javascript:void(0)"
+                                            th:href="@{/cart/add/{productId}(productId=${product.id})}" class="btn btn-primary"><i
+                                            class="fi-shopping-cart"></i> </a><a
+                                            th:href="@{'/products/' + ${product.id}}"
                                                                           class="btn btn-primary"><i
                                             class="fi-eye"></i></a></div>
                                 </div>

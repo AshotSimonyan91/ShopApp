@@ -812,15 +812,18 @@
                                                           aria-haspopup="true" aria-expanded="false"><i
                                 class="fi-user"></i></a>
                             <div class="dropdown-menu dropdown-menu-end mt-2 shadow"
-                                 aria-labelledby="dropdown_myaccount"><a
-                                    class="dropdown-item" href="/login">Login</a> <a
+                                 aria-labelledby="dropdown_myaccount"><a th:if="${currentUser == null}"
+                                    class="dropdown-item" href="/login">Login</a> <a th:if="${currentUser == null}"
                                     class="dropdown-item"
                                     href="/user/register">Register</a> <a th:if="${currentUser != null}"
                                                                           class="dropdown-item"
                                                                           href="/wishlist">Wishlist</a>
-                                <a class="dropdown-item"
+                                <a class="dropdown-item" th:if="${currentUser != null}"
+                                   href="/order">Order</a>
+                                <a class="dropdown-item" th:if="${currentUser != null}"
                                    href="/user">My
                                     account</a>
+
                                 <a th:if="${currentUser != null}"
                                    class="dropdown-item"
                                    href="/logout">Logout</a>

@@ -61,8 +61,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDto> last3ByCategory(String category) {
         List<Product> top3ByCategoriesNameOrderBOrderByIdDesc = productRepository.findTop3ByCategoriesNameOrderByIdDesc(category);
-        List<ProductDto> productDtoList = ProductMapper.mapProductList(top3ByCategoriesNameOrderBOrderByIdDesc);
-        return productDtoList;
+        return ProductMapper.mapProductList(top3ByCategoriesNameOrderBOrderByIdDesc);
     }
 
     @Override
