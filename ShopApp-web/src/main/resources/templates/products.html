@@ -253,13 +253,7 @@
                                     <div class="badge-ribbon"><span class="badge bg-danger">Sale</span></div>
                                     <div class="product-action"><a th:href="@{/wishList/add(productId=${product.id})}"
                                                                    class="btn btn-outline-primary"><i
-                                            class="fi-heart"></i> </a><a href="shop.html#"
-                                                                         class="btn btn-outline-primary"><i
-                                            class="fi-repeat"></i> </a><a data-bs-toggle="modal"
-                                                                          data-bs-target="#px-quick-view"
-                                                                          href="javascript:void(0)"
-                                                                          class="btn btn-outline-primary"><i
-                                            class="fi-eye"></i></a></div>
+                                            class="fi-heart"></i> </a></div>
                                     <div class="product-media"><a th:href="@{'/products/' + ${product.id}}"><img
                                             class="img-fluid"
                                             th:if="${product.images[0] != null}"

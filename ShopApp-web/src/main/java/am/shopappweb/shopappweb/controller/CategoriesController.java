@@ -20,7 +20,7 @@ public class CategoriesController {
     @PostMapping("/add")
     public String addCategory(@ModelAttribute CategoryDto categoryDto, @RequestParam("pic") MultipartFile multipartFile) throws IOException {
         categoryService.save(categoryDto, multipartFile);
-        return "redirect:/";
+        return "redirect:/admin/add/category";
     }
 
     @GetMapping("/remove")
