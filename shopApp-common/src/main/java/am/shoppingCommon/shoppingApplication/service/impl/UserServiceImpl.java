@@ -122,7 +122,7 @@ public class UserServiceImpl implements UserService {
         if (userOptional.isPresent()) {
             User userOldData = userOptional.get();
             Optional<User> byEmail = userRepository.findByEmail(user.getEmail());
-            if (byEmail.isPresent()){
+            if (byEmail.isPresent()) {
                 throw new EmailAlreadyExistsException("Email is already exists");
             }
             if (user.getEmail() == null || user.getEmail().equals("")) {
