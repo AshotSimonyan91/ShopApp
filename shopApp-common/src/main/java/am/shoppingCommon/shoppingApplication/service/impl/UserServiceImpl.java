@@ -3,6 +3,7 @@ package am.shoppingCommon.shoppingApplication.service.impl;
 
 import am.shoppingCommon.shoppingApplication.dto.userDto.UserDto;
 import am.shoppingCommon.shoppingApplication.dto.userDto.UserUpdateDto;
+import am.shoppingCommon.shoppingApplication.exception.EmailAlreadyExistsException;
 import am.shoppingCommon.shoppingApplication.service.AddressService;
 import am.shoppingCommon.shoppingApplication.service.UserService;
 import am.shoppingCommon.shoppingApplication.dto.addressDto.AddressDto;
@@ -120,14 +121,18 @@ public class UserServiceImpl implements UserService {
         User user = UserMapper.userUpdateDtoToUser(userUpdateDto);
         if (userOptional.isPresent()) {
             User userOldData = userOptional.get();
+            Optional<User> byEmail = userRepository.findByEmail(user.getEmail());
+            if (byEmail.isPresent()){
+                throw new EmailAlreadyExistsException("Email is already exists");
+            }
+            if (user.getEmail() == null || user.getEmail().equals("")) {
+                user.setEmail(userOldData.getEmail());
+            }
             if (user.getName() == null || user.getName().equals("")) {
                 user.setName(userOldData.getName());
             }
             if (user.getSurname() == null || user.getSurname().equals("")) {
                 user.setSurname(userOldData.getSurname());
-            }
-            if (user.getEmail() == null || user.getEmail().equals("")) {
-                user.setEmail(userOldData.getEmail());
             }
             if (user.getPhoneNumber() == null || user.getPhoneNumber().equals("")) {
                 user.setPhoneNumber(userOldData.getPhoneNumber());
