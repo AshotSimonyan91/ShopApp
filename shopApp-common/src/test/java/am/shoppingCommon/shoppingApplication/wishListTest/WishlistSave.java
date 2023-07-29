@@ -11,12 +11,15 @@ import am.shoppingCommon.shoppingApplication.repository.WishListRepository;
 import am.shoppingCommon.shoppingApplication.service.impl.WishListServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class WishlistSave {
     private WishListServiceImpl wishlistService;
     private ProductRepository productRepository;
