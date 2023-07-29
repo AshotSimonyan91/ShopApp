@@ -41,7 +41,7 @@ public class MainController {
         modelmap.addAttribute("watches",categoryService.findByParent("watches"));
 
         modelmap.addAttribute("laptop",categoryService.findByParent("laptop"));
-        modelmap.addAttribute("phones",categoryService.findByParent("phones"));
+        modelmap.addAttribute("phones",categoryService.findByParent("phone"));
         modelmap.addAttribute("tv",categoryService.findByParent("tv"));
         modelmap.addAttribute("lights",categoryService.findByParent("lights"));
 
@@ -49,7 +49,7 @@ public class MainController {
         modelmap.addAttribute("livingRoom",categoryService.findByParent("livingRoom"));
 
         modelmap.addAttribute("newTvs",productService.last3ByCategory("TV"));
-        modelmap.addAttribute("newPhones",productService.last3ByCategory("phone"));
+        modelmap.addAttribute("newPhones",productService.last3ByCategory("iPhone"));
         modelmap.addAttribute("newHeadPhones",productService.last3ByCategory("headphone"));
 
         return "index";

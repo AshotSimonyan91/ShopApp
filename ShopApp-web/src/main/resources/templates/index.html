@@ -549,51 +549,27 @@
                                     <div class="vertical-mm-in">
                                         <div class="row gy-4">
                                             <div class="col-6 col-md-4 col-lg-3"><h6 class="sm-title-04"><a
-                                                    class="text-reset" href="#">Harum Quidem</a></h6>
+                                                    class="text-reset" href="#">Toys</a></h6>
                                                 <ul class="list-unstyled link-list-style-03">
-                                                    <li><a href="#">All Harum Quidem</a></li>
-                                                    <li><a href="#">Cosmopolis</a></li>
-                                                    <li><a href="#">Suitó</a></li>
-                                                    <li><a href="#">Milancélos</a></li>
-                                                    <li><a href="#">Blazéro</a></li>
-                                                    <li><a href="#">Glamos</a></li>
-                                                    <li><a href="#">Metropolis</a></li>
+                                                    <li th:each="toy:${toys}"><a th:href="@{/products/search/{category}(category=${toy.name})}" th:text="${toy.name}"></a></li>
                                                 </ul>
                                             </div>
                                             <div class="col-6 col-md-4 col-lg-3"><h6 class="sm-title-04"><a
-                                                    class="text-reset" href="#">Harum Quidem</a></h6>
+                                                    class="text-reset" href="#">Gift For Mens</a></h6>
                                                 <ul class="list-unstyled link-list-style-03">
-                                                    <li><a href="#">All Harum Quidem</a></li>
-                                                    <li><a href="#">Cosmopolis</a></li>
-                                                    <li><a href="#">Suitó</a></li>
-                                                    <li><a href="#">Milancélos</a></li>
-                                                    <li><a href="#">Blazéro</a></li>
-                                                    <li><a href="#">Glamos</a></li>
-                                                    <li><a href="#">Metropolis</a></li>
+                                                    <li th:each="giftForMen:${giftForMens}"><a th:href="@{/products/search/{category}(category=${giftForMen.name})}" th:text="${giftForMen.name}"></a></li>
                                                 </ul>
                                             </div>
                                             <div class="col-6 col-md-4 col-lg-3"><h6 class="sm-title-04"><a
-                                                    class="text-reset" href="#">Harum Quidem</a></h6>
+                                                    class="text-reset" href="#">Gift for Women's</a></h6>
                                                 <ul class="list-unstyled link-list-style-03">
-                                                    <li><a href="#">All Harum Quidem</a></li>
-                                                    <li><a href="#">Cosmopolis</a></li>
-                                                    <li><a href="#">Suitó</a></li>
-                                                    <li><a href="#">Milancélos</a></li>
-                                                    <li><a href="#">Blazéro</a></li>
-                                                    <li><a href="#">Glamos</a></li>
-                                                    <li><a href="#">Metropolis</a></li>
+                                                    <li th:each="giftForWomens:${giftForWomen}"><a th:href="@{/products/search/{category}(category=${giftForWomens.name})}" th:text="${giftForWomens.name}"></a></li>
                                                 </ul>
                                             </div>
                                             <div class="col-6 col-md-4 col-lg-3"><h6 class="sm-title-04"><a
-                                                    class="text-reset" href="#">Harum Quidem</a></h6>
+                                                    class="text-reset" href="#">Watches</a></h6>
                                                 <ul class="list-unstyled link-list-style-03">
-                                                    <li><a href="#">All Harum Quidem</a></li>
-                                                    <li><a href="#">Cosmopolis</a></li>
-                                                    <li><a href="#">Suitó</a></li>
-                                                    <li><a href="#">Milancélos</a></li>
-                                                    <li><a href="#">Blazéro</a></li>
-                                                    <li><a href="#">Glamos</a></li>
-                                                    <li><a href="#">Metropolis</a></li>
+                                                    <li th:each="watch:${watches}"><a th:href="@{/products/search/{category}(category=${watch.name})}" th:text="${watch.name}"></a></li>
                                                 </ul>
                                             </div>
                                         </div><!-- Product section -->
@@ -658,16 +634,10 @@
                                                         class="card-img-top"
                                                         src="/img/electronic/el-blog-1.jpg" title="" alt=""></a>
                                                 </div>
-                                                <h6 class="sm-title-04"><a class="text-reset" href="#">Harum
-                                                    Quidem</a></h6>
+                                                <h6 class="sm-title-04"><a class="text-reset" href="#">Laptop
+                                                    </a></h6>
                                                 <ul class="list-unstyled link-list-style-03">
-                                                    <li><a href="#">All Harum Quidem</a></li>
-                                                    <li><a href="#">Cosmopolis</a></li>
-                                                    <li><a href="#">Suitó</a></li>
-                                                    <li><a href="#">Milancélos</a></li>
-                                                    <li><a href="#">Blazéro</a></li>
-                                                    <li><a href="#">Glamos</a></li>
-                                                    <li><a href="#">Metropolis</a></li>
+                                                    <li th:each="notebook:${laptop}"><a th:href="@{/products/search/{category}(category=${notebook.name})}" th:text="${notebook.name}"></a></li>
                                                 </ul>
                                             </div>
                                             <div class="col-6 col-md-4 col-lg-3">
@@ -676,16 +646,10 @@
                                                         class="card-img-top"
                                                         src="/img/electronic/el-blog-2.jpg" title="" alt=""></a>
                                                 </div>
-                                                <h6 class="sm-title-04"><a class="text-reset" href="#">Harum
-                                                    Quidem</a></h6>
+                                                <h6 class="sm-title-04"><a class="text-reset" href="#">Phone
+                                                    </a></h6>
                                                 <ul class="list-unstyled link-list-style-03">
-                                                    <li><a href="#">All Harum Quidem</a></li>
-                                                    <li><a href="#">Cosmopolis</a></li>
-                                                    <li><a href="#">Suitó</a></li>
-                                                    <li><a href="#">Milancélos</a></li>
-                                                    <li><a href="#">Blazéro</a></li>
-                                                    <li><a href="#">Glamos</a></li>
-                                                    <li><a href="#">Metropolis</a></li>
+                                                    <li th:each="smartPhone:${phones}"><a th:href="@{/products/search/{category}(category=${smartPhone.name})}" th:text="${smartPhone.name}"></a></li>
                                                 </ul>
                                             </div>
                                             <div class="col-6 col-md-4 col-lg-3">
@@ -694,16 +658,10 @@
                                                         class="card-img-top"
                                                         src="/img/electronic/el-blog-3.jpg" title="" alt=""></a>
                                                 </div>
-                                                <h6 class="sm-title-04"><a class="text-reset" href="#">Harum
-                                                    Quidem</a></h6>
+                                                <h6 class="sm-title-04"><a class="text-reset" href="#">TV
+                                                    </a></h6>
                                                 <ul class="list-unstyled link-list-style-03">
-                                                    <li><a href="#">All Harum Quidem</a></li>
-                                                    <li><a href="#">Cosmopolis</a></li>
-                                                    <li><a href="#">Suitó</a></li>
-                                                    <li><a href="#">Milancélos</a></li>
-                                                    <li><a href="#">Blazéro</a></li>
-                                                    <li><a href="#">Glamos</a></li>
-                                                    <li><a href="#">Metropolis</a></li>
+                                                    <li th:each="tvs:${tv}"><a th:href="@{/products/search/{category}(category=${tvs.name})}" th:text="${tvs.name}"></a></li>
                                                 </ul>
                                             </div>
                                             <div class="col-6 col-md-4 col-lg-3">
@@ -712,16 +670,10 @@
                                                         class="card-img-top"
                                                         src="/img/electronic/el-blog-4.jpg" title="" alt=""></a>
                                                 </div>
-                                                <h6 class="sm-title-04"><a class="text-reset" href="#">Harum
-                                                    Quidem</a></h6>
+                                                <h6 class="sm-title-04"><a class="text-reset" href="#">Lights
+                                                    </a></h6>
                                                 <ul class="list-unstyled link-list-style-03">
-                                                    <li><a href="#">All Harum Quidem</a></li>
-                                                    <li><a href="#">Cosmopolis</a></li>
-                                                    <li><a href="#">Suitó</a></li>
-                                                    <li><a href="#">Milancélos</a></li>
-                                                    <li><a href="#">Blazéro</a></li>
-                                                    <li><a href="#">Glamos</a></li>
-                                                    <li><a href="#">Metropolis</a></li>
+                                                    <li th:each="light:${lights}"><a th:href="@{/products/search/{category}(category=${light.name})}" th:text="${light.name}"></a></li>
                                                 </ul>
                                             </div>
                                         </div>
