@@ -1,7 +1,6 @@
 package am.shopappRest.shoppingApplicationRest.cartIntegrationTest;
 
 import am.shopappRest.shoppingApplicationRest.security.CurrentUser;
-import am.shoppingCommon.shoppingApplication.dto.cartDto.CartDto;
 import am.shoppingCommon.shoppingApplication.entity.*;
 import am.shoppingCommon.shoppingApplication.repository.CartItemRepository;
 import am.shoppingCommon.shoppingApplication.repository.CartRepository;
@@ -9,7 +8,6 @@ import am.shoppingCommon.shoppingApplication.repository.ProductRepository;
 import am.shoppingCommon.shoppingApplication.repository.UserRepository;
 import am.shoppingCommon.shoppingApplication.service.CartService;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -24,7 +22,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
