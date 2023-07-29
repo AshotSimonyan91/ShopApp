@@ -1,7 +1,6 @@
 package am.shoppingCommon.shoppingApplication.service.impl;
 
 
-
 import am.shoppingCommon.shoppingApplication.dto.productDto.CreateProductResponseDto;
 import am.shoppingCommon.shoppingApplication.mapper.ProductMapper;
 import am.shoppingCommon.shoppingApplication.service.MainService;
@@ -27,10 +26,12 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public byte[] getImage(String imageName) throws IOException {
-        File file = new File(imageUploadPath + imageName);
-        if (file.exists()) {
-            FileInputStream fis = new FileInputStream(file);
-            return IOUtils.toByteArray(fis);
+        if (imageName != null && !imageName.equals("")) {
+            File file = new File(imageUploadPath + imageName);
+            if (file.exists()) {
+                FileInputStream fis = new FileInputStream(file);
+                return IOUtils.toByteArray(fis);
+            }
         }
         return null;
     }
