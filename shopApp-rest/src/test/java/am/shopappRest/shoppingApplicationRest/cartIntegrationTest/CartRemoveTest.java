@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@ActiveProfiles("test")
+@ActiveProfiles("test2")
 public class CartRemoveTest {
     @Autowired
     private CartService cartService;
@@ -43,7 +43,7 @@ public class CartRemoveTest {
     @Autowired
     private CartRepository cartRepository;
     @Autowired
-    CartItemRepository cartItemRepository;
+    private CartItemRepository cartItemRepository;
 
     @Autowired
     private MockMvc mockMvc;

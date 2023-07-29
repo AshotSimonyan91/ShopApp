@@ -34,7 +34,7 @@ public class DeliveryEndpoint {
     }
 
     @DeleteMapping("/remove")
-    public ResponseEntity<?> removeDelivery(@RequestParam("id") int id, @RequestParam("ProductId") int productId) {
+    public ResponseEntity<?> removeDelivery(@RequestParam("id") int id) {
         deliveryService.remove(id);
         return ResponseEntity.noContent().build();
     }
