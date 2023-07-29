@@ -23,7 +23,7 @@ public interface ProductService {
 
     List<ProductDto> findAll();
 
-    void remove(int id);
+    void remove(int id, User user);
 
     ProductDto save(CreateProductRequestDto product, MultipartFile[] files, User user) throws IOException;
 

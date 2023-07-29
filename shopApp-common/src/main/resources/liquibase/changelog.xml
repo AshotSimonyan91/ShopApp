@@ -345,4 +345,28 @@
         </preConditions>
         <dropForeignKeyConstraint baseTableName="product_images" constraintName="fk_product_images_product" />
     </changeSet>
+    <changeSet id="11" author="HrantMeselyan">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="fk_product_product_view" />
+            </not>
+        </preConditions>
+        <dropForeignKeyConstraint baseTableName="product_review" constraintName="fk_product_product_view" />
+    </changeSet>
+
+    <changeSet id="12" author="HrantMeselyan">
+        <addForeignKeyConstraint baseTableName="product_review"
+                                 constraintName="fk_product_product_view3"
+                                 referencedTableName="product"
+                                 baseColumnNames="product_id"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE" />
+    </changeSet>
+    <changeSet id="13" author="HrantMeselyan">
+        <dropForeignKeyConstraint
+                baseTableName="product_review"
+                constraintName="fk_product_product_view"
+        />
+
+    </changeSet>
 </databaseChangeLog>

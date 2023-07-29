@@ -4,6 +4,8 @@ package am.shoppingCommon.shoppingApplication.mapper;
 import am.shoppingCommon.shoppingApplication.dto.categoryDto.CategoryDto;
 import am.shoppingCommon.shoppingApplication.entity.Category;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -43,5 +45,22 @@ public class CategoryMapper {
                 .map(CategoryMapper::categoryToDto)
                 .toList();
     }
+
+    public static List<Category> dtoListMapper(List<CategoryDto> categories) {
+        if (categories == null) {
+            return Collections.emptyList();
+        }
+
+        List<Category> categoryList = new ArrayList<>();
+        for (CategoryDto categoryDto : categories) {
+            Category category = new Category();
+            category.setId(categoryDto.getId());
+            category.setParentCategory(categoryDto.getParentCategory());
+            category.setName(categoryDto.getName());
+            categoryList.add(category);
+        }
+        return categoryList;
+    }
+
 
 }

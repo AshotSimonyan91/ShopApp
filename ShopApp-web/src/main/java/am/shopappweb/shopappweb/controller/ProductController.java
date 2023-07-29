@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -76,8 +77,8 @@ public class ProductController {
     }
 
     @GetMapping("{id}")
-    public String currentProductPage(@PathVariable("id") int id, @AuthenticationPrincipal CurrentUser currentUser,ModelMap modelmap) {
-        modelmap.addAttribute("currentProduct", productService.findById(id,currentUser.getUser()));
+    public String currentProductPage(@PathVariable("id") int id, @AuthenticationPrincipal CurrentUser currentUser, ModelMap modelmap) {
+        modelmap.addAttribute("currentProduct", productService.findById(id, currentUser.getUser()));
         modelmap.addAttribute("products", productService.findTrendingProducts());
         modelmap.addAttribute("comments", commentService.findAllByLimit(id));
         return "singleProductPage";
@@ -85,8 +86,8 @@ public class ProductController {
 
     @GetMapping("/search/{category}")
     public String getProductByCategoryName(ModelMap modelMap, @PathVariable("category") String category,
-                                       @RequestParam("page") Optional<Integer> page,
-                                       @RequestParam("size") Optional<Integer> size) {
+                                           @RequestParam("page") Optional<Integer> page,
+                                           @RequestParam("size") Optional<Integer> size) {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(9);
         Sort sort = Sort.by(Sort.Direction.DESC, "id");
@@ -121,8 +122,8 @@ public class ProductController {
     }
 
     @GetMapping("/remove")
-    public String removeProduct(@RequestParam("id") int id) {
-        productService.remove(id);
+    public String removeProduct(@RequestParam("id") int id,@AuthenticationPrincipal CurrentUser currentUser) {
+        productService.remove(id, currentUser.getUser());
         return "redirect:/products";
     }
 

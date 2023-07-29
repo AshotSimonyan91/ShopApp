@@ -1,6 +1,7 @@
 package am.shoppingCommon.shoppingApplication.service;
 
 import am.shoppingCommon.shoppingApplication.dto.orderDto.OrderDto;
+import am.shoppingCommon.shoppingApplication.dto.productDto.CreateProductRequestDto;
 import am.shoppingCommon.shoppingApplication.dto.userDto.UserDto;
 import am.shoppingCommon.shoppingApplication.entity.User;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,4 +17,6 @@ public interface AdminService {
     OrderDto editOrder(OrderDto orderDto, int deliveryId, User user);
 
     UserDto updateUser(UserDto userDto, MultipartFile multipartFile) throws IOException;
+
+    void editProduct(CreateProductRequestDto createProductRequestDto, MultipartFile[] files, User user, int id) throws IOException;
 }

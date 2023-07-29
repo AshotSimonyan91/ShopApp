@@ -30,6 +30,9 @@
             </div><!-- End Product Gallery --><!-- Product Details -->
             <div class="col-lg-6 ps-lg-5">
                 <div class="product-detail pt-4 pt-lg-0">
+                    <a th:if="${currentUser.role == currentUser.role.ADMIN}" th:href="@{/admin/edit/product(id=${currentProduct.id})}">
+                        <span>Edit</span>
+                    </a>
                     <div class="products-brand pb-2"><span>Brand name</span></div>
                     <div class="products-title mb-2"><h4 class="h4" th:text="${currentProduct.name}"></h4></div>
                     <div class="rating-star text small pb-4"><i class="bi bi-star-fill active"></i> <i
@@ -152,10 +155,11 @@
                                         title=""
                                         alt=""></a>
                                     <div class="product-action nav justify-content-center"><a
-                                            th:href="@{/cart/add/{productId}(productId=${product.id})}" class="btn btn-primary"><i
+                                            th:href="@{/cart/add/{productId}(productId=${product.id})}"
+                                            class="btn btn-primary"><i
                                             class="fi-shopping-cart"></i> </a><a
                                             th:href="@{'/products/' + ${product.id}}"
-                                                                          class="btn btn-primary"><i
+                                            class="btn btn-primary"><i
                                             class="fi-eye"></i></a></div>
                                 </div>
                             </div>
