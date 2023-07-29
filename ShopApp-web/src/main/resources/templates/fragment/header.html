@@ -817,11 +817,9 @@
                         <div class="nav-item d-none d-xl-block"><a class="nav-link" th:if="${currentUser != null}"
                                                                    th:href="@{/wishList(userid=${currentUser.id})}"><i
                                 class="fi-heart"></i></a></div><!-- Cart -->
-                        <div class="nav-item"><a class="nav-link" data-bs-toggle="offcanvas"
-                                                 href="#"
-                                                 role="button" aria-controls="modalMiniCart">
-                            <span class="data-cart-items"><i class="fi-shopping-cart"></i></span></a>
-                        </div><!-- Mobile Toggle -->
+                        <div class="nav-item d-none d-xl-block"><a class="nav-link"
+                                                                   href="/cart"><i
+                                class="fi-shopping-cart"></i></a></div><!-- Cart -->
                         <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                                 aria-expanded="false" aria-label="Toggle navigation"><span

@@ -2,10 +2,8 @@ package am.shopappweb.shopappweb.controller;
 
 import am.shopappweb.shopappweb.security.CurrentUser;
 import am.shoppingCommon.shoppingApplication.dto.orderDto.OrderDto;
+import am.shoppingCommon.shoppingApplication.dto.productDto.CreateProductRequestDto;
 import am.shoppingCommon.shoppingApplication.dto.userDto.UserDto;
-import am.shoppingCommon.shoppingApplication.entity.User;
-import am.shoppingCommon.shoppingApplication.mapper.CategoryMapper;
-import am.shoppingCommon.shoppingApplication.mapper.UserMapper;
 import am.shoppingCommon.shoppingApplication.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -32,6 +30,7 @@ public class AdminController {
     private final CategoryService categoryService;
     private final NotificationService notificationService;
     private final AdminService adminService;
+    private final ProductService productService;
 
     @GetMapping
     public String adminPage(ModelMap modelMap,
@@ -58,7 +57,7 @@ public class AdminController {
 
     @PostMapping("/update")
     public String updateUser(@ModelAttribute UserDto userDto, @RequestParam("img") MultipartFile profilePic) throws IOException {
-        adminService.updateUser(userDto,profilePic);
+        adminService.updateUser(userDto, profilePic);
         return "redirect:/admin";
     }
 
@@ -70,13 +69,36 @@ public class AdminController {
         modelMap.addAttribute("notifications", notificationService.last3Notifications(currentUser.getUser().getId()));
         return "admin/add-product";
     }
+
+    @GetMapping("/edit/product")
+    public String editProductAdminPage(ModelMap modelMap, @RequestParam("id") int id, @AuthenticationPrincipal CurrentUser currentUser) {
+        modelMap.addAttribute("productId", id);
+        modelMap.addAttribute("categories", categoryService.findAllCategory());
+        modelMap.addAttribute("user", userService.findByIdWithAddresses(currentUser.getUser().getId()));
+        modelMap.addAttribute("notifications", notificationService.last3Notifications(currentUser.getUser().getId()));
+        return "admin/edit-product";
+    }
+
+    @PostMapping("/edit/product")
+    public String addProduct(@ModelAttribute CreateProductRequestDto createProductRequestDto,
+                             @AuthenticationPrincipal CurrentUser currentUser,
+                             @RequestParam("files") MultipartFile[] files,@RequestParam("id") int id) throws IOException {
+        adminService.editProduct(createProductRequestDto, files, currentUser.getUser(),id);
+        return "redirect:/admin";
+    }
+    @GetMapping("/remove/product")
+    public String removeProduct(@RequestParam ("id") int id,@AuthenticationPrincipal CurrentUser currentUser){
+        productService.remove(id,currentUser.getUser());
+        return "redirect:/admin";
+    }
+
+
     @GetMapping("/add/category")
     public String addCategoryAdminPage(ModelMap modelMap, @AuthenticationPrincipal CurrentUser currentUser) {
         modelMap.addAttribute("user", userService.findByIdWithAddresses(currentUser.getUser().getId()));
         modelMap.addAttribute("notifications", notificationService.last3Notifications(currentUser.getUser().getId()));
         return "admin/add-category";
     }
-
 
 
     @GetMapping("/edit/order/{id}")

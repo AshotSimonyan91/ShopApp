@@ -83,9 +83,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void remove(int id) {
-        productRepository.deleteById(id);
-        log.info("product is removed by ID: {}", id);
+    @Transactional
+    public void remove(int id, User user) {
+        if (user.getRole() == Role.ADMIN) {
+            productRepository.deleteById(id);
+            log.info("product is removed by ID: {}", id);
+        }
     }
 
 
@@ -101,7 +104,7 @@ public class ProductServiceImpl implements ProductService {
             for (MultipartFile multipartFile : files) {
                 if (multipartFile != null && !multipartFile.isEmpty()) {
                     Image image = new Image();
-                    image.setImage(ImageUtil.imageUploadWithResize(multipartFile,imageUploadPath));
+                    image.setImage(ImageUtil.imageUploadWithResize(multipartFile, imageUploadPath));
                     imageList.add(image);
                 }
             }
@@ -168,7 +171,6 @@ public class ProductServiceImpl implements ProductService {
         List<ProductDto> productDtoList = ProductMapper.mapToListProductDto(all);
         return productDtoList;
     }
-
 
 
     private List<Product> searchProductByFilter(int page, int size, FilterProductDto filterProductDto) {
