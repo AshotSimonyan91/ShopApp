@@ -1,14 +1,11 @@
-package am.shopappRest.shoppingApplicationRest.cartIntegrationTest;
+package am.shopappRest.shoppingApplicationRest.deliveryIntegrationTest;
 
 import am.shopappRest.shoppingApplicationRest.security.CurrentUser;
-import am.shoppingCommon.shoppingApplication.dto.cartDto.CartDto;
 import am.shoppingCommon.shoppingApplication.entity.*;
-import am.shoppingCommon.shoppingApplication.repository.CartItemRepository;
-import am.shoppingCommon.shoppingApplication.repository.CartRepository;
+import am.shoppingCommon.shoppingApplication.repository.DeliveryRepository;
+import am.shoppingCommon.shoppingApplication.repository.OrderRepository;
 import am.shoppingCommon.shoppingApplication.repository.ProductRepository;
 import am.shoppingCommon.shoppingApplication.repository.UserRepository;
-import am.shoppingCommon.shoppingApplication.service.CartService;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,71 +18,82 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+/**
+ * Created by Ashot Simonyan on 29.07.23.
+ */
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test2")
-public class CartRemoveTest {
+public class DeliveryAddTest {
+
     @Autowired
-    private CartService cartService;
+    private MockMvc mockMvc;
 
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
+    private OrderRepository orderRepository;
+
+    @Autowired
     private ProductRepository productRepository;
 
     @Autowired
-    private CartRepository cartRepository;
-    @Autowired
-    private CartItemRepository cartItemRepository;
+    private DeliveryRepository deliveryRepository;
 
-    @Autowired
-    private MockMvc mockMvc;
-
-    @AfterEach
-    public void setUp() {
-        cartRepository.deleteAll();
+    @BeforeEach
+    public void before(){
+        deliveryRepository.deleteAll();
+        orderRepository.deleteAll();
         productRepository.deleteAll();
         userRepository.deleteAll();
-
     }
 
+
     @Test
-    public void testRemoveFromCart() throws Exception {
+    public void deliveryAdd() throws Exception {
+        Product product = createProduct(33);
 
-        User user = createUser("user@shopApp.com", "name", "surname");
-
-        Product product = new Product(0, "Product Name", "pCode", "brand", 0L, "desc", 10.0, 40, user, null, null);
-        Product save = productRepository.save(product);
-
-        List<Product> all = productRepository.findAll();
-        cartService.save(all.get(0).getId(), user);
-
-        List<CartItem> cartItems = cartItemRepository.findAll();
-        assertFalse(cartItems.isEmpty());
-
-        CurrentUser currentUser = new CurrentUser(user);
+        User basicUser = new User(product.getUser().getId(), "Basic User", "Surname", "user@shopApp.com", "password", null, null, Role.USER, null, true, null, null);
+        CurrentUser currentUser = new CurrentUser(basicUser);
         Authentication authentication = new UsernamePasswordAuthenticationToken(currentUser, null, currentUser.getAuthorities());
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
         securityContext.setAuthentication(authentication);
         SecurityContextHolder.setContext(securityContext);
 
-        mockMvc.perform(delete("/cart/remove")
-                        .param("countRemove", String.valueOf(1))
-                        .param("productRemoveId", String.valueOf(save.getId()))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent());
+        Order order = new Order(1, LocalDateTime.now(),33.3, Status.APPROVED,product.getUser(),null);
+        Order save = orderRepository.save(order);
 
-        List<CartItem> cartItemsAfterRemove = cartItemRepository.findAll();
-        assertTrue(cartItemsAfterRemove.isEmpty());
+        mockMvc.perform(get("/delivery/add")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("order_id",String.valueOf(save.getId())))
+                .andExpect(status().isOk());
 
+        List<Order> allByUserId = orderRepository.findAllByUserId(product.getUser().getId());
+        assertNotNull(allByUserId);
+    }
+
+
+
+    private Product createProduct(int id) {
+        Product product = new Product();
+        product.setId(id);
+        product.setName("name");
+        product.setPrice(400);
+        product.setCount(40);
+        product.setUser(createUser("email", "name", "surname"));
+        product.setProductCode("450");
+        return productRepository.save(product);
     }
 
     private User createUser(String email, String name, String surname) {
@@ -100,5 +108,4 @@ public class CartRemoveTest {
                 .addresses(null)
                 .build());
     }
-
 }
