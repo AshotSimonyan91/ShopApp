@@ -1847,7 +1847,7 @@
                                 class="text-primary fw-500 small text-uppercase ms-auto" href="/products">View
                             All</a></div>
                         <div class="product-card-4 rounded overflow-hidden" th:each="tv : ${newTvs}">
-                            <div class="product-card-image"><a href="#"><img
+                            <div class="product-card-image"><a href="#"><img class="margin-10"
                                     th:src="@{/getImage(profilePic=${tv.images[0].image})}" alt=""></a></div>
                             <div class="product-card-info"><h6 class="product-title"><a href="#"
                                                                                         tabindex="0"
@@ -1866,7 +1866,7 @@
                                 class="text-primary fw-500 small text-uppercase ms-auto" href="/products">View
                             All</a></div>
                         <div class="product-card-4 rounded overflow-hidden" th:each="phone :${newPhones}">
-                            <div class="product-card-image"><a href="#"><img
+                            <div class="product-card-image"><a href="#"><img class="margin-10"
                                     th:src="@{/getImage(profilePic=${phone.images[0].image})}"  alt=""></a></div>
                             <div class="product-card-info"><h6 class="product-title"><a href="#"
                                                                                         tabindex="0"
@@ -1885,7 +1885,7 @@
                                 class="text-primary fw-500 small text-uppercase ms-auto" href="/products">View
                             All</a></div>
                         <div class="product-card-4 rounded overflow-hidden" th:each="headphone :${newHeadPhones}">
-                            <div class="product-card-image"><a href="#"><img
+                            <div class="product-card-image"><a href="#"><img class="margin-10"
                                     th:src="@{/getImage(profilePic=${headphone.images[0].image})}"  title="" alt=""></a></div>
                             <div class="product-card-info"><h6 class="product-title"><a href="#"
                                                                                         tabindex="0" th:text="${headphone.name}"></a></h6>

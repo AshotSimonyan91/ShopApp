@@ -25,5 +25,10 @@ public class EmailExceptionHandlerAdvice {
         modelAndView.setViewName("singleUserPage");
         return modelAndView;
     }
-
+    @ExceptionHandler(Exception.class)
+    public ModelAndView handleGlobalException(Exception ex) {
+        ModelAndView modelAndView = new ModelAndView("error"); // Specify the error view template
+        modelAndView.addObject("errorMessage", "An error occurred. Please try again later.");
+        return modelAndView;
+    }
 }
