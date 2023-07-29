@@ -12,7 +12,7 @@
     </head>
     <body><!-- Skippy & Prload --><!-- skippy -->
     <a id="skippy" class="skippy visually-hidden-focusable overflow-hidden"
-       href="./html/account/login.html#content">
+       href="#">
         <div class="container"><span class="u-skiplink-text">Skip to main content</span></div>
     </a><!-- End skippy --><!-- Preload -->
     <div id="loading" class="loading-preloader">
@@ -97,19 +97,19 @@
             <div class="pt-3">
                 <div class="nav tag-cloud"><a
                         class="rounded-pill px-3 small font-w-500 py-1 bg-gray-200 me-1 mb-1 text-mode"
-                        href="./html/account/login.html#">Design</a>
+                        href="#">Design</a>
                     <a class="rounded-pill px-3 small font-w-500 py-1 bg-gray-200 me-1 mb-1 text-mode"
-                       href="./html/account/login.html#">Development</a>
+                       href="#">Development</a>
                     <a class="rounded-pill px-3 small font-w-500 py-1 bg-gray-200 me-1 mb-1 text-mode"
-                       href="./html/account/login.html#">Travel</a>
+                       href="#">Travel</a>
                     <a class="rounded-pill px-3 small font-w-500 py-1 bg-gray-200 me-1 mb-1 text-mode"
-                       href="./html/account/login.html#">Web
+                       href="#">Web
                         Design</a> <a class="rounded-pill px-3 small font-w-500 py-1 bg-gray-200 me-1 mb-1 text-mode"
-                                      href="./html/account/login.html#">Marketing</a> <a
+                                      href="#">Marketing</a> <a
                             class="rounded-pill px-3 small font-w-500 py-1 bg-gray-200 me-1 mb-1 text-mode"
-                            href="./html/account/login.html#">Research</a> <a
+                            href="#">Research</a> <a
                             class="rounded-pill px-3 small font-w-500 py-1 bg-gray-200 me-1 mb-1 text-mode"
-                            href="./html/account/login.html#">Managment</a></div>
+                            href="#">Managment</a></div>
             </div>
         </div>
     </div><!-- End Header Side Search --><!-- Login Popup  -->
@@ -166,13 +166,13 @@
                     <block th:each="cartItem: ${cartItems}">
                         <li class="py-2">
                             <div class="row align-items-center">
-                                <div class="col-4"><!-- Image --> <a href="./html/account/login.html#"><img
+                                <div class="col-4"><!-- Image --> <a href="#"><img
                                         class="img-fluid border"
                                         th:if="${cartItem.product.images[0] != null}"
                                         th:src="@{/getImage(profilePic=${cartItem.product.images[0].image})}"
                                         alt="..."></a></div>
                                 <div class="col-8"><!-- Title --><p class="mb-2"><a class="text-mode fw-500"
-                                                                                    href="./html/account/login.html#"
+                                                                                    href="#"
                                                                                     th:text="${cartItem.product.name}">Cotton
                                     floral print Dress</a> <span class="m-0 text-muted w-100 d-block"
                                                                  th:text="'1 pcs price = ' + ${cartItem.product.price}"></span>
@@ -564,11 +564,11 @@
                                 </li>
                             </ul><!-- Top social -->
                             <div class="nav header-social justify-content-end d-none d-lg-block white-link"><a
-                                    class="h-social-link" href="./html/account/login.html#"><i
+                                    class="h-social-link" href="#"><i
                                     class="bi bi-facebook"></i></a> <a
-                                    class="h-social-link" href="./html/account/login.html#"><i
+                                    class="h-social-link" href="#"><i
                                     class="bi bi-twitter"></i></a> <a
-                                    class="h-social-link" href="./html/account/login.html#"><i
+                                    class="h-social-link" href="#"><i
                                     class="bi bi-linkedin"></i></a>
                             </div>
                         </div>
@@ -583,7 +583,7 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav mx-auto">
 
-                            <li class="dropdown dropdown-full nav-item"><a href="./html/account/login.html#"
+                            <li class="dropdown dropdown-full nav-item"><a href="#"
                                                                            class="nav-link" th:text="#{header.latest}"></a>
                                 <label class="px-dropdown-toggle mob-menu"></label>
                                 <div class="dropdown-menu dropdown-mega-menu py-0">
@@ -591,38 +591,25 @@
                                         <div class="row gy-4">
                                             <div class="col-6 col-md-3">
                                                 <ul class="list-unstyled link-list-style-04 m-0">
-                                                    <li><a href="./html/account/login.html#">WHAT’S NEW</a></li>
-                                                    <li><a href="./html/account/login.html#">BEST SELLING</a></li>
-                                                    <li><a href="./html/account/login.html#">TOP RATED</a></li>
-                                                    <li><a href="./html/account/login.html#">MOST POPULAR</a></li>
-                                                    <li><a href="./html/account/login.html#">EDITOR’S PICKS</a></li>
-                                                    <li><a href="./html/account/login.html#">ON SALE</a></li>
+                                                    <li><a href="#">WHAT’S NEW</a></li>
+                                                    <li><a href="#">BEST SELLING</a></li>
+                                                    <li><a href="#">TOP RATED</a></li>
+                                                    <li><a href="#">MOST POPULAR</a></li>
+                                                    <li><a href="#">EDITOR’S PICKS</a></li>
+                                                    <li><a href="#">ON SALE</a></li>
                                                 </ul>
                                             </div>
                                             <div class="col-6 col-md-3 col-xl-2"><h6 class="sm-title-05 mb-3 fw-500">
                                                 Women's</h6>
                                                 <ul class="list-unstyled link-list-style-05 m-0">
-                                                    <li><a href="./html/account/login.html#">Fusion Wear</a></li>
-                                                    <li><a href="./html/account/login.html#">Dress Materials</a></li>
-                                                    <li><a href="./html/account/login.html#">Dupattas & Shawls</a></li>
-                                                    <li><a href="./html/account/login.html#">Ethnic Dresses</a></li>
-                                                    <li><a href="./html/account/login.html#">Jackets & Waistcoats</a>
-                                                    </li>
-                                                    <li><a href="./html/account/login.html#">Kurtas & Suits</a></li>
-                                                    <li><a href="./html/account/login.html#">Sarees</a></li>
+                                                    <li th:each="forWomen:${women}"><a th:href="@{/products/search/{category}(category=${forWomen.name})}" th:text="${forWomen.name}"></a></li>
                                                 </ul>
                                             </div>
                                             <div class="col-6 col-md-3 col-xl-2"><h6 class="sm-title-05 mb-3 fw-500">
                                                 Living
                                                 Room</h6>
                                                 <ul class="list-unstyled link-list-style-05 m-0">
-                                                    <li><a href="./html/account/login.html#">Sofa</a></li>
-                                                    <li><a href="./html/account/login.html#">Love Seat</a></li>
-                                                    <li><a href="./html/account/login.html#">Settee Sofa</a></li>
-                                                    <li><a href="./html/account/login.html#">Sleeper Sofas</a></li>
-                                                    <li><a href="./html/account/login.html#">Tuxedo</a></li>
-                                                    <li><a href="./html/account/login.html#">Chair & Ottomans</a></li>
-                                                    <li><a href="./html/account/login.html#">Wing Chair</a></li>
+                                                    <li th:each="forlivingRoom:${livingRoom}"><a th:href="@{/products/search/{category}(category=${forlivingRoom.name})}" th:text="${forlivingRoom.name}"></a></li>
                                                 </ul>
                                             </div>
                                             <div class="col-12 col-md-3 col-xl-5 d-flex flex-row">
@@ -633,7 +620,7 @@
                                                         NEW IN</h6>
                                                         <h3 class="fw-600 h4 text-white">2022 Collection</h3>
                                                         <div class="pt-2"><a class="btn btn-white btn-sm"
-                                                                             href="./html/account/login.html#">Shop
+                                                                             href="#">Shop
                                                             Now</a></div>
                                                     </div>
                                                 </div>
@@ -642,7 +629,7 @@
                                     </div>
                                 </div>
                             </li>
-                            <li class="dropdown dropdown-full nav-item"><a href="./html/account/login.html#"
+                            <li class="dropdown dropdown-full nav-item"><a href="#"
                                                                            class="nav-link" th:text="#{header.collection}">Collection</a> <label
                                     class="px-dropdown-toggle mob-menu"></label>
                                 <div class="dropdown-menu dropdown-mega-menu py-0">
@@ -651,31 +638,31 @@
                                             <div class="col-lg-6">
                                                 <div class="row gy-4">
                                                     <div class="col-6"><h6 class="sm-title-04"><a class="text-reset"
-                                                                                                  href="./html/account/login.html#">Center
+                                                                                                  href="#">Center
                                                         Quidem</a></h6>
                                                         <ul class="list-unstyled link-list-style-03">
-                                                            <li><a href="./html/account/login.html#">All Harum
+                                                            <li><a href="#">All Harum
                                                                 Quidem</a></li>
-                                                            <li><a href="./html/account/login.html#">Cosmopolis</a></li>
-                                                            <li><a href="./html/account/login.html#">Suitó</a></li>
-                                                            <li><a href="./html/account/login.html#">Milancélos</a></li>
-                                                            <li><a href="./html/account/login.html#">Blazéro</a></li>
-                                                            <li><a href="./html/account/login.html#">Glamos</a></li>
-                                                            <li><a href="./html/account/login.html#">Metropolis</a></li>
+                                                            <li><a href="#">Cosmopolis</a></li>
+                                                            <li><a href="#">Suitó</a></li>
+                                                            <li><a href="#">Milancélos</a></li>
+                                                            <li><a href="#">Blazéro</a></li>
+                                                            <li><a href="#">Glamos</a></li>
+                                                            <li><a href="#">Metropolis</a></li>
                                                         </ul>
                                                     </div>
                                                     <div class="col-6"><h6 class="sm-title-04"><a class="text-reset"
-                                                                                                  href="./html/account/login.html#">Harum
+                                                                                                  href="#">Harum
                                                         Quidem</a></h6>
                                                         <ul class="list-unstyled link-list-style-03">
-                                                            <li><a href="./html/account/login.html#">All Harum
+                                                            <li><a href="#">All Harum
                                                                 Quidem</a></li>
-                                                            <li><a href="./html/account/login.html#">Cosmopolis</a></li>
-                                                            <li><a href="./html/account/login.html#">Suitó</a></li>
-                                                            <li><a href="./html/account/login.html#">Milancélos</a></li>
-                                                            <li><a href="./html/account/login.html#">Blazéro</a></li>
-                                                            <li><a href="./html/account/login.html#">Glamos</a></li>
-                                                            <li><a href="./html/account/login.html#">Metropolis</a></li>
+                                                            <li><a href="#">Cosmopolis</a></li>
+                                                            <li><a href="#">Suitó</a></li>
+                                                            <li><a href="#">Milancélos</a></li>
+                                                            <li><a href="#">Blazéro</a></li>
+                                                            <li><a href="#">Glamos</a></li>
+                                                            <li><a href="#">Metropolis</a></li>
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -689,7 +676,7 @@
                                                             Collection
                                                         </h3>
                                                         <div class="pt-2"><a class="btn btn-white btn-sm"
-                                                                             href="./html/account/login.html#">Shop
+                                                                             href="#">Shop
                                                             Now</a></div>
                                                     </div>
                                                 </div>
@@ -698,7 +685,7 @@
                                     </div>
                                 </div>
                             </li>
-                            <li class="dropdown dropdown-full nav-item"><a href="./html/account/login.html#"
+                            <li class="dropdown dropdown-full nav-item"><a href="#"
                                                                            class="nav-link"
                                                                            th:text="#{index.categories.page}">Categories</a>
                                 <label
@@ -709,94 +696,94 @@
                                             <div class="col-6 col-md-4 col-lg-2">
                                                 <div class="hover-scale position-relative mb-3">
                                                     <div class="hover-scale-in"><a
-                                                            href="./html/account/login.html#"><img
+                                                            href="#"><img
                                                             src="/img/fashion3/shop-banner-12.jpg" title=""
                                                             alt=""></a></div>
                                                     <div class="pt-2 text-center position-absolute bottom-0 start-0 mb-3">
                                                         <h5 class="m-0 h6 bg-body px-3 py-2"><a
                                                                 class="text-reset link-effect"
-                                                                href="./html/account/login.html#">Living
+                                                                href="#">Living
                                                             Room</a></h5></div>
                                                 </div>
                                                 <ul class="list-unstyled link-list-style-02">
-                                                    <li><a href="./html/account/login.html#">Sofa</a></li>
-                                                    <li><a href="./html/account/login.html#">Love Seat</a></li>
-                                                    <li><a href="./html/account/login.html#">Settee Sofa</a></li>
-                                                    <li><a href="./html/account/login.html#">Sleeper Sofas</a></li>
-                                                    <li><a href="./html/account/login.html#">Tuxedo</a></li>
-                                                    <li><a href="./html/account/login.html#">Chair & Ottomans</a></li>
-                                                    <li><a href="./html/account/login.html#">Wing Chair</a></li>
+                                                    <li><a href="#">Sofa</a></li>
+                                                    <li><a href="#">Love Seat</a></li>
+                                                    <li><a href="#">Settee Sofa</a></li>
+                                                    <li><a href="#">Sleeper Sofas</a></li>
+                                                    <li><a href="#">Tuxedo</a></li>
+                                                    <li><a href="#">Chair & Ottomans</a></li>
+                                                    <li><a href="#">Wing Chair</a></li>
                                                 </ul>
                                             </div>
                                             <div class="col-6 col-md-4 col-lg-2">
                                                 <div class="hover-scale position-relative mb-3">
                                                     <div class="hover-scale-in"><a
-                                                            href="./html/account/login.html#"><img
+                                                            href="#"><img
                                                             src="/img/fashion3/shop-banner-13.jpg" title=""
                                                             alt=""></a></div>
                                                     <div class="pt-2 text-center position-absolute bottom-0 start-0 mb-3">
                                                         <h5 class="m-0 h6 bg-body px-3 py-2"><a
                                                                 class="text-reset link-effect"
-                                                                href="./html/account/login.html#">Women</a>
+                                                                href="#">Women</a>
                                                         </h5></div>
                                                 </div>
                                                 <ul class="list-unstyled link-list-style-02">
-                                                    <li><a href="./html/account/login.html#">Fusion Wear</a></li>
-                                                    <li><a href="./html/account/login.html#">Dress Materials</a></li>
-                                                    <li><a href="./html/account/login.html#">Dupattas & Shawls</a></li>
-                                                    <li><a href="./html/account/login.html#">Ethnic Dresses</a></li>
-                                                    <li><a href="./html/account/login.html#">Jackets & Waistcoats</a>
+                                                    <li><a href="#">Fusion Wear</a></li>
+                                                    <li><a href="#">Dress Materials</a></li>
+                                                    <li><a href="#">Dupattas & Shawls</a></li>
+                                                    <li><a href="#">Ethnic Dresses</a></li>
+                                                    <li><a href="#">Jackets & Waistcoats</a>
                                                     </li>
-                                                    <li><a href="./html/account/login.html#">Kurtas & Suits</a></li>
-                                                    <li><a href="./html/account/login.html#">Sarees</a></li>
+                                                    <li><a href="#">Kurtas & Suits</a></li>
+                                                    <li><a href="#">Sarees</a></li>
                                                 </ul>
                                             </div>
                                             <div class="col-6 col-md-4 col-lg-2">
                                                 <div class="hover-scale position-relative mb-3">
                                                     <div class="hover-scale-in"><a
-                                                            href="./html/account/login.html#"><img
+                                                            href="#"><img
                                                             src="/img/fashion3/shop-banner-14.jpg" title=""
                                                             alt=""></a></div>
                                                     <div class="pt-2 text-center position-absolute bottom-0 start-0 mb-3">
                                                         <h5 class="m-0 h6 bg-body px-3 py-2"><a
                                                                 class="text-reset link-effect"
-                                                                href="./html/account/login.html#">Western
+                                                                href="#">Western
                                                             Wear</a></h5></div>
                                                 </div>
                                                 <ul class="list-unstyled link-list-style-02">
-                                                    <li><a href="./html/account/login.html#">Blazers & Waistcoats</a>
+                                                    <li><a href="#">Blazers & Waistcoats</a>
                                                     </li>
-                                                    <li><a href="./html/account/login.html#">Dresses</a></li>
-                                                    <li><a href="./html/account/login.html#">Jackets & Coats</a></li>
-                                                    <li><a href="./html/account/login.html#">Jeans & Jeggings</a></li>
-                                                    <li><a href="./html/account/login.html#">Jumpsuits</a></li>
-                                                    <li><a href="./html/account/login.html#">Shorts & Skirts</a></li>
-                                                    <li><a href="./html/account/login.html#">Shrugs</a></li>
+                                                    <li><a href="#">Dresses</a></li>
+                                                    <li><a href="#">Jackets & Coats</a></li>
+                                                    <li><a href="#">Jeans & Jeggings</a></li>
+                                                    <li><a href="#">Jumpsuits</a></li>
+                                                    <li><a href="#">Shorts & Skirts</a></li>
+                                                    <li><a href="#">Shrugs</a></li>
                                                 </ul>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </li>
-                            <li class="dropdown nav-item"><a href="./html/account/login.html#"
+                            <li class="dropdown nav-item"><a href="#"
                                                              class="nav-link" th:text="#{header.page}"></a> <label
                                     class="px-dropdown-toggle mob-menu"></label>
                                 <ul class="dropdown-menu left shadow-lg">
-                                    <li><a class="dropdown-item" href="../pages/about.html" th:text="#{header.about}"></a></li>
-                                    <li><a class="dropdown-item" href="../pages/faq.html">FAQ's</a></li>
-                                    <li><a class="dropdown-item" href="../pages/policy.html" th:text="#{header.policy}"></a></li>
-                                    <li><a class="dropdown-item" href="../pages/support.html" th:text="#{header.support}"></a></li>
-                                    <li><a class="dropdown-item" href="../pages/support-topic.html" th:text="#{header.support.topic}"></a>
+                                    <li><a class="dropdown-item" href="/about" th:text="#{header.about}"></a></li>
+                                    <li><a class="dropdown-item" href="/faq">FAQ's</a></li>
+                                    <li><a class="dropdown-item" href="/policy" th:text="#{header.policy}"></a></li>
+                                    <li><a class="dropdown-item" href="/support" th:text="#{header.support}"></a></li>
+                                    <li><a class="dropdown-item" href="/support-topic" th:text="#{header.support.topic}"></a>
                                     </li>
-                                    <li><a class="dropdown-item" href="../pages/contact-us.html" th:text="#{header.contact.us}"></a></li>
+                                    <li><a class="dropdown-item" href="/contact-us" th:text="#{header.contact.us}"></a></li>
                                 </ul>
                             </li>
-                            <li class="dropdown nav-item"><a href="./html/account/login.html#" class="nav-link" th:text="#{header.blog}"></a>
+                            <li class="dropdown nav-item"><a href="/blog" class="nav-link" th:text="#{header.blog}"></a>
                                 <label
                                         class="px-dropdown-toggle mob-menu"></label>
                                 <ul class="dropdown-menu left shadow-lg">
-                                    <li><a class="dropdown-item" href="../blog/blog.html" th:text="#{header.blog}"></a></li>
-                                    <li><a class="dropdown-item" href="../blog/blog-single.html" th:text="#{header.blog.single}"></a></li>
+                                    <li><a class="dropdown-item" href="/blog" th:text="#{header.blog}"></a></li>
+                                    <li><a class="dropdown-item" href="/blog-single" th:text="#{header.blog.single}"></a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -831,7 +818,7 @@
                                                                    th:href="@{/wishList(userid=${currentUser.id})}"><i
                                 class="fi-heart"></i></a></div><!-- Cart -->
                         <div class="nav-item"><a class="nav-link" data-bs-toggle="offcanvas"
-                                                 href="./html/account/login.html#modalMiniCart"
+                                                 href="#"
                                                  role="button" aria-controls="modalMiniCart">
                             <span class="data-cart-items"><i class="fi-shopping-cart"></i></span></a>
                         </div><!-- Mobile Toggle -->

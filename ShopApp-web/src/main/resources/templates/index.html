@@ -1405,25 +1405,13 @@
                                         <div class="col-6 col-md-3 col-xl-2"><h6 class="sm-title-05 mb-3 fw-500">
                                             Women's</h6>
                                             <ul class="list-unstyled link-list-style-05 m-0">
-                                                <li><a href="#">Fusion Wear</a></li>
-                                                <li><a href="#">Dress Materials</a></li>
-                                                <li><a href="#">Dupattas & Shawls</a></li>
-                                                <li><a href="#">Ethnic Dresses</a></li>
-                                                <li><a href="#">Jackets & Waistcoats</a></li>
-                                                <li><a href="#">Kurtas & Suits</a></li>
-                                                <li><a href="#">Sarees</a></li>
+                                                <li th:each="forWomen:${women}"><a th:href="@{/products/search/{category}(category=${forWomen.name})}" th:text="${forWomen.name}"></a></li>
                                             </ul>
                                         </div>
                                         <div class="col-6 col-md-3 col-xl-2"><h6 class="sm-title-05 mb-3 fw-500">Living
                                             Room</h6>
                                             <ul class="list-unstyled link-list-style-05 m-0">
-                                                <li><a href="#">Sofa</a></li>
-                                                <li><a href="#">Love Seat</a></li>
-                                                <li><a href="#">Settee Sofa</a></li>
-                                                <li><a href="#">Sleeper Sofas</a></li>
-                                                <li><a href="#">Tuxedo</a></li>
-                                                <li><a href="#">Chair & Ottomans</a></li>
-                                                <li><a href="#">Wing Chair</a></li>
+                                                <li th:each="forlivingRoom:${livingRoom}"><a th:href="@{/products/search/{category}(category=${forlivingRoom.name})}" th:text="${forlivingRoom.name}"></a></li>
                                             </ul>
                                         </div>
                                         <div class="col-12 col-md-3 col-xl-5 d-flex flex-row">
