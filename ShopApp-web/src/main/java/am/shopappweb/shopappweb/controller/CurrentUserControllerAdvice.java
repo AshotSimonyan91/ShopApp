@@ -38,41 +38,7 @@ public class CurrentUserControllerAdvice {
         }
         return null;
     }
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ModelAndView handleIllegalArgument(MethodArgumentNotValidException methodArgumentNotValidException,
-                                              @AuthenticationPrincipal CurrentUser currentUser,
-                                              BindingResult errors) {
-        ModelAndView modelAndView = new ModelAndView();
-        List<FieldError> fieldErrors = methodArgumentNotValidException.getBindingResult().getFieldErrors();
-
-        for (FieldError fieldError : fieldErrors) {
-            modelAndView.addObject(fieldError.getField() + "_", fieldError.getDefaultMessage());
-        }
-        Object target = errors.getTarget();
-        if (target instanceof UserUpdateDto) {
-            modelAndView.addObject("updatePasswordDto", new UpdatePasswordDto());
-            modelAndView.addObject("user", userService.findByIdWithAddresses(currentUser.getUser().getId()));
-            modelAndView.setViewName("singleUserPage");
-
-        } else if (target instanceof UpdatePasswordDto) {
-            modelAndView.addObject("userUpdateDto", new UserUpdateDto());
-            modelAndView.addObject("user", userService.findByIdWithAddresses(currentUser.getUser().getId()));
-            modelAndView.setViewName("singleUserPage");
-        }
-        else if (target instanceof UserRegisterDto) {
-            modelAndView.addObject("userRegisterDto", new UserRegisterDto());
-            modelAndView.setViewName("register");
-        }
-        modelAndView.addObject(toLowerCase(errors.getTarget().getClass().getSimpleName()), errors.getTarget());
-        return modelAndView;
-    }
-
-
-    private String toLowerCase(String str) {
-        return str.substring(0, 1).toLowerCase() + str.substring(1);
-    }
-
-    @ModelAttribute("cartItems")
+      @ModelAttribute("cartItems")
     public List<CartItemDto> currentUserCart(@AuthenticationPrincipal CurrentUser currentUser) {
         if (currentUser != null) {
             return cartService.findLastCartItemsByLimit(currentUser.getUser().getId());
