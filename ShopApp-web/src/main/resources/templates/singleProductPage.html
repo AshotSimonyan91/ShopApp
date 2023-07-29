@@ -54,13 +54,13 @@
                             </a>
                         </div>
                     </div>
-                    <div class="product-info-buttons nav pt-4"><a href="product-details.html#" class="me-3"
+                    <div class="product-info-buttons nav pt-4"><a href="#" class="me-3"
                                                                   data-bs-toggle="modal"
                                                                   data-bs-target="#px_size_chart_modal"><i
-                            class="bi bi-scissors"></i>Size guide</a> <a href="product-details.html#" class=""
+                            class="bi bi-scissors"></i>Size guide</a> <a href="#" class=""
                                                                          data-bs-toggle="modal"
                                                                          data-bs-target="#px_shipping_modal"><i
-                            class="bi bi-truck me-2"></i>Shipping</a> <a href="product-details.html#"
+                            class="bi bi-truck me-2"></i>Shipping</a> <a href="#"
                                                                          class="ms-auto" data-bs-toggle="modal"
                                                                          data-bs-target="#px_ask_modal"><i
                             class="bi bi-envelope ms-auto"></i>Ask about product</a></div>
@@ -68,17 +68,17 @@
                         <p class="theme-link mb-2"><label
                                 class="m-0 text-mode">Categories:</label>
                             <th:block th:each="category:${currentProduct.getCategories()}"><a
-                                    href="product-details.html#" th:text="${category.name}"></a>
+                                    href="#" th:text="${category.name}"></a>
                             </th:block>
                         </p>
                         <p class="theme-link m-0"><label class="m-0 text-mode">Share:</label> <a
-                                class="icon icon-sm icon-secondary me-2" href="product-details.html#"><i
+                                class="icon icon-sm icon-secondary me-2" href="#"><i
                                 class="bi bi-facebook"></i> </a><a class="icon icon-sm icon-secondary me-2"
-                                                                   href="product-details.html#"><i
+                                                                   href="#"><i
                                 class="bi bi-twitter"></i> </a><a class="icon icon-sm icon-secondary me-2"
-                                                                  href="product-details.html#"><i
+                                                                  href="#"><i
                                 class="bi bi-instagram"></i> </a><a class="icon icon-sm icon-secondary me-2"
-                                                                    href="product-details.html#"><i
+                                                                    href="#"><i
                                 class="bi bi-linkedin"></i></a></p></div>
                     <div class="pt-4"><img class="img-fluid" src="/img/fashion2/payment-details.png"
                                            title="" alt=""></div>
@@ -147,7 +147,7 @@
                                 <div class="product-wishlist"><a th:href="@{/wishList/add(productId=${product.id})}"
                                                                  class="btn btn-outline-primary"><i
                                         class="fi-heart"></i></a></div>
-                                <div class="product-media"><a href="singleProductPage.html#"><img
+                                <div class="product-media"><a th:href="@{'/products/' + ${product.id}}"><img
                                         class="img-fluid" th:src="@{/getImage(profilePic=${product.images[0].image})}"
                                         title=""
                                         alt=""></a>
