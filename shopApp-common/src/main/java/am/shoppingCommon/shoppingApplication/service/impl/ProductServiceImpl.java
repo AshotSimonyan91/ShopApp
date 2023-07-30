@@ -4,6 +4,7 @@ import am.shoppingCommon.shoppingApplication.dto.productDto.CreateProductRequest
 import am.shoppingCommon.shoppingApplication.dto.productDto.FilterProductDto;
 import am.shoppingCommon.shoppingApplication.dto.productDto.ProductDto;
 import am.shoppingCommon.shoppingApplication.entity.*;
+import am.shoppingCommon.shoppingApplication.exception.CategoryDoesNotExistsException;
 import am.shoppingCommon.shoppingApplication.mapper.ProductMapper;
 import am.shoppingCommon.shoppingApplication.repository.ProductRepository;
 import am.shoppingCommon.shoppingApplication.repository.ProductReviewRepository;
@@ -95,25 +96,38 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public ProductDto save(CreateProductRequestDto productRequestDto, MultipartFile[] files, User user) throws IOException {
+        validateCategories(productRequestDto);
         Product product = ProductMapper.map(productRequestDto);
-        product.getCategories().removeIf(category -> category.getId() == 0);
-        List<Image> imageList = new ArrayList<>();
         Optional<User> byId = userRepository.findById(user.getId());
         if (byId.isPresent()) {
             product.setUser(byId.get());
-            for (MultipartFile multipartFile : files) {
-                if (multipartFile != null && !multipartFile.isEmpty()) {
-                    Image image = new Image();
-                    image.setImage(ImageUtil.imageUploadWithResize(multipartFile, imageUploadPath));
-                    imageList.add(image);
-                }
-            }
+            List<Image> imageList = processImages(files);
+            product.setImages(imageList);
         }
-        product.setImages(imageList);
         product.setReview(0L);
         Product save = productRepository.save(product);
-        log.info("product is saved by ID: {}", save.getId());
+        log.info("Product is saved by ID: {}", save.getId());
         return ProductMapper.mapToDto(save);
+    }
+
+    private void validateCategories(CreateProductRequestDto productRequestDto) {
+        if (productRequestDto.getCategories() == null || productRequestDto.getCategories().isEmpty()) {
+            throw new CategoryDoesNotExistsException("Please add category");
+        }
+        productRequestDto.getCategories().removeIf(category -> category.getId() == 0);
+    }
+
+    private List<Image> processImages(MultipartFile[] files) throws IOException {
+        List<Image> imageList = new ArrayList<>();
+
+        for (MultipartFile multipartFile : files) {
+            if (multipartFile != null && !multipartFile.isEmpty()) {
+                Image image = new Image();
+                image.setImage(ImageUtil.imageUploadWithResize(multipartFile, imageUploadPath));
+                imageList.add(image);
+            }
+        }
+        return imageList;
     }
 
     @Override
