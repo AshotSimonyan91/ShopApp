@@ -36,6 +36,12 @@ import java.util.Optional;
 /**
  * Created by Ashot Simonyan on 21.05.23.
  */
+
+/**
+ * Service implementation class responsible for handling product-related operations.
+ * It implements the ProductService interface and provides functionalities for managing products,
+ * such as fetching all products, finding trending products, searching products by name, etc.
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -53,36 +59,78 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductReviewRepository productReviewRepository;
 
+
+    /**
+     * Retrieves a page of products using pagination.
+     *
+     * @param pageable The Pageable object containing pagination information.
+     * @return A Page of ProductDto objects.
+     */
     @Override
     public Page<ProductDto> findAllProducts(Pageable pageable) {
         Page<Product> all = productRepository.findAll(pageable);
         return ProductMapper.mapPageToDto(all);
     }
 
+
+    /**
+     * Retrieves the last 3 products of a specific category ordered by ID in descending order.
+     *
+     * @param category The category name for which the products are retrieved.
+     * @return A list of ProductDto objects representing the last 3 products in the given category.
+     */
     @Override
     public List<ProductDto> last3ByCategory(String category) {
         List<Product> top3ByCategoriesNameOrderBOrderByIdDesc = productRepository.findTop3ByCategoriesNameOrderByIdDesc(category);
         return ProductMapper.mapProductList(top3ByCategoriesNameOrderBOrderByIdDesc);
     }
 
+
+    /**
+     * Retrieves the top 9 trending products ordered by review score in descending order.
+     *
+     * @return A list of ProductDto objects representing the top 9 trending products.
+     */
     @Override
     public List<ProductDto> findTrendingProducts() {
         List<Product> top9ByOrderByReviewDesc = productRepository.findTop9ByOrderByReviewDesc();
         return ProductMapper.mapProductList(top9ByOrderByReviewDesc);
     }
 
+
+    /**
+     * Searches for products by name using pagination.
+     *
+     * @param name     The product name or part of it to be searched.
+     * @param pageable The Pageable object containing pagination information.
+     * @return A Page of ProductDto objects that match the search criteria.
+     */
     @Override
     public Page<ProductDto> findByName(String name, Pageable pageable) {
         Page<Product> byNameContainingIgnoreCase = productRepository.findByNameContainingIgnoreCase(name, pageable);
         return ProductMapper.mapPageToDto(byNameContainingIgnoreCase);
     }
 
+
+    /**
+     * Retrieves all products from the database.
+     *
+     * @return A list of all ProductDto objects representing all products.
+     */
     @Override
     public List<ProductDto> findAll() {
         List<Product> all = productRepository.findAll();
         return ProductMapper.mapToListProductDto(all);
     }
 
+
+    /**
+     * Removes a product from the database by ID if the user's role is ADMIN.
+     * This method is transactional.
+     *
+     * @param id   The ID of the product to be removed.
+     * @param user The User object representing the user performing the action.
+     */
     @Override
     @Transactional
     public void remove(int id, User user) {
@@ -93,18 +141,38 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
+    /**
+     * Save a new product in the database.
+     *
+     * @param productRequestDto The DTO containing the product details.
+     * @param files             An array of MultipartFiles containing product images.
+     * @param user              The user creating the product.
+     * @return The saved product as a ProductDto.
+     * @throws IOException If there is an error while processing the images.
+     */
     @Override
     @Transactional
     public ProductDto save(CreateProductRequestDto productRequestDto, MultipartFile[] files, User user) throws IOException {
+        // Validation to ensure the product has at least one category
         validateCategories(productRequestDto);
+
+        // Map the product request DTO to a Product entity
         Product product = ProductMapper.map(productRequestDto);
+
+        // Associate the product with the user who created it
         Optional<User> byId = userRepository.findById(user.getId());
         if (byId.isPresent()) {
             product.setUser(byId.get());
+
+            // Process and save the images associated with the product
             List<Image> imageList = processImages(files);
             product.setImages(imageList);
         }
+
+        // Initialize the product review count
         product.setReview(0L);
+
+        // Save the product to the database
         Product save = productRepository.save(product);
         log.info("Product is saved by ID: {}", save.getId());
         return ProductMapper.mapToDto(save);
@@ -130,6 +198,15 @@ public class ProductServiceImpl implements ProductService {
         return imageList;
     }
 
+    /**
+     * Retrieve a product by its ID and user. If the product is found, check if the
+     * user has reviewed the product today. If not, asynchronously save the product
+     * review.
+     *
+     * @param id   The ID of the product to retrieve.
+     * @param user The user accessing the product.
+     * @return The found product as a ProductDto, or null if not found.
+     */
     @Override
     public ProductDto findById(int id, User user) {
         Optional<Product> productOptional = productRepository.findById(id);
@@ -154,6 +231,14 @@ public class ProductServiceImpl implements ProductService {
         return false;
     }
 
+    /**
+     * Asynchronously saves a product review for the given product and user. If the user has not reviewed the product
+     * today, a new ProductReview entity is created and associated with the product and user. Otherwise, the existing
+     * ProductReview entity is updated to mark today's review date.
+     *
+     * @param product The product to review.
+     * @param user    The user writing the review.
+     */
     @Async
     public void saveProductReview(Product product, User user) {
         Optional<ProductReview> productReviewOptional = productReviewRepository.findByProductIdAndUserId(product.getId(), user.getId());
@@ -171,12 +256,29 @@ public class ProductServiceImpl implements ProductService {
         productReviewRepository.save(productReview);
     }
 
+
+    /**
+     * Retrieves a page of products from the database that belong to the specified category.
+     *
+     * @param pageable The pageable object used to control pagination.
+     * @param category The name of the category to filter products by.
+     * @return A Page of ProductDtos containing the products in the specified category.
+     */
     @Override
     public Page<ProductDto> findByCategory(Pageable pageable, String category) {
         Page<Product> products = productRepository.findAllByCategoriesName(category, pageable);
         return ProductMapper.mapPageToDto(products);
     }
 
+
+    /**
+     * Searches for products based on filter criteria provided in the FilterProductDto.
+     *
+     * @param page             The page number for pagination.
+     * @param size             The number of products per page.
+     * @param filterProductDto The filter criteria used to search for products.
+     * @return A List of ProductDtos containing the search results.
+     */
     @Override
     public List<ProductDto> search(int page, int size,
                                    FilterProductDto filterProductDto) {
@@ -187,6 +289,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
+    /**
+     * Performs a filtered search for products based on the provided filter criteria.
+     *
+     * @param page             The page number for pagination.
+     * @param size             The number of products per page.
+     * @param filterProductDto The filter criteria used to search for products.
+     * @return A List of Product entities containing the search results.
+     */
     private List<Product> searchProductByFilter(int page, int size, FilterProductDto filterProductDto) {
         QProduct qProduct = QProduct.product;
         var query = new JPAQuery<Product>(entityManager);
