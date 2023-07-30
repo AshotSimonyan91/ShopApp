@@ -15,12 +15,27 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
-
+/**
+ * This controller advice class handles validation errors related to user operations, such as user registration,
+ * user update, and password update. It provides methods to handle MethodArgumentNotValidException and return
+ * appropriate views with error messages.
+ */
 @ControllerAdvice
 @RequiredArgsConstructor
 public class UserValidationHandlerAdvice {
     private final UserService userService;
 
+    /**
+     * Handles the MethodArgumentNotValidException and returns a ModelAndView with error messages for invalid user input.
+     * The method processes the validation errors and populates the ModelAndView with the necessary attributes,
+     * such as field error messages and corresponding user DTOs, to display the appropriate views with error messages.
+     * The views returned depend on the target DTO involved in the validation error (UserUpdateDto, UpdatePasswordDto, or UserRegisterDto).
+     *
+     * @param methodArgumentNotValidException The MethodArgumentNotValidException thrown during validation.
+     * @param currentUser                     The currently authenticated user (CurrentUser).
+     * @param errors                          The BindingResult containing the validation errors.
+     * @return A ModelAndView with the appropriate view, displaying the error messages for invalid user input.
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ModelAndView handleIllegalArgument(MethodArgumentNotValidException methodArgumentNotValidException,
                                               @AuthenticationPrincipal CurrentUser currentUser,
@@ -49,6 +64,12 @@ public class UserValidationHandlerAdvice {
         return modelAndView;
     }
 
+    /**
+     * Converts the first character of the input string to lowercase and returns the modified string.
+     *
+     * @param str The input string.
+     * @return The modified string with the first character in lowercase.
+     */
 
     private String toLowerCase(String str) {
         return str.substring(0, 1).toLowerCase() + str.substring(1);
