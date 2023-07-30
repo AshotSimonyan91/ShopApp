@@ -17,6 +17,11 @@ import java.util.*;
 
 /**
  * Created by Ashot Simonyan on 21.05.23.
+ * This class provides the implementation for the CategoryService interface, offering functionalities
+ * related to managing categories in a shopping application. It handles operations such as retrieving all categories,
+ * finding categories by parent, retrieving category by ID, saving new categories with image uploads,
+ * and removing categories. The class uses repositories to interact with the underlying data storage
+ * and a custom CategoryMapper to convert entities to DTOs and vice versa.
  */
 @Service
 @RequiredArgsConstructor
@@ -27,17 +32,36 @@ public class CategoryServiceImpl implements CategoryService {
     @Value("${shopping-app.upload.image.path}")
     private String imageUploadPath;
 
+    /**
+     * Retrieves all categories available in the shopping application.
+     *
+     * @return The List of CategoryDto representing all categories.
+     */
     @Override
     public List<CategoryDto> findAllCategory() {
         List<Category> all = categoryRepository.findAll();
         return CategoryMapper.categoryDtoList(all);
     }
 
+    /**
+     * Removes the category with the specified ID from the database.
+     *
+     * @param id The unique identifier of the category to be removed.
+     */
     @Override
     public void remove(int id) {
         categoryRepository.deleteById(id);
     }
 
+    /**
+     * Saves a new category with the provided CategoryDto and associated image (if available) to the database.
+     * The image is uploaded to the specified imageUploadPath. If the image is not provided, the category is saved without it.
+     *
+     * @param categoryDto  The CategoryDto representing the new category information.
+     * @param multipartFile The image file associated with the new category (optional).
+     * @return The CategoryDto representing the saved category with the assigned image.
+     * @throws IOException If there's an issue with uploading or processing the image file.
+     */
     @Override
     public CategoryDto save(CategoryDto categoryDto, MultipartFile multipartFile) throws IOException {
         Category category = CategoryMapper.dtoToCategory(categoryDto);
@@ -51,11 +75,23 @@ public class CategoryServiceImpl implements CategoryService {
         return CategoryMapper.categoryToDto(save);
     }
 
+    /**
+     * Retrieves all categories having the specified parent category.
+     *
+     * @param parent The name of the parent category.
+     * @return The List of CategoryDto representing categories having the specified parent category.
+     */
     public List<CategoryDto> findByParent(String parent) {
         List<Category> allByParentCategory = categoryRepository.findAllByParentCategory(parent);
         return CategoryMapper.categoryDtoList(allByParentCategory);
     }
 
+    /**
+     * Retrieves the category with the specified ID from the database.
+     *
+     * @param id The unique identifier of the category to be retrieved.
+     * @return The CategoryDto representing the retrieved category, or null if no category is found.
+     */
     @Override
     public CategoryDto findById(Integer id) {
         Optional<Category> byId = categoryRepository.findById(id);
@@ -66,6 +102,14 @@ public class CategoryServiceImpl implements CategoryService {
         return null;
     }
 
+    /**
+     * Retrieves all categories from the database and organizes them into a map where the keys are the parent category names,
+     * and the values are lists of CategoryDto representing the children categories. If a category has no parent category,
+     * it is considered a top-level category. The method returns a map containing parent categories as keys and their children
+     * categories as values.
+     *
+     * @return The Map of parent category names with their associated children categories.
+     */
     public Map<String, List<CategoryDto>> getParentCategoriesWithChildren() {
         List<Category> categories = categoryRepository.findAll();
         List<CategoryDto> categoryDtoList = new ArrayList<>();
