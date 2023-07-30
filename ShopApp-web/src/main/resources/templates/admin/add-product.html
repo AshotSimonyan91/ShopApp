@@ -283,6 +283,7 @@
         <div class="page-content">
             <div class="container-fluid">
                 <h1 class="text-center">Add Product</h1>
+                <span class="text-center" th:style="'color: red'" th:if="${error}" th:text="${error}"></span>
                 <form action="/products/add" method="post" enctype="multipart/form-data">
                     <input class="form-control" type="text" name="name" placeholder="Name" required><br>
                     <input class="form-control" type="text" name="brand" placeholder="Brand" required><br>
