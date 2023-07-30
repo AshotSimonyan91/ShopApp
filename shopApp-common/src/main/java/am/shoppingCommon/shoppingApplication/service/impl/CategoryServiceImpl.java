@@ -7,6 +7,7 @@ import am.shoppingCommon.shoppingApplication.entity.Category;
 import am.shoppingCommon.shoppingApplication.mapper.CategoryMapper;
 import am.shoppingCommon.shoppingApplication.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +26,7 @@ import java.util.*;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
@@ -40,6 +42,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<CategoryDto> findAllCategory() {
         List<Category> all = categoryRepository.findAll();
+        log.info("Get all categories");
         return CategoryMapper.categoryDtoList(all);
     }
 
@@ -51,6 +54,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void remove(int id) {
         categoryRepository.deleteById(id);
+        log.info("category was deleted");
     }
 
     /**
@@ -72,6 +76,7 @@ public class CategoryServiceImpl implements CategoryService {
             category.setImage(fileName);
         }
         Category save = categoryRepository.save(category);
+        log.info("Category saved in {} id",save.getId());
         return CategoryMapper.categoryToDto(save);
     }
 
@@ -83,6 +88,7 @@ public class CategoryServiceImpl implements CategoryService {
      */
     public List<CategoryDto> findByParent(String parent) {
         List<Category> allByParentCategory = categoryRepository.findAllByParentCategory(parent);
+        log.info("Get all category by parent category");
         return CategoryMapper.categoryDtoList(allByParentCategory);
     }
 
@@ -97,8 +103,10 @@ public class CategoryServiceImpl implements CategoryService {
         Optional<Category> byId = categoryRepository.findById(id);
         if (byId.isPresent()) {
             Category category = byId.get();
+            log.info("Category found by {} id",id);
             return CategoryMapper.categoryToDto(category);
         }
+        log.info("Category does not find");
         return null;
     }
 
@@ -126,7 +134,7 @@ public class CategoryServiceImpl implements CategoryService {
             }
             parentCategoriesMap.get(parentCategory).add(categoryDto);
         }
-
+        log.info("Parent category found");
         return parentCategoriesMap;
     }
 

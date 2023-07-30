@@ -45,6 +45,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderResponseDto> findAllOrder() {
         List<Order> all = orderRepository.findAll();
+        log.info("Get all orders");
         return OrderMapper.findAll(all);
     }
 
@@ -59,6 +60,7 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderDto> findAllByUserId(int id) {
         Pageable pageable = PageRequest.of(0, 15);
         List<Order> last15Orders = orderRepository.findLast15OrdersByUserId(id, pageable);
+        log.info("Get all orders by {} user_id",id);
         return OrderMapper.listOrderToListOrderDto(last15Orders);
     }
 
@@ -72,6 +74,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDto orderById(int id) {
         Optional<Order> byId = orderRepository.findById(id);
+        log.info("Get {} id order",id);
         return byId.map(OrderMapper::orderToOrderDto).orElse(null);
     }
 
@@ -85,6 +88,7 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderDto> ordersLimit10() {
         List<Order> top10ByOrderByOrderDateDesc = orderRepository.findTop10ByOrderByDateTimeDesc();
         List<OrderDto> orderDtoList = OrderMapper.listOrderToListOrderDto(top10ByOrderByOrderDateDesc);
+        log.info("Get last 10 orders");
         return orderDtoList;
     }
 
@@ -100,6 +104,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public OrderDto findByUserIdAndStatus(int id, Status status) {
         Optional<Order> byUserIdAndStatus = orderRepository.findByUserIdAndStatus(id, status);
+        log.info("Get order by {} user_id and {} order status",id,status);
         return byUserIdAndStatus.map(OrderMapper::orderToOrderDto).orElse(null);
     }
 
@@ -172,6 +177,7 @@ public class OrderServiceImpl implements OrderService {
                 return OrderMapper.orderToOrderDto(save);
             }
         }
+        log.info("Order did not update");
         return null;
     }
 
@@ -205,7 +211,7 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderItems(orderItems);
         order.setTotalAmount(totalAmount);
         order.setStatus(Status.PENDING);
-
+        log.info("Order was created");
         return order;
     }
 

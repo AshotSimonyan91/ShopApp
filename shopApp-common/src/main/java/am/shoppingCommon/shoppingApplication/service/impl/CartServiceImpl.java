@@ -50,8 +50,10 @@ public class CartServiceImpl implements CartService {
         if (allByUserId.isPresent()) {
             Cart cart = allByUserId.get();
             List<CartItem> top4ByCartUserIdOrderByCreatedAtDesc = cartItemRepository.findTop4ByCartIdOrderByIdDesc(cart.getId());
+            log.info("Get last cart item list by {} user_id",userId);
             return CartMapper.mapToDtoList(top4ByCartUserIdOrderByCreatedAtDesc);
         }
+        log.info("Cart is empty");
         return null;
     }
 
@@ -67,8 +69,10 @@ public class CartServiceImpl implements CartService {
         Optional<Cart> allByUserId = cartRepository.findAllByUser_Id(id);
         if (allByUserId.isPresent()) {
             Cart cart = allByUserId.get();
+            log.info("Get all cart by {} user_id",id);
             return CartMapper.convertToDto(cart);
         }
+        log.info("Cart is empty");
         return null;
     }
 
@@ -177,6 +181,7 @@ public class CartServiceImpl implements CartService {
         Cart cart = new Cart();
         cart.setUser(user);
         cart.setCartItems(new ArrayList<>());
+        log.info("Cart created");
         return cart;
     }
 
@@ -202,6 +207,7 @@ public class CartServiceImpl implements CartService {
     private void incrementCartItem(CartItem cartItem) {
         cartItem.setCount(cartItem.getCount() + 1);
         cartItem.getProduct().setCount(cartItem.getProduct().getCount() - 1);
+        log.info("Cart Item incremented");
     }
 
     /**
@@ -216,6 +222,7 @@ public class CartServiceImpl implements CartService {
         cartItem.setCount(1);
         cartItem.setProduct(product);
         cartItem.setCart(cart);
+        log.info("CartItem created");
         return cartItem;
     }
 }

@@ -80,7 +80,7 @@ public class NotificationController {
     @GetMapping
     public String notificationsPage(@AuthenticationPrincipal CurrentUser currentUser, ModelMap modelMap) {
         modelMap.addAttribute("user", userService.findByIdWithAddresses(currentUser.getUser().getId()));
-        modelMap.addAttribute("notifications", notificationService.notifications(currentUser.getUser().getId()));
+        modelMap.addAttribute("notifications", notificationService.notificationsByUserIdAndOrderDate(currentUser.getUser().getId()));
         return "notifications";
     }
 }

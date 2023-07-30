@@ -28,8 +28,6 @@ public interface UserService {
 
     boolean changePassword(String password, String password2, String email, String token);
 
-    void remove(int id);
-
     UserDto save(UserRegisterDto user);
 
     UserDto saveAddress(User user, AddressDto addressDto);

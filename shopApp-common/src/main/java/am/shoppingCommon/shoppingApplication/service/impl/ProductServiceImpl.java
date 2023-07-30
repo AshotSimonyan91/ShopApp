@@ -69,6 +69,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Page<ProductDto> findAllProducts(Pageable pageable) {
         Page<Product> all = productRepository.findAll(pageable);
+        log.info("Get all products");
         return ProductMapper.mapPageToDto(all);
     }
 
@@ -82,6 +83,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDto> last3ByCategory(String category) {
         List<Product> top3ByCategoriesNameOrderBOrderByIdDesc = productRepository.findTop3ByCategoriesNameOrderByIdDesc(category);
+        log.info("Get last 3 products by {} category",category);
         return ProductMapper.mapProductList(top3ByCategoriesNameOrderBOrderByIdDesc);
     }
 
@@ -94,6 +96,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDto> findTrendingProducts() {
         List<Product> top9ByOrderByReviewDesc = productRepository.findTop9ByOrderByReviewDesc();
+        log.info("Get products to trending");
         return ProductMapper.mapProductList(top9ByOrderByReviewDesc);
     }
 
@@ -108,6 +111,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Page<ProductDto> findByName(String name, Pageable pageable) {
         Page<Product> byNameContainingIgnoreCase = productRepository.findByNameContainingIgnoreCase(name, pageable);
+        log.info("Get products by {} name",name);
         return ProductMapper.mapPageToDto(byNameContainingIgnoreCase);
     }
 
@@ -120,6 +124,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDto> findAll() {
         List<Product> all = productRepository.findAll();
+        log.info("Get all products");
         return ProductMapper.mapToListProductDto(all);
     }
 
@@ -136,7 +141,7 @@ public class ProductServiceImpl implements ProductService {
     public void remove(int id, User user) {
         if (user.getRole() == Role.ADMIN) {
             productRepository.deleteById(id);
-            log.info("product is removed by ID: {}", id);
+            log.info("product by ID: {} was removed ", id);
         }
     }
 
@@ -153,26 +158,21 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public ProductDto save(CreateProductRequestDto productRequestDto, MultipartFile[] files, User user) throws IOException {
-        // Validation to ensure the product has at least one category
+
         validateCategories(productRequestDto);
 
-        // Map the product request DTO to a Product entity
         Product product = ProductMapper.map(productRequestDto);
 
-        // Associate the product with the user who created it
         Optional<User> byId = userRepository.findById(user.getId());
         if (byId.isPresent()) {
             product.setUser(byId.get());
 
-            // Process and save the images associated with the product
             List<Image> imageList = processImages(files);
             product.setImages(imageList);
         }
 
-        // Initialize the product review count
         product.setReview(0L);
 
-        // Save the product to the database
         Product save = productRepository.save(product);
         log.info("Product is saved by ID: {}", save.getId());
         return ProductMapper.mapToDto(save);
@@ -180,6 +180,7 @@ public class ProductServiceImpl implements ProductService {
 
     private void validateCategories(CreateProductRequestDto productRequestDto) {
         if (productRequestDto.getCategories() == null || productRequestDto.getCategories().isEmpty()) {
+            log.info("Category not exist");
             throw new CategoryDoesNotExistsException("Please add category");
         }
         productRequestDto.getCategories().removeIf(category -> category.getId() == 0);
@@ -215,8 +216,10 @@ public class ProductServiceImpl implements ProductService {
             if (!hasUserReviewedProductToday(product, user)) {
                 saveProductReview(product, user);
             }
+            log.info("Get product by {} id",id);
             return ProductMapper.mapToDto(product);
         }
+        log.info("Product by {} id did not exist",id);
         return null;
     }
 
@@ -254,6 +257,7 @@ public class ProductServiceImpl implements ProductService {
         productReview.setLastReview(LocalDate.now());
         productRepository.save(product);
         productReviewRepository.save(productReview);
+        log.info("User by {} id was looked product",user.getId());
     }
 
 
@@ -267,6 +271,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Page<ProductDto> findByCategory(Pageable pageable, String category) {
         Page<Product> products = productRepository.findAllByCategoriesName(category, pageable);
+        log.info("Get products by {} category",category);
         return ProductMapper.mapPageToDto(products);
     }
 
@@ -285,6 +290,7 @@ public class ProductServiceImpl implements ProductService {
         List<Product> all = searchProductByFilter(page, size, filterProductDto);
 
         List<ProductDto> productDtoList = ProductMapper.mapToListProductDto(all);
+        log.info("Get products by criteria");
         return productDtoList;
     }
 

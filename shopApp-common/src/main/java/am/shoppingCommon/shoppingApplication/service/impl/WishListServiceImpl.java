@@ -47,6 +47,7 @@ public class WishListServiceImpl implements WishListService {
     @Override
     public List<WishlistDto> findAll() {
         List<WishList> all = wishListRepository.findAll();
+        log.info("Get all wishLists");
         return WishListMapper.mapToListDto(all);
     }
 
@@ -60,6 +61,7 @@ public class WishListServiceImpl implements WishListService {
     @Override
     public WishlistDto findByUserId(int id) {
         Optional<WishList> byUserId = wishListRepository.findByUserId(id);
+        log.info("Get wishList by {} id",id);
         return byUserId.map(WishListMapper::mapToDto).orElse(null);
     }
 
@@ -71,7 +73,7 @@ public class WishListServiceImpl implements WishListService {
     @Override
     public void remove(int id) {
         wishListRepository.deleteById(id);
-        log.info("wishlist is deleted by ID: {}", id);
+        log.info("wishlist by ID: {} was deleted", id);
     }
 
     /**
@@ -106,6 +108,7 @@ public class WishListServiceImpl implements WishListService {
     @Override
     public WishlistDto findByProduct(Product product) {
         Optional<WishList> byProduct = wishListRepository.findByProduct(product);
+        log.info("Get wishList by {} product",product.getName());
         return byProduct.map(WishListMapper::mapToDto).orElse(null);
     }
 

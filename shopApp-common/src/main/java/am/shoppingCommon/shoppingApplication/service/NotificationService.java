@@ -14,7 +14,7 @@ public interface NotificationService {
 
     NotificationDto save(NotificationRequestDto notificationRequestDto);
 
-    List<NotificationDto> notifications(int userId);
+    List<NotificationDto> notificationsByUserIdAndOrderDate(int userId);
     List<NotificationDto> last3Notifications(int userId);
 
 
