@@ -4,9 +4,12 @@ import am.shopappRest.shoppingApplicationRest.security.CurrentUser;
 import am.shoppingCommon.shoppingApplication.dto.categoryDto.CategoryDto;
 import am.shoppingCommon.shoppingApplication.dto.imageDto.ImageDto;
 import am.shoppingCommon.shoppingApplication.dto.productDto.CreateProductRequestDto;
+import am.shoppingCommon.shoppingApplication.entity.Category;
 import am.shoppingCommon.shoppingApplication.entity.Gender;
 import am.shoppingCommon.shoppingApplication.entity.Role;
 import am.shoppingCommon.shoppingApplication.entity.User;
+import am.shoppingCommon.shoppingApplication.mapper.CategoryMapper;
+import am.shoppingCommon.shoppingApplication.repository.CategoryRepository;
 import am.shoppingCommon.shoppingApplication.repository.ImagesRepository;
 import am.shoppingCommon.shoppingApplication.repository.ProductRepository;
 import am.shoppingCommon.shoppingApplication.repository.UserRepository;
@@ -38,7 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@ActiveProfiles("test2")
+@ActiveProfiles("test")
 public class ProductSaveTest {
     @Autowired
     private MockMvc mockMvc;
@@ -55,6 +58,9 @@ public class ProductSaveTest {
     @Autowired
     private ImagesRepository imagesRepository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
 
     @AfterEach
     public void tearDown() {
@@ -64,17 +70,19 @@ public class ProductSaveTest {
     }
 
 
-
     @Test
     public void testAddProduct() throws Exception {
-        createUser("mail","surname","name");
-
+        Category category = createCategory();
+        createUser("mail", "surname", "name");
+        List<CategoryDto> categoryDtoList = new ArrayList<>();
+        categoryDtoList.add(CategoryMapper.categoryToDto(category));
         List<User> all = userRepository.findAll();
         User user = all.get(0);
 
         CreateProductRequestDto createProductRequestDto = new CreateProductRequestDto();
         createProductRequestDto.setName("Test Product");
         createProductRequestDto.setBrand("Test Brand");
+        createProductRequestDto.setCategories(categoryDtoList);
         createProductRequestDto.setProductCode("TEST-123");
         createProductRequestDto.setDescription("This is a test product.");
         createProductRequestDto.setCount(10);
@@ -82,9 +90,6 @@ public class ProductSaveTest {
 
         List<ImageDto> images = new ArrayList<>();
         createProductRequestDto.setImages(images);
-
-        List<CategoryDto> categories = new ArrayList<>();
-        createProductRequestDto.setCategories(categories);
 
         User basicUser = new User(user.getId(), "Basic User", "Surname", "user@shopApp.com", "password", null, null, Role.USER, null, true, null, null);
         CurrentUser currentUser = new CurrentUser(basicUser);
@@ -114,8 +119,13 @@ public class ProductSaveTest {
                 .andExpect(jsonPath("$.count").value(10))
                 .andExpect(jsonPath("$.price").value(99.99))
                 .andExpect(jsonPath("$.images").isArray())
-                .andExpect(jsonPath("$.categories").isArray())
-                .andExpect(jsonPath("$.categories").isEmpty());
+                .andExpect(jsonPath("$.categories").isArray());
+    }
+
+    private Category createCategory() {
+        Category category = new Category();
+        category.setName("test");
+        return categoryRepository.save(category);
     }
 
 
