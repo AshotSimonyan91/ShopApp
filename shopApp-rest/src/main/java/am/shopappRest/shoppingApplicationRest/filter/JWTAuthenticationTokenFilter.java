@@ -17,6 +17,12 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+/**
+ * This class is a filter that intercepts incoming HTTP requests and performs JWT (JSON Web Token) authentication for the requests.
+ * It extracts the JWT token from the request header, validates it, and sets the authentication details in the SecurityContextHolder
+ * for the authenticated user. The filter uses the JwtTokenUtil to extract information from the JWT token and the
+ * CurrentUserDetailServiceImpl to load the user details for authentication.
+ */
 @Component
 @RequiredArgsConstructor
 public class JWTAuthenticationTokenFilter extends OncePerRequestFilter {
@@ -25,7 +31,18 @@ public class JWTAuthenticationTokenFilter extends OncePerRequestFilter {
 
     private final CurrentUserDetailServiceImpl userDetailsService;
 
-
+    /**
+     * This method intercepts incoming HTTP requests, extracts the JWT token from the "Authorization" header, and performs
+     * JWT authentication. If the token is valid, it loads the user details from the token, creates an authentication object,
+     * and sets it in the SecurityContextHolder for further authentication. Finally, it lets the request proceed to the next
+     * filter in the chain.
+     *
+     * @param httpServletRequest  The incoming HTTP request.
+     * @param httpServletResponse The outgoing HTTP response.
+     * @param filterChain         The filter chain for processing the request.
+     * @throws ServletException if there is an issue during the filter processing.
+     * @throws IOException      if there is an issue with IO operations during the filter processing.
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
 
