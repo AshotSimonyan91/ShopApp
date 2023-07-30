@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RequiredArgsConstructor
 public class EmailExceptionHandlerAdvice {
     private final UserService userService;
+
     @ExceptionHandler(EmailAlreadyExistsException.class)
     public ModelAndView handleEmailAlreadyExistsException(@AuthenticationPrincipal CurrentUser currentUser) {
         ModelAndView modelAndView = new ModelAndView();
@@ -23,6 +24,14 @@ public class EmailExceptionHandlerAdvice {
         modelAndView.addObject("updatePasswordDto", new UpdatePasswordDto());
         modelAndView.addObject("user", userService.findByIdWithAddresses(currentUser.getUser().getId()));
         modelAndView.setViewName("singleUserPage");
+        return modelAndView;
+    }
+
+
+    @ExceptionHandler(NullPointerException.class)
+    public ModelAndView allExceptionHandler(@AuthenticationPrincipal CurrentUser currentUser) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("/admin/error-404-basic");
         return modelAndView;
     }
 
