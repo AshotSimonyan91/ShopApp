@@ -12,6 +12,7 @@ import am.shoppingCommon.shoppingApplication.repository.ProductRepository;
 import am.shoppingCommon.shoppingApplication.repository.UserRepository;
 import am.shoppingCommon.shoppingApplication.service.CommentService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,6 +28,7 @@ import java.util.Optional;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CommentServiceImpl implements CommentService {
 
     private final CommentsRepository commentsRepository;
@@ -41,6 +43,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void remove(int id) {
         commentsRepository.deleteById(id);
+        log.info("Comment was deleted");
     }
 
     /**
@@ -63,9 +66,11 @@ public class CommentServiceImpl implements CommentService {
                 comment.setProduct(product);
                 commentsRepository.save(comment);
                 Comment save = commentsRepository.save(comment);
+                log.info("Comment was saved in {} id by {} user_id",save.getId(),user.getId());
                 return CommentMapper.toDto(save);
             }
         }
+        log.info("Comment did not save");
         return null;
     }
 
@@ -78,6 +83,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<Comment> findAllByLimit(int productId) {
         List<Comment> allByProductId = commentsRepository.findAllByProduct_Id(productId);
+        log.info("Get all comments by {} product id",productId);
         return allByProductId;
     }
 }

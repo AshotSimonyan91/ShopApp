@@ -7,6 +7,7 @@ import am.shoppingCommon.shoppingApplication.mapper.ProductMapper;
 import am.shoppingCommon.shoppingApplication.repository.ProductRepository;
 import am.shoppingCommon.shoppingApplication.service.MainService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ import java.util.List;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MainServiceImpl implements MainService {
     private final ProductRepository productRepository;
 
@@ -41,9 +43,11 @@ public class MainServiceImpl implements MainService {
             File file = new File(imageUploadPath + imageName);
             if (file.exists()) {
                 FileInputStream fis = new FileInputStream(file);
+                log.info("Image by {} name was opened",imageName);
                 return IOUtils.toByteArray(fis);
             }
         }
+        log.info("Image did not open");
         return null;
     }
 
@@ -56,6 +60,7 @@ public class MainServiceImpl implements MainService {
     @Override
     public List<CreateProductResponseDto> search(String value) {
         List<Product> byNameContainingIgnoreCase = productRepository.findByNameContainingIgnoreCase(value);
+        log.info("Found products by {} value",value);
         return ProductMapper.mapToListDto(byNameContainingIgnoreCase);
     }
 }

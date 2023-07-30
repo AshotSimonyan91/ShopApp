@@ -5,6 +5,7 @@ package am.shoppingCommon.shoppingApplication.service.impl;
 import am.shoppingCommon.shoppingApplication.service.AddressService;
 import am.shoppingCommon.shoppingApplication.repository.AddressRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 /**
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AddressServiceImpl implements AddressService {
     private final AddressRepository addressRepository;
 
@@ -28,5 +30,6 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public void delete(int id) {
         addressRepository.deleteById(id);
+        log.info("Address was deleted");
     }
 }

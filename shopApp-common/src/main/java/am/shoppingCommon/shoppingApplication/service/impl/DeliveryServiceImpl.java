@@ -12,6 +12,7 @@ import am.shoppingCommon.shoppingApplication.entity.User;
 import am.shoppingCommon.shoppingApplication.repository.DeliveryRepository;
 import am.shoppingCommon.shoppingApplication.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,7 @@ import java.util.Optional;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class DeliveryServiceImpl implements DeliveryService {
 
     private final DeliveryRepository deliveryRepository;
@@ -47,6 +49,7 @@ public class DeliveryServiceImpl implements DeliveryService {
     @Override
     public Page<DeliveryDto> findAllByUserIdAndOrderStatus(int id, Status status, Pageable pageable) {
         Page<Delivery> allByUserIdAndOrderStatus = deliveryRepository.findAllByUserIdAndOrderStatus(id, status, pageable);
+        log.info("Get all orders by {} user_id and {} status",id,status);
         return DeliveryMapper.mapPageToDto(allByUserIdAndOrderStatus);
     }
 
@@ -60,6 +63,7 @@ public class DeliveryServiceImpl implements DeliveryService {
     @Override
     public Page<DeliveryDto> findAllByOrderStatus(Status status, Pageable pageable) {
         Page<Delivery> allByOrderStatus = deliveryRepository.findAllByOrderStatus(status, pageable);
+        log.info("Get all orders by {} status",status);
         return DeliveryMapper.mapPageToDto(allByOrderStatus);
     }
 
@@ -72,6 +76,7 @@ public class DeliveryServiceImpl implements DeliveryService {
     @Override
     public DeliveryDto findById(int id) {
         Optional<Delivery> byId = deliveryRepository.findById(id);
+        log.info("Delivery by {} id found",id);
         return byId.map(DeliveryMapper::mapToDto).orElse(null);
     }
 
@@ -83,6 +88,7 @@ public class DeliveryServiceImpl implements DeliveryService {
     @Override
     public void remove(int id) {
         deliveryRepository.deleteById(id);
+        log.info("Delivery was deleted");
     }
 
     /**
@@ -102,8 +108,10 @@ public class DeliveryServiceImpl implements DeliveryService {
             delivery.setOrder(order);
             Delivery save = deliveryRepository.save(delivery);
             order.setStatus(Status.APPROVED);
+            log.info("Delivery was saved by {} id",save.getId());
             return DeliveryMapper.mapToDto(save);
         }
+        log.info("Delivery did not save");
         return null;
     }
 
@@ -116,6 +124,7 @@ public class DeliveryServiceImpl implements DeliveryService {
     @Override
     public DeliveryDto save(Delivery delivery) {
         Delivery save = deliveryRepository.save(delivery);
+        log.info("Delivery was saved by {} id",save.getId());
         return DeliveryMapper.mapToDto(save);
     }
 
@@ -134,6 +143,7 @@ public class DeliveryServiceImpl implements DeliveryService {
         delivery.setUser(byId.orElse(null));
         delivery.getOrder().setStatus(status);
         Delivery save = deliveryRepository.save(delivery);
+        log.info("User with {} id choose Delivery",user.getId());
         return DeliveryMapper.mapToDto(save);
     }
 
@@ -146,6 +156,7 @@ public class DeliveryServiceImpl implements DeliveryService {
     @Override
     public DeliveryDto findByOrderId(int id) {
         Optional<Delivery> allByOrderId = deliveryRepository.findAllByOrder_Id(id);
+        log.info("Delivery found");
         return allByOrderId.map(DeliveryMapper::mapToDto).orElse(null);
     }
 }

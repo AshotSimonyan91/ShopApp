@@ -51,17 +51,6 @@ public class UserServiceImpl implements UserService {
     private String imageUploadPath;
 
     /**
-     * Removes a user with the given ID from the database.
-     *
-     * @param id The ID of the user to remove.
-     */
-    @Override
-    public void remove(int id) {
-        userRepository.findById(id);
-    }
-
-
-    /**
      * Saves a new user to the database based on the provided UserRegisterDto.
      * The user's password is encoded using the passwordEncoder before saving.
      *
@@ -125,8 +114,10 @@ public class UserServiceImpl implements UserService {
             User user = byEmail.get();
             user.setToken(UUID.randomUUID().toString());
             User save = userRepository.save(user);
+            log.info("User by {} email found",email);
             return UserMapper.userToUserDto(save);
         }
+        log.info("User by {} email did not find",email);
         return null;
     }
 
@@ -143,8 +134,10 @@ public class UserServiceImpl implements UserService {
         if (byEmail.isPresent()) {
             User user = byEmail.get();
             user.setToken(UUID.randomUUID().toString());
+            log.info("User by {} email found",email);
             return userRepository.save(user);
         }
+        log.info("User by {} email did not find",email);
         return null;
     }
 
@@ -157,6 +150,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Page<UserDto> findAll(Pageable pageable) {
         Page<User> all = userRepository.findAll(pageable);
+        log.info("Get all users");
         return UserMapper.mapPageToDto(all);
     }
 
@@ -174,7 +168,6 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserDto updateUser(MultipartFile multipartFile, UserUpdateDto userUpdateDto, User currentUser) throws IOException {
-        // Retrieve the user from the database based on the current user's ID
         Optional<User> userOptional = userRepository.findById(currentUser.getId());
         User user = UserMapper.userUpdateDtoToUser(userUpdateDto);
         if (userOptional.isPresent()) {
@@ -183,7 +176,6 @@ public class UserServiceImpl implements UserService {
             if (byEmail.isPresent()) {
                 throw new EmailAlreadyExistsException("Email is already exists");
             }
-            // Preserve existing data if no new data is provided in the UserUpdateDto
             if (user.getEmail() == null || user.getEmail().equals("")) {
                 user.setEmail(userOldData.getEmail());
             }
@@ -202,7 +194,6 @@ public class UserServiceImpl implements UserService {
             if (user.getRole() == null) {
                 user.setRole(userOldData.getRole());
             }
-            // Preserve existing profile picture if not updated
             if (userOldData.getProfilePic() != null) {
                 user.setProfilePic(userOldData.getProfilePic());
             }
@@ -210,7 +201,6 @@ public class UserServiceImpl implements UserService {
             user.setId(userOldData.getId());
             user.setPassword(userOldData.getPassword());
             user.setAddresses(userOldData.getAddresses());
-            // If a new profile picture is provided, upload it and save the file name in the user's profilePic field
             if (multipartFile != null && !multipartFile.isEmpty()) {
                 String fileName = System.nanoTime() + "_" + multipartFile.getOriginalFilename();
                 File file = new File(imageUploadPath + fileName);
@@ -247,8 +237,10 @@ public class UserServiceImpl implements UserService {
                 user.setProfilePic(fileName);
             }
             User save = userRepository.save(user);
+            log.info("User is updated by ID: {}", save.getId());
             return UserMapper.userToUserDto(save);
         }
+        log.info("User by {} id did not find",currentUser.getId());
         return null;
     }
 
@@ -261,6 +253,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void removeById(int id) {
         userRepository.deleteById(id);
+        log.info("User by {} id was deleted",id);
     }
 
 
@@ -298,6 +291,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto findById(int id) {
         Optional<User> byId = userRepository.findById(id);
+        log.info("Get user by {} id",id);
         return byId.map(UserMapper::userToUserDto).orElse(null);
     }
 
@@ -311,6 +305,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto findByIdWithAddresses(int id) {
         Optional<User> byId = userRepository.findById(id);
+        log.info("Get user by {} id",id);
         return byId.map(UserMapper::userToUserDto).orElse(null);
     }
 
@@ -352,9 +347,11 @@ public class UserServiceImpl implements UserService {
                 user.setEnabled(true);
                 user.setToken(null);
                 verified = true;
+                log.info("{} email was verified",email);
                 userRepository.save(user);
             }
         }
+        log.info("{} email did not verify",email);
         return verified;
     }
 
@@ -367,8 +364,10 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> findAllDeliveries() {
         List<User> byRole = userRepository.findByRole(Role.DELIVERY);
         if (!byRole.isEmpty()) {
+            log.info("Get all delivery status users");
             return UserMapper.userDtoListMap(byRole);
         }
+        log.info("Users with delivery status did not find");
         return null;
     }
 
@@ -387,8 +386,10 @@ public class UserServiceImpl implements UserService {
             User user = byEmail.get();
             if (user.isEnabled() && user.getToken() != null && user.getToken().equals(token)) {
                 isVerified = true;
+                log.info("{} email was verified",email);
             }
         }
+        log.info("{} email did not verify",email);
         return isVerified;
     }
 
@@ -412,8 +413,10 @@ public class UserServiceImpl implements UserService {
                 user.setToken(null);
                 userRepository.save(user);
                 isChanged = true;
+                log.info("User by {} email changed password",email);
             }
         }
+        log.info("User by {} email failed change password",email);
         return isChanged;
     }
 }

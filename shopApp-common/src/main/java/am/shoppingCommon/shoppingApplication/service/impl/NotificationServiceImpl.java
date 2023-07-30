@@ -43,6 +43,7 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public List<NotificationDto> findAllByUserId(int id) {
         List<Notification> allByUserId = notificationRepository.findAllByUser_Id(id);
+        log.info("Found all notification by {} user_id",id);
         return NotificationMapper.mapToListNotificationDto(allByUserId);
     }
 
@@ -54,6 +55,7 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public void remove(int id) {
         notificationRepository.deleteById(id);
+        log.info("Notification by {} id was deleted",id);
     }
 
     /**
@@ -72,8 +74,8 @@ public class NotificationServiceImpl implements NotificationService {
             Notification save = notificationRepository.save(notification);
             log.info("notification is created by ID : {} & by user ID{}", save.getId(), save.getUser().getId());
             return NotificationMapper.mapToDto(save);
-
         }
+        log.info("Notification did not create");
         return null;
     }
 
@@ -85,9 +87,10 @@ public class NotificationServiceImpl implements NotificationService {
      * @return List of NotificationDto representing the user's notifications with pagination.
      */
     @Override
-    public List<NotificationDto> notifications(int id) {
+    public List<NotificationDto> notificationsByUserIdAndOrderDate(int id) {
         Pageable pageable = PageRequest.of(0, 20);
         List<Notification> lastNotifications = notificationRepository.findAllByUserIdOrderByDateTimeDesc(id, pageable);
+        log.info("Get Notifications by {} user_id",id);
         return NotificationMapper.mapToListNotificationDto(lastNotifications);
     }
 
@@ -102,6 +105,7 @@ public class NotificationServiceImpl implements NotificationService {
     public List<NotificationDto> last3Notifications(int userId) {
         Pageable pageable = PageRequest.of(0, 3);
         List<Notification> lastNotifications = notificationRepository.findAllByUserIdOrderByDateTimeDesc(userId, pageable);
+        log.info("Get last 3 notifications by {} user_id",userId);
         return NotificationMapper.mapToListNotificationDto(lastNotifications);
     }
 }

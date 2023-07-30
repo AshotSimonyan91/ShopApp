@@ -4,6 +4,7 @@ package am.shoppingCommon.shoppingApplication.service.impl;
 import am.shoppingCommon.shoppingApplication.entity.User;
 import am.shoppingCommon.shoppingApplication.service.MailService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MailServiceImpl implements MailService {
     private final MailSender mailSender;
 
@@ -26,7 +28,7 @@ public class MailServiceImpl implements MailService {
         String text = "Welcome " + user.getName() + ". Please verify your account by clicking " + siteUrl + "/user/verify?email=" + user.getEmail() + "&token=" + user.getToken();
         simpleMailMessage.setText(text);
         mailSender.send(simpleMailMessage);
-
+        log.info("Email sent to {}",user.getEmail());
     }
 
     @Override
@@ -37,5 +39,6 @@ public class MailServiceImpl implements MailService {
         String text = "Welcome " + user.getName() + ". Please verify your account by clicking " + siteUrl + "/user/changePassword?email=" + user.getEmail() + "&token=" + user.getToken();
         simpleMailMessage.setText(text);
         mailSender.send(simpleMailMessage);
+        log.info("Email for recovery password sent to {}",user.getEmail());
     }
 }
